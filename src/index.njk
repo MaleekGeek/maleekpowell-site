@@ -38,6 +38,7 @@ title: Home
 </section>
 
 <section class="intro wrap" id="intro" aria-labelledby="intro-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
   <div class="intro__text">
     <h2 id="intro-h" class="statement" data-reveal><span class="hl">Discipline</span>, <span class="hl">mental health</span>, and <span class="hl">getting back up</span>. <span class="hl">The real conversation is here.</span></h2>
   </div>
@@ -74,6 +75,7 @@ title: Home
 
 {% if n %}
 <section class="latest" aria-labelledby="latest-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
   <h2 id="latest-h" data-reveal>Latest</h2>
   <div class="cards">
     {% for v in collections.videos.slice(0, 3) %}{{ vcard(v, loop.index0) }}{% endfor %}
@@ -88,6 +90,7 @@ title: Home
 </section>
 
 <section class="story wrap" id="story" aria-labelledby="story-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
   <h2 id="story-h" data-reveal>My story</h2>
   {% include "partials/chapters.njk" %}
   <p class="more"><a class="pill" href="/about/">Read my story</a></p>
@@ -114,6 +117,7 @@ title: Home
 
 {% if site.membershipLaunched %}
 <section class="members" id="members" aria-labelledby="members-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
   <h2 id="members-h" data-reveal>Want more than the video?</h2>
   <div class="members__body" data-reveal style="--i:1">
     <p class="lead">The free videos aren't going <span class="hl">anywhere.</span></p>
