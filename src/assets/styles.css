@@ -193,7 +193,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .foot { padding: 4rem var(--margin) var(--margin); display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); column-gap: var(--gutter); row-gap: 2.5rem; }
 .crisis { grid-column: 1 / 13; display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); column-gap: var(--gutter); background: var(--panel); padding: clamp(1.25rem, 2.2vw, 2rem); align-items: start; }
 .crisis__h { grid-column: 1 / 6; } .crisis h2 { font-size: var(--step-lead); line-height: 1.05; margin-bottom: .75rem; } .crisis__h p { font-weight: 600; }
-.crisis ul { grid-column: 7 / 13; display: grid; gap: .45rem; padding-left: 1.1em; margin: 0; font-size: .9375rem; line-height: 1.45; }
+.crisis ul { grid-column: 7 / 13; display: grid; gap: .45rem; padding-left: 1.1em; margin: 0; font-size: 1rem; line-height: 1.5; }
 .crisis li::marker { color: var(--accent); }
 .crisis strong { color: var(--accent); }
 .crisis a { color: var(--ink); }
