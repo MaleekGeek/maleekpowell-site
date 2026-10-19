@@ -34,5 +34,6 @@
     "work": "",
     "about": ""
   },
-  "dummyPhotos": true
+  "dummyPhotos": true,
+  "aiImageNote": true
 }
