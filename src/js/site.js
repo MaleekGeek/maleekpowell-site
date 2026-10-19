@@ -80,7 +80,16 @@ document.documentElement.classList.add('js');
   // Entrances
   var els = document.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (el) { io.observe(el); });
+    // Items in a sideways-scrolling row (the story chapters) reveal together with their row, so ones off to the side never stay hidden.
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      if (e.target.matches('.chapters__row')) e.target.querySelectorAll('[data-reveal]').forEach(function (el) { el.classList.add('in'); });
+      io.unobserve(e.target);
+    }); }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { if (!el.closest('.chapters__row')) io.observe(el); });
+    document.querySelectorAll('.chapters__row').forEach(function (row) { io.observe(row); });
+    // Show everything when printing or saving the page.
+    window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('in'); }); });
   } else { els.forEach(function (el) { el.classList.add('in'); }); }
 })();
