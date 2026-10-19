@@ -9,7 +9,7 @@ scripts: ["/js/calendar.js"]
 {% set past = collections.events | past(buildDate) %}
 <section class="page-head">
   <h1 data-reveal>Events</h1>
-  <p class="intro-line" data-reveal style="--i:1">Where I'll be, online and in person. Tap a highlighted day to see what's on.</p>
+  <p class="intro-line" data-reveal style="--i:1">Where you can catch me, online or in person. Tap a highlighted day to see what's on.</p>
 </section>
 
 <section class="cal-wrap section" aria-labelledby="cal-h">
@@ -50,7 +50,7 @@ scripts: ["/js/calendar.js"]
     {% endfor %}
   </ol>
   {% else %}
-  <p class="empty">No events on the calendar right now. People on the email list hear first. <a class="arrow-link" href="/free/">Get the free 7-Day Reset</a></p>
+  <p class="empty">Nothing on the calendar right now. When something's coming up, people on the email list hear first. <a class="arrow-link" href="/free/">Get the free 7-Day Reset</a></p>
   {% endif %}
   {% if past.length %}
   <h2 class="list-h list-h--past">Past events</h2>
