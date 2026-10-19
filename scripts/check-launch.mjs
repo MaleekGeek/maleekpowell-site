@@ -24,6 +24,10 @@ function walk(dir) {
 }
 walk("_site");
 
+// Stand-in stock photos must be gone before launch.
+if (site.dummyPhotos) found.push('src/_data/site.json  "dummyPhotos" is still true (turn it off and add real photos)');
+if (readFileSync("src/_headers", "utf8").includes("picsum")) found.push("src/_headers  remove picsum.photos from img-src");
+
 if (found.length) {
   console.error(`Launch check failed: ${found.length} placeholder(s) still in the site.\n` + found.join("\n"));
   process.exit(1);

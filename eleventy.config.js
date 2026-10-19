@@ -1,6 +1,8 @@
 // Eleventy 3 config for maleekpowell.com
 // Source: src/   Output: _site/   Templates: Nunjucks (.njk) + Markdown for videos.
 
+import { readFileSync } from "node:fs";
+
 export default function (eleventyConfig) {
   // Static files copied as-is
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
@@ -44,6 +46,22 @@ export default function (eleventyConfig) {
     const same = others.filter((v) => v.data.theme === theme);
     const rest = others.filter((v) => v.data.theme !== theme);
     return same.concat(rest).slice(0, n);
+  });
+
+  // Stand-in photos for the test build only. When site.json "dummyPhotos" is true, every empty
+  // photo slot gets a random black-and-white stock photo from picsum.photos (Unsplash licence).
+  // Turn it off before launch; scripts/check-launch.mjs fails the build if it's still on.
+  eleventyConfig.addTransform("dummyPhotos", function (content) {
+    const site = JSON.parse(readFileSync("src/_data/site.json", "utf8"));
+    if (!site.dummyPhotos || !(this.page.outputPath || "").endsWith(".html")) return content;
+    let n = 0;
+    const slug = (this.page.url || "x").replace(/[^a-z0-9]/gi, "") || "home";
+    return content.replace(/<(figure|div|span|a)(\s[^>]*?)class="([^"]*\bphoto\b[^"]*)"([^>]*)>/g, (tag, el, pre, cls, post) => {
+      if (/\bhas-img\b/.test(cls)) return tag;
+      const big = /hero__media|intro__portrait|tile|work__shot/.test(cls);
+      const src = `https://picsum.photos/seed/mp-${slug}-${n++}/${big ? "1600/1200" : "800/600"}?grayscale`;
+      return `<${el}${pre}class="${cls} has-img"${post}><img class="fill" src="${src}" alt="" loading="lazy" decoding="async">`;
+    });
   });
 
   eleventyConfig.addGlobalData("themes", themes);

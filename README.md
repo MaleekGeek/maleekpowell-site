@@ -65,3 +65,7 @@ If `npm install` fails on a network drive because of symlinks, use `npm install 
 ## Launch check
 
 `npm run build` runs `scripts/check-launch.mjs` after Eleventy. Once **Show sample videos** is off, the build fails if any page still has placeholder text (anything in square brackets that starts with a capital letter, like `[NEEDS MALEEK: …]`, `[Year]` or `[Yardy Life link]`), and it lists where.
+
+## Stand-in photos (test build only)
+
+While `"dummyPhotos": true` in `src/_data/site.json`, every empty photo spot shows a random black-and-white stock photo from picsum.photos (Unsplash licence), with its "Your photo: …" label still on top so you know what goes there. Before launch: add your own photos, set `"dummyPhotos": false`, and remove `https://picsum.photos https://fastly.picsum.photos` from `img-src` in `src/_headers`. The launch check fails until both are done.
