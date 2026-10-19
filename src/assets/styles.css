@@ -573,3 +573,5 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .has-px :is(.tile, .shot, .work__shot, .section-bg).photo > img.fill { translate: 0 var(--py, 0); scale: 1.14; }
 .has-px .hero__media > .poster, .has-px .hero__media > .hero__vid { translate: 0 var(--py, 0); scale: 1.08; }
 /* separate translate/scale properties so they stack with the poster's drift animation */
+/* Portraits: the main subject, so lighter than the background photos and framed from the top */
+.photo.shot > img.fill, .photo.intro__portrait > img.fill { filter: grayscale(1) contrast(1.05) brightness(.85); object-position: 50% 15%; }

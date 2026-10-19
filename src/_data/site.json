@@ -23,7 +23,7 @@
   "showSamples": true,
   "membershipLaunched": false,
   "photos": {
-    "portrait": "",
+    "portrait": "/assets/photos/portrait.webp",
     "motivation": "",
     "discipline": "",
     "mentalHealth": "",
@@ -32,7 +32,7 @@
     "adventureSquad": "",
     "yardyLife": "",
     "work": "",
-    "about": ""
+    "about": "/assets/photos/portrait.webp"
   },
   "dummyPhotos": true,
   "aiImageNote": true
