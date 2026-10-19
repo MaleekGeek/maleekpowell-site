@@ -78,6 +78,91 @@ content:
         label: Notes and transcript
         type: rich-text
 
+  - name: journal
+    label: Journal
+    type: collection
+    path: src/journal
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, category]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values: [Update, Insight, Tips & tricks, News]
+      - name: cover
+        label: Cover photo (optional)
+        type: image
+        options:
+          media: photos
+      - name: summary
+        label: Summary
+        type: text
+        description: "One or two sentences for the cards and search engines."
+      - name: sample
+        label: Sample post (placeholder)
+        type: boolean
+        description: "Leave off for real posts."
+      - name: body
+        label: Post
+        type: rich-text
+
+  - name: events
+    label: Events
+    type: collection
+    path: src/events
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, kind]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: asc
+    fields:
+      - { name: title, label: Event name, type: string, required: true }
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: time
+        label: Time
+        type: string
+        description: "Like 7:00 pm (Jamaica time)"
+      - name: kind
+        label: Type
+        type: select
+        required: true
+        options:
+          values: [Online, In person]
+      - name: place
+        label: Place
+        type: string
+        description: "Venue and town, or the platform for online events."
+      - name: link
+        label: Sign-up or ticket link
+        type: string
+        description: "Optional. Shows a 'Get a spot' button."
+      - name: summary
+        label: Summary
+        type: text
+      - name: sample
+        label: Sample event (placeholder)
+        type: boolean
+        description: "Leave off for real events."
+      - name: body
+        label: Details
+        type: rich-text
+
   - name: site
     label: Site settings
     type: file
@@ -121,6 +206,8 @@ content:
       - { name: yardyLifeUrl, label: Yardy Life link, type: string }
       - { name: instagramUrl, label: Instagram link, type: string }
       - { name: instagramHandle, label: Instagram handle, type: string }
+      - { name: tiktokUrl, label: TikTok link, type: string }
+      - { name: facebookUrl, label: Facebook link, type: string }
       - { name: businessEmail, label: Business email, type: string }
       - name: postalAddress
         label: Postal address (shown in the footer, needed for email law)

@@ -452,3 +452,87 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 /* Hero scrim above poster/video/photo, below the name (contrast for the orange name in every hero mode) */
 .hero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: /* taste-skill-ignore: scrim behind hero name */ linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,.45) 100%); }
 .hero__name, .hero__foot { position: relative; z-index: 2; }
+/* Footer socials cell: same size as the other cells, icons sized to fit */
+.social__cell { display: grid; place-items: center; gap: .3rem; min-height: 7.5rem; background: #000; padding: 1rem; text-align: center; }
+.social__h { margin: 0; font-family: var(--display); text-transform: uppercase; font-size: var(--step-lead); font-weight: 500; line-height: 1.55; }
+.social__icons { display: flex; gap: .5rem; list-style: none; margin: -11px 0; padding: 0; }
+.social__icons a { display: grid; place-items: center; width: 44px; height: 44px; min-height: 0; padding: 0; background: transparent; border-radius: 50%; color: var(--ink); transition: background-color 180ms, color 180ms; }
+.social__icons a:hover, .social__icons a:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.social__icons svg { width: 24px; height: 24px; }
+
+/* Journal posts and event pages */
+.post, .event { padding: calc(var(--margin) + 8rem) var(--margin) var(--section); display: grid; gap: 2.5rem; }
+.post__head { display: grid; gap: 1.25rem; max-width: 52rem; }
+.post__head h1, .event__head h1 { font-size: var(--step-head); }
+.post__meta { color: var(--accent); font-weight: 600; font-size: var(--step-small); text-transform: uppercase; letter-spacing: .06em; }
+.post__lead { font-size: max(1.125rem, var(--step-body)); color: var(--soft); max-width: 40rem; }
+.post__cover { margin: 0; width: 100%; aspect-ratio: 21 / 9; }
+.post__body { font-size: max(1.0625rem, var(--step-body)); }
+.post__body:empty { display: none; }
+.event__head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; max-width: 64rem; }
+.event__head > div { display: grid; gap: 1.25rem; justify-items: start; }
+.event__date { margin: 0; }
+.event__date time { display: grid; place-items: center; width: clamp(6.5rem, 12vw, 9.5rem); aspect-ratio: 1; background: var(--accent); color: var(--accent-ink); font-family: var(--display); text-transform: uppercase; line-height: .9; }
+.event__day { font-size: clamp(3.5rem, 7vw, 5.5rem); font-weight: 700; }
+.event__mon { font-size: var(--step-lead); font-weight: 500; margin-top: -.6em; }
+@media (max-width: 560px) { .event__head { grid-template-columns: 1fr; } }
+
+/* Events calendar */
+.cal { background: var(--panel); border-top: 6px solid var(--accent); padding: clamp(1.25rem, 3vw, 2.5rem); }
+.cal[hidden] { display: none; }
+.cal__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.cal__month { margin: 0; font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: var(--step-head); line-height: .9; }
+.cal__nav { display: flex; gap: .5rem; }
+.cal__nav button { min-width: 48px; min-height: 48px; padding: 0 1rem; border: 2px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font-family: var(--display); text-transform: uppercase; font-size: var(--step-body); display: grid; place-items: center; transition: background-color 180ms, color 180ms, border-color 180ms; }
+.cal__nav button svg { width: 20px; height: 20px; }
+.cal__nav button:hover { border-color: var(--accent); color: var(--accent); }
+.cal__body { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 2.5rem); }
+.cal__dow, .cal__row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cal__days { display: grid; gap: 4px; margin-top: 4px; }
+.cal__dow span { font-family: var(--display); text-transform: uppercase; color: var(--soft); font-size: var(--step-small); letter-spacing: .06em; padding: .25rem .5rem; }
+.cal__day { position: relative; width: 100%; aspect-ratio: 1; min-height: 44px; display: flex; align-items: flex-start; justify-content: flex-start; padding: .45rem .55rem; border: 2px solid transparent; background: #0f0f0f; color: var(--ink); cursor: pointer; font-family: var(--display); font-size: clamp(1rem, .8rem + .8vw, 1.5rem); font-weight: 500; line-height: 1; transition: background-color 180ms, border-color 180ms, color 180ms; }
+.cal__day:hover { border-color: var(--soft); }
+.cal__day.past { color: #8c8c8c; }
+.cal__day.today { border-color: var(--ink); }
+.cal__day.has { background: #2a1408; color: var(--ink); }
+.cal__dot { position: absolute; left: .55rem; bottom: .55rem; width: clamp(8px, 1.2vw, 12px); aspect-ratio: 1; border-radius: 50%; background: var(--accent); }
+.cal__day[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.cal__day[aria-pressed="true"] .cal__dot { background: var(--accent-ink); }
+.cal__day:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.cal__panel { display: grid; gap: 1rem; align-content: start; border-left: 2px solid #2a2a2a; padding-left: clamp(1.25rem, 3vw, 2.5rem); }
+.cal__panel-date { margin: 0; font-family: var(--display); text-transform: uppercase; font-weight: 700; font-size: var(--step-lead); line-height: 1; color: var(--accent); }
+.cal__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.cal__list a { display: grid; gap: .3rem; padding: 1rem 1.1rem; background: #0f0f0f; border-left: 4px solid var(--accent); text-decoration: none; transition: background-color 180ms; }
+.cal__list a:hover { background: #222; }
+.cal__ev-title { font-family: var(--display); text-transform: uppercase; font-weight: 700; font-size: 1.25rem; line-height: 1.05; }
+.cal__ev-meta, .cal__none { color: var(--soft); font-size: var(--step-small); }
+@media (max-width: 800px) {
+  .cal__body { grid-template-columns: minmax(0, 1fr); }
+  .cal__panel { border-left: 0; padding-left: 0; border-top: 2px solid #2a2a2a; padding-top: 1.25rem; }
+}
+@media (max-width: 560px) {
+  .cal__day { aspect-ratio: auto; height: 48px; padding: .35rem; font-size: 1rem; }
+  .cal__dot { left: auto; right: .35rem; bottom: .35rem; width: 8px; }
+  .cal__dow span { padding: .25rem; font-size: .75rem; }
+}
+
+/* Event lists */
+.list-h { font-size: var(--step-lead); margin-bottom: 1.25rem; }
+.list-h--past { margin-top: 3.5rem; color: var(--soft); }
+.elist { list-style: none; margin: 0; padding: 0; border-top: 2px solid #2a2a2a; }
+.elist li { border-bottom: 2px solid #2a2a2a; }
+.elist a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(1rem, 3vw, 2rem); align-items: center; padding: 1.25rem 0; text-decoration: none; }
+.elist__date { display: grid; place-items: center; width: 4.5rem; aspect-ratio: 1; background: var(--panel); font-family: var(--display); text-transform: uppercase; font-size: var(--step-small); line-height: 1; color: var(--soft); }
+.elist__date span { font-size: 2rem; font-weight: 700; color: var(--ink); }
+.elist__main { display: grid; gap: .35rem; }
+.elist__title { font-family: var(--display); text-transform: uppercase; font-weight: 700; font-size: var(--step-lead); line-height: 1; transition: color 180ms; }
+.elist__meta { color: var(--soft); font-size: var(--step-small); }
+.elist .arr { color: var(--accent); font-size: 1.75rem; transition: transform 200ms var(--ease); }
+.elist a:hover .elist__title { color: var(--accent); }
+.elist a:hover .arr { transform: translateX(5px); }
+.elist a:hover .elist__date { background: var(--accent); color: var(--accent-ink); }
+.elist a:hover .elist__date span { color: var(--accent-ink); }
+.elist--past .elist__title { font-size: var(--step-body); color: var(--soft); }
+.elist--past .elist__date { width: 3.5rem; }
+.elist--past .elist__date span { font-size: 1.4rem; }
+.cal-wrap { padding-bottom: clamp(3rem, 6vw, 5rem); }

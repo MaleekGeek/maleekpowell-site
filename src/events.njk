@@ -1,0 +1,61 @@
+---
+layout: layouts/base.njk
+title: Events
+description: Upcoming events with Maleek Powell, online and in person.
+permalink: /events/
+scripts: ["/js/calendar.js"]
+---
+{% set up = collections.events | upcoming(buildDate) %}
+{% set past = collections.events | past(buildDate) %}
+<section class="page-head">
+  <h1 data-reveal>Events</h1>
+  <p class="intro-line" data-reveal style="--i:1">Where I'll be, online and in person. Tap a highlighted day to see what's on.</p>
+</section>
+
+<section class="cal-wrap section" aria-labelledby="cal-h">
+  <h2 id="cal-h" class="sr-only">Calendar</h2>
+  <div class="cal" data-start="{{ (up[0].date | isoDate) if up.length else buildDate }}" hidden>
+    <div class="cal__top">
+      <p class="cal__month" aria-live="polite"></p>
+      <div class="cal__nav">
+        <button type="button" class="cal__prev" aria-label="Previous month"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M20 11H3M9 5l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>
+        <button type="button" class="cal__today">Today</button>
+        <button type="button" class="cal__next" aria-label="Next month"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M2 11h17M13 5l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>
+      </div>
+    </div>
+    <div class="cal__body">
+      <div class="cal__grid" role="grid" aria-label="Event calendar">
+        <div class="cal__dow" role="row"><span role="columnheader">Sun</span><span role="columnheader">Mon</span><span role="columnheader">Tue</span><span role="columnheader">Wed</span><span role="columnheader">Thu</span><span role="columnheader">Fri</span><span role="columnheader">Sat</span></div>
+        <div class="cal__days"></div>
+      </div>
+      <aside class="cal__panel" aria-live="polite">
+        <p class="cal__panel-date"></p>
+        <ul class="cal__list"></ul>
+      </aside>
+    </div>
+  </div>
+  <script type="application/json" id="events-data">{{ collections.events | eventsJson | safe }}</script>
+</section>
+
+<section class="section" aria-labelledby="up-h">
+  <h2 id="up-h" class="list-h" data-reveal>Coming up</h2>
+  {% if up.length %}
+  <ol class="elist">
+    {% for e in up %}
+    <li data-reveal style="--i:{{ loop.index0 % 3 }}"><a href="{{ e.url }}">
+      <time class="elist__date" datetime="{{ e.date | isoDate }}"><span>{{ e.date | dayNum }}</span>{{ e.date | monthShort }}</time>
+      <span class="elist__main"><span class="elist__title">{% if e.data.sample %}[Sample] {% endif %}{{ e.data.title }}</span><span class="elist__meta">{{ e.data.kind }}{% if e.data.time %} · {{ e.data.time }}{% endif %}{% if e.data.place %} · {{ e.data.place }}{% endif %}</span></span>
+      <span class="arr" aria-hidden="true">→</span>
+    </a></li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <p class="empty">No events on the calendar right now. People on the email list hear first. <a class="arrow-link" href="/free/">Get the free 7-Day Reset</a></p>
+  {% endif %}
+  {% if past.length %}
+  <h2 class="list-h list-h--past">Past events</h2>
+  <ol class="elist elist--past">
+    {% for e in past %}<li><a href="{{ e.url }}"><time class="elist__date" datetime="{{ e.date | isoDate }}"><span>{{ e.date | dayNum }}</span>{{ e.date | monthShort }}</time><span class="elist__main"><span class="elist__title">{{ e.data.title }}</span></span></a></li>{% endfor %}
+  </ol>
+  {% endif %}
+</section>

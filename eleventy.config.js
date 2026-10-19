@@ -22,6 +22,28 @@ export default function (eleventyConfig) {
       .sort((a, b) => b.date - a.date);
   });
 
+  // Journal: newest first. Events: soonest first. Samples drop out when showSamples is false.
+  eleventyConfig.addCollection("journal", (api) =>
+    api.getFilteredByGlob("src/journal/*.md").filter((i) => i.data.permalink !== false).sort((a, b) => b.date - a.date)
+  );
+  eleventyConfig.addCollection("events", (api) =>
+    api.getFilteredByGlob("src/events/*.md").filter((i) => i.data.permalink !== false).sort((a, b) => a.date - b.date)
+  );
+  // Events as JSON for the calendar (read by /js/calendar.js)
+  eleventyConfig.addFilter("eventsJson", (events) =>
+    JSON.stringify((events || []).map((e) => ({
+      title: (e.data.sample ? "[Sample] " : "") + e.data.title,
+      date: new Date(e.date).toISOString().slice(0, 10),
+      time: e.data.time || "",
+      place: e.data.place || "",
+      kind: e.data.kind || "",
+      url: e.url,
+    }))).replace(/</g, "\\u003c")
+  );
+  eleventyConfig.addFilter("upcoming", (events, today) => (events || []).filter((e) => new Date(e.date) >= new Date(today)));
+  eleventyConfig.addFilter("past", (events, today) => (events || []).filter((e) => new Date(e.date) < new Date(today)).reverse());
+  eleventyConfig.addGlobalData("buildDate", () => new Date().toISOString().slice(0, 10));
+
   // Count of videos per theme (for the home tiles)
   eleventyConfig.addFilter("countTheme", (videos, theme) =>
     (videos || []).filter((v) => !theme || v.data.theme === theme).length
@@ -38,6 +60,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("readableDate", (d) =>
     new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(d))
   );
+  eleventyConfig.addFilter("dayNum", (d) => new Date(d).getUTCDate());
+  eleventyConfig.addFilter("monthShort", (d) => new Intl.DateTimeFormat("en-GB", { month: "short", timeZone: "UTC" }).format(new Date(d)));
   eleventyConfig.addFilter("isoDate", (d) => new Date(d).toISOString().slice(0, 10));
 
   // Videos on the same theme first, then the rest, excluding the current one

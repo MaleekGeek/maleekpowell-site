@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+---
+{% from "partials/macros.njk" import slot with context %}
+<article class="post">
+  <header class="post__head">
+    <p class="post__meta" data-reveal><span>{{ category }}</span> · <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+    <h1 data-reveal style="--i:1">{% if sample %}[Sample] {% endif %}{{ title }}</h1>
+    {% if summary %}<p class="post__lead" data-reveal style="--i:2">{{ summary }}</p>{% endif %}
+  </header>
+  {{ slot("figure", "post__cover", "Cover photo (optional)", cover, "", "", "data-reveal") }}
+  <div class="post__body prose">
+    {{ content | safe }}
+  </div>
+  <footer class="post__foot">
+    <a class="arrow-link" href="/journal/">More from the journal <svg viewBox="0 0 22 22" aria-hidden="true"><path d="M2 11h17M13 5l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg></a>
+  </footer>
+</article>
