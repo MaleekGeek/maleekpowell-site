@@ -567,3 +567,9 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .also .elist__date { background: #0f0f0f; width: 6rem; font-size: 1rem; }
 .also .elist__date span { font-size: 2.75rem; }
 @media (max-width: 800px) { .also { grid-template-columns: 1fr; } }
+
+/* Parallax (site.js sets --py; only when .has-px, so reduced motion and no-JS stay still) */
+.has-px .tile.photo::before, .has-px .shot.photo::before, .has-px .work__shot.photo::before, .has-px .section-bg::before { translate: 0 var(--py, 0); }
+.has-px :is(.tile, .shot, .work__shot, .section-bg).photo > img.fill { translate: 0 var(--py, 0); scale: 1.14; }
+.has-px .hero__media > .poster, .has-px .hero__media > .hero__vid { translate: 0 var(--py, 0); scale: 1.08; }
+/* separate translate/scale properties so they stack with the poster's drift animation */

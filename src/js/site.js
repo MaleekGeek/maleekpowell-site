@@ -42,6 +42,30 @@ document.documentElement.classList.add('js');
     });
   });
 
+  // Parallax: photos and the hero drift a little slower than the page as you scroll.
+  // Off under reduced motion and while motion is paused.
+  var px = reduce ? [] : Array.prototype.slice.call(document.querySelectorAll('.hero__media, .tile.photo, .shot.photo, .work__shot.photo, .section-bg'));
+  if (px.length) {
+    var ticking = false;
+    var drift = function () {
+      ticking = false;
+      var vh = window.innerHeight, still = html.classList.contains('paused');
+      px.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        var max = r.height * (el.classList.contains('hero__media') ? 0.04 : 0.06), off = still ? 0 : -((r.top + r.height / 2) - vh / 2) * 0.12;
+        if (el.classList.contains('hero__media')) off = still ? 0 : Math.max(0, -r.top) * 0.35;
+        el.style.setProperty('--py', Math.max(-max, Math.min(max, off)).toFixed(1) + 'px');
+      });
+    };
+    var queue = function () { if (!ticking) { ticking = true; requestAnimationFrame(drift); } };
+    html.classList.add('has-px');
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    document.querySelectorAll('.pause').forEach(function (p) { p.addEventListener('click', queue); });
+    drift();
+  }
+
   // Captions toggle for the hero video
   document.querySelectorAll('.cc').forEach(function (cc) {
     cc.addEventListener('click', function () {
