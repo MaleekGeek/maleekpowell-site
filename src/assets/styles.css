@@ -449,3 +449,6 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
           mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent); }
 .section-bg > img.fill { filter: grayscale(1) contrast(1.1) brightness(.6) blur(2px); }
 @media (prefers-reduced-transparency: reduce) { .section-bg { display: none; } }
+/* Hero scrim above poster/video/photo, below the name (contrast for the orange name in every hero mode) */
+.hero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: /* taste-skill-ignore: scrim behind hero name */ linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,.45) 100%); }
+.hero__name, .hero__foot { position: relative; z-index: 2; }

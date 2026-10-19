@@ -22,6 +22,7 @@ title: Home
     {% endif %}
   </div>
   {{ slot("div", "hero__media hero__media--photo", "Hero photo not set yet: add it in Site settings", site.heroPhoto, "Maleek Powell", "--tone:#303030; --x:40%; --y:34%") }}
+  <div class="hero__scrim" aria-hidden="true"></div>
   <div class="controls">
     <button class="ctl cc" type="button" aria-pressed="true">CC on</button>
     <button class="ctl pause" type="button" aria-pressed="false">Pause motion</button>
