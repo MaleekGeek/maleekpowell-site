@@ -237,3 +237,4 @@ content:
           - { name: yardyLife, label: Yardy Life tile, type: image, options: { media: photos } }
           - { name: work, label: Work with Maleek, type: image, options: { media: photos } }
           - { name: about, label: About page, type: image, options: { media: photos } }
+          - { name: company, label: "About page: wide photo under the story", type: image, options: { media: photos } }

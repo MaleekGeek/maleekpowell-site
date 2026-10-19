@@ -19,6 +19,7 @@ permalink: /about/
   </div>
   {{ slot("figure", "r shot", "Your photo: portrait", site.photos.about, "Maleek Powell smiling, arms crossed", "", 'data-reveal style="--i:1"') }}
 </section>
+{% if site.photos.company %}<div class="about-wide">{{ slot("figure", "about-wide__shot", "", site.photos.company, "Maleek Powell smiling beside a screen showing his company's logo, Helios", "", "data-reveal") }}</div>{% endif %}
 <section class="roles" aria-labelledby="roles-h">
   <h2 id="roles-h" data-reveal>What else Maleek does</h2>
   <ul class="roles__list">
@@ -31,8 +32,8 @@ permalink: /about/
 </section>
 <section class="more-from" aria-labelledby="more-h">
   <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
-  <a class="tile photo t2" href="{{ site.adventureSquadUrl or '#' }}" data-reveal><span class="cap">Your photo: Adventure Squad</span><span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>Maleek's documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
-  <a class="tile photo t3" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1"><span class="cap">Your photo: in the studio</span><span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>Maleek's travel and lifestyle show on Fame 95 FM.</p></a>
+  <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy" decoding="async">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>Maleek's documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
+  <a class="tile photo t3{% if site.photos.yardyLife %} has-img{% endif %}" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1">{% if site.photos.yardyLife %}<img class="fill" src="{{ site.photos.yardyLife }}" alt="" loading="lazy" decoding="async">{% else %}<span class="cap">Your photo: in the studio</span>{% endif %}<span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>Maleek's travel and lifestyle show on Fame 95 FM.</p></a>
 </section>
 
 <section class="split" aria-labelledby="why-h">

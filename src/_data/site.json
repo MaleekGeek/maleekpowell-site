@@ -32,7 +32,8 @@
     "adventureSquad": "/assets/photos/adventure-squad.webp",
     "yardyLife": "/assets/photos/yardy-life.webp",
     "work": "/assets/photos/work.webp",
-    "about": "/assets/photos/portrait.webp"
+    "about": "/assets/photos/portrait.webp",
+    "company": "/assets/photos/company.webp"
   },
   "dummyPhotos": true,
   "aiImageNote": true
