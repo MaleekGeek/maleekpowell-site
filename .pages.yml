@@ -187,6 +187,10 @@ content:
             label: Bunny CDN host name
             type: string
             description: "The part before .b-cdn.net, like vz-1234abcd-567 (Library > API > CDN Hostname)"
+          - name: file
+            label: Or a short silent clip stored in the site
+            type: string
+            description: "Path like /assets/video/banner.mp4. Used only when the Bunny IDs are empty. Keep it under 10 seconds-ish and a few MB."
           - name: poster
             label: Poster image (shown before the video plays)
             type: image

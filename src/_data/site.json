@@ -6,7 +6,8 @@
     "bunnyLibraryId": "",
     "bunnyVideoId": "",
     "pullZone": "",
-    "poster": ""
+    "poster": "/assets/video/banner-poster.webp",
+    "file": "/assets/video/banner.mp4"
   },
   "heroPhoto": "",
   "kitFormId": "",
@@ -24,9 +25,9 @@
   "photos": {
     "portrait": "",
     "motivation": "",
-    "discipline": "",
-    "mentalHealth": "",
-    "healing": "",
+    "discipline": "/assets/photos/early-morning.webp",
+    "mentalHealth": "/assets/photos/quiet-moment.webp",
+    "healing": "/assets/photos/beach-walk.webp",
     "everyVideo": "",
     "adventureSquad": "",
     "yardyLife": "",
