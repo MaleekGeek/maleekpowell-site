@@ -56,15 +56,18 @@ async function main() {
   if (feedFile) xml = readFileSync(feedFile, "utf8");
   else xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${await channelId()}`)).text();
 
-  // IDs already added by hand
-  const manual = new Set();
-  for (const f of readdirSync(VIDEOS)) if (f.endsWith(".md")) { const m = readFileSync(`${VIDEOS}/${f}`, "utf8").match(/^youtube:\s*"?([^"\n]*)"?/m); const id = m && ytId(m[1]); if (id) manual.add(id); }
+  // IDs already added by hand, and the page addresses they use (file name minus the date)
+  const manual = new Set(), used = new Set();
+  for (const f of readdirSync(VIDEOS)) if (f.endsWith(".md")) {
+    used.add(f.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, ""));
+    const m = readFileSync(`${VIDEOS}/${f}`, "utf8").match(/^youtube:\s*"?([^"\n]*)"?/m); const id = m && ytId(m[1]); if (id) manual.add(id);
+  }
 
   mkdirSync(THUMBS, { recursive: true });
   let added = 0;
   for (const entry of xml.split("<entry>").slice(1)) {
     const id = tag(entry, "yt:videoId");
-    if (!id || manual.has(id)) continue;
+    if (!/^[\w-]{11}$/.test(id) || manual.has(id)) continue;
     if (/href="https:\/\/www\.youtube\.com\/shorts\//.test(entry)) continue; // full videos only
     const title = unbracket(tag(entry, "title"));
     const desc = unbracket(tag(entry, "media:description"));
@@ -84,9 +87,16 @@ async function main() {
       if (feedFile || existsSync(`${THUMBS}/yt-${id}.jpg`)) thumb = `/assets/thumbs/yt-${id}.jpg`;
     } catch (e) { console.warn(`YouTube sync: no thumbnail for ${id} (${e.message})`); }
 
+    // Two videos can't share an address, or the build fails: add the video ID on a clash
+    let slug = slugify(title) || id;
+    if (used.has(slug)) slug = `${slug}-${id}`.toLowerCase();
+    used.add(slug);
+
     const fm = {
       title, date, theme, youtube: `https://youtu.be/${id}`, thumbnail: thumb, length: "", summary,
-      fromYouTube: true, slug: slugify(title) || id,
+      // Safety note on everything except clearly light themes, since most videos touch heavy topics
+      heavy: !["Motivation", "Discipline"].includes(theme),
+      fromYouTube: true, slug,
     };
     const yaml = Object.entries(fm).map(([k, v]) => `${k}: ${typeof v === "string" ? JSON.stringify(v) : v}`).join("\n");
     writeFileSync(`${VIDEOS}/yt-${id}.md`, `---\n${yaml}\n---\n${body}\n`);
