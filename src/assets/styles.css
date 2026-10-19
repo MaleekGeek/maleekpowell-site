@@ -436,3 +436,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .signup-top .form .pill { justify-content: center; }
 .signup-top .form .done { min-height: 0; margin: 0; }
 .signup-top .form .done:empty { display: none; }
+/* Contrast over photos (review, WCAG 1.4.3): darken photos, deeper tile scrim, scrim behind the hero name */
+.photo > img.fill { filter: grayscale(1) contrast(1.05) brightness(.5); }
+.tile .scrim { height: 100%; background: /* taste-skill-ignore: neutral scrim under text on photo */ linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.6) 55%, transparent 90%); }
+.hero__media.has-img::before { inset: 0; background: /* taste-skill-ignore: scrim behind hero name */ linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,.45) 100%); }
+.hero__vid { filter: brightness(.6); }
