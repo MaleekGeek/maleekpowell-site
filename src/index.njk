@@ -84,18 +84,18 @@ title: Home
 {% endif %}
 
 
-{% set nextEv = (collections.events | upcoming(buildDate))[0] %}
+{% set nextEvs = (collections.events | upcoming(buildDate)).slice(0, 3) %}{% set nextEv = nextEvs[0] %}
 {% set lastPost = collections.journal[0] %}
 {% if nextEv or lastPost %}
 <section class="also" aria-label="Events and journal">
-  {% if nextEv %}
-  <a class="also__card next-event" href="{{ nextEv.url }}" data-date="{{ nextEv.date | isoDate }}" data-reveal>
+  {% for nextEv in nextEvs %}
+  <a class="also__card next-event" href="{{ nextEv.url }}" data-date="{{ nextEv.date | isoDate }}" {% if not loop.first %}hidden {% endif %}data-reveal>
     <span class="also__label">Next event</span>
     <span class="also__row"><time class="elist__date" datetime="{{ nextEv.date | isoDate }}"><span>{{ nextEv.date | dayNum }}</span>{{ nextEv.date | monthShort }}</time>
     <span class="also__main"><span class="also__title">{% if nextEv.data.sample %}[Sample] {% endif %}{{ nextEv.data.title }}</span><span class="also__meta">{{ nextEv.data.kind }}{% if nextEv.data.time %} · {{ nextEv.data.time | withZone }}{% endif %}</span></span></span>
     <span class="also__more">See the event <span aria-hidden="true">→</span></span>
   </a>
-  {% endif %}
+  {% endfor %}
   {% if lastPost %}
   <a class="also__card" href="{{ lastPost.url }}" data-reveal style="--i:1">
     <span class="also__label">From the journal</span>

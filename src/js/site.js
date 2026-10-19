@@ -70,11 +70,12 @@ document.documentElement.classList.add('js');
     if (q && document.querySelector('[data-filter="' + q + '"]')) setF(q);
   }
 
-  // Home: hide the next-event card once that event has passed (the page is built ahead of time)
-  var ne = document.querySelector('.next-event');
-  if (ne) {
-    var d = new Date(), t = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
-    if (ne.dataset.date < t) { ne.hidden = true; var also = ne.closest('.also'); if (also && !also.querySelector('.also__card:not([hidden])')) also.hidden = true; }
+  // Home: show the first event that hasn't passed yet (the page is built ahead of time)
+  var nes = document.querySelectorAll('.next-event');
+  if (nes.length) {
+    var d = new Date(), t = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), shown = false;
+    nes.forEach(function (ne) { ne.hidden = shown || ne.dataset.date < t; if (!ne.hidden) shown = true; });
+    var also = nes[0].closest('.also'); if (also && !also.querySelector('.also__card:not([hidden])')) also.hidden = true;
   }
 
   // Signup forms: until the Kit form ID is set, don't submit anywhere
