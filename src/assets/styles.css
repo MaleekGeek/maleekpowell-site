@@ -538,3 +538,16 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .cal-wrap { padding-bottom: clamp(3rem, 6vw, 5rem); }
 .chip-note:empty { margin: 0; }
 .chip-note { margin: -1rem 0 2rem; color: var(--soft); font-size: max(1.0625rem, var(--step-body)); }
+
+/* About: what else Maleek does */
+.roles { padding: 0 var(--margin) var(--section); }
+.roles > h2 { font-size: var(--step-head); margin-bottom: 2rem; }
+.roles__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); }
+.roles__list li { border-top: 4px solid var(--accent); padding-top: 1.1rem; display: grid; gap: .6rem; align-content: start; }
+.roles__list h3 { font-size: var(--step-lead); line-height: 1; min-height: 2em; }
+@media (max-width: 560px) { .roles__list h3 { min-height: 0; } }
+.roles__list p { color: var(--soft); }
+.roles__press { margin-top: 2.5rem; color: var(--soft); }
+.roles__press a { color: var(--accent); }
+@media (max-width: 900px) { .roles__list { grid-template-columns: 1fr 1fr; row-gap: 2.5rem; } }
+@media (max-width: 560px) { .roles__list { grid-template-columns: 1fr; } }
