@@ -423,3 +423,16 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .signup-top { justify-self: center; text-align: center; }
 .signup-top .form { justify-content: center; }
 @media (max-width: 800px) { .signup-top { justify-self: center; } }
+/* 7-Day Reset in the hero: more presence (Maleek, 2026-10-19) */
+.signup-top { width: min(100%, 40rem); padding: clamp(1.25rem, 2.5vw, 2rem); background: rgba(11,11,11,.72); border-top: 6px solid var(--accent); backdrop-filter: blur(6px); }
+.signup-top h2 { font-size: clamp(2rem, 1.1rem + 2.6vw, 3.5rem); line-height: .98; }
+.signup-top h2 .free { color: var(--accent); }
+.signup-top .form { margin-top: 1.25rem; }
+.signup-top .form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.signup-top .form input { min-height: 56px; font-size: 1.0625rem; flex-basis: 16rem; }
+.signup-top .form .pill { min-height: 56px; padding-inline: 1.75em; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-size: 1.125rem; }
+.signup-top .form .pill:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+@media (max-width: 800px) { .signup-top .form .pill { flex: 1 1 100%; } }
+.signup-top .form .pill { justify-content: center; }
+.signup-top .form .done { min-height: 0; margin: 0; }
+.signup-top .form .done:empty { display: none; }
