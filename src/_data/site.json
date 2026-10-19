@@ -6,8 +6,8 @@
     "bunnyLibraryId": "",
     "bunnyVideoId": "",
     "pullZone": "",
-    "poster": "/assets/video/banner-poster.webp",
-    "file": "/assets/video/banner.mp4"
+    "poster": "",
+    "file": ""
   },
   "heroPhoto": "",
   "kitFormId": "",
@@ -25,9 +25,9 @@
   "photos": {
     "portrait": "",
     "motivation": "",
-    "discipline": "/assets/photos/early-morning.webp",
-    "mentalHealth": "/assets/photos/quiet-moment.webp",
-    "healing": "/assets/photos/beach-walk.webp",
+    "discipline": "",
+    "mentalHealth": "",
+    "healing": "",
     "everyVideo": "",
     "adventureSquad": "",
     "yardyLife": "",
@@ -35,5 +35,5 @@
     "about": ""
   },
   "dummyPhotos": true,
-  "aiImageNote": true
+  "aiImageNote": false
 }
