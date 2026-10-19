@@ -22,8 +22,8 @@ permalink: /journal/
     {% for c in cats %}<button type="button" data-filter="{{ c[0] }}" data-note="{{ c[1] }}" aria-pressed="false">{{ c[0] }}</button>
     {% endfor %}
   </div>
-  <p class="chip-note" aria-live="polite" hidden></p>
-  <div class="cards" aria-live="polite">
+  <p class="chip-note" aria-live="polite"></p>
+  <div class="cards">
     {% for p in collections.journal %}
     <a class="vcard pcard" href="{{ p.url }}" data-kind="{{ p.data.category }}" data-reveal style="--i:{{ loop.index0 % 3 }}">
       {{ slot("span", "thumb", "Cover photo", p.data.cover, "") }}

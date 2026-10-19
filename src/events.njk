@@ -28,10 +28,10 @@ scripts: ["/js/calendar.js"]
         <div class="cal__dow" role="row"><span role="columnheader">Sun</span><span role="columnheader">Mon</span><span role="columnheader">Tue</span><span role="columnheader">Wed</span><span role="columnheader">Thu</span><span role="columnheader">Fri</span><span role="columnheader">Sat</span></div>
         <div class="cal__days"></div>
       </div>
-      <aside class="cal__panel" aria-live="polite">
+      <div class="cal__panel" aria-live="polite">
         <p class="cal__panel-date"></p>
         <ul class="cal__list"></ul>
-      </aside>
+      </div>
     </div>
   </div>
   <script type="application/json" id="events-data">{{ collections.events | eventsJson | safe }}</script>
@@ -39,23 +39,20 @@ scripts: ["/js/calendar.js"]
 
 <section class="section" aria-labelledby="up-h">
   <h2 id="up-h" class="list-h" data-reveal>Coming up</h2>
-  {% if up.length %}
-  <ol class="elist">
+  <ol class="elist elist--up">
     {% for e in up %}
     <li data-reveal style="--i:{{ loop.index0 % 3 }}"><a href="{{ e.url }}">
       <time class="elist__date" datetime="{{ e.date | isoDate }}"><span>{{ e.date | dayNum }}</span>{{ e.date | monthShort }}</time>
-      <span class="elist__main"><span class="elist__title">{% if e.data.sample %}[Sample] {% endif %}{{ e.data.title }}</span><span class="elist__meta">{{ e.data.kind }}{% if e.data.time %} · {{ e.data.time }}{% endif %}{% if e.data.place %} · {{ e.data.place }}{% endif %}</span></span>
+      <span class="elist__main"><span class="elist__title">{% if e.data.sample %}[Sample] {% endif %}{{ e.data.title }}</span><span class="elist__meta">{{ e.data.kind }}{% if e.data.time %} · {{ e.data.time | withZone }}{% endif %}{% if e.data.place %} · {{ e.data.place }}{% endif %}</span></span>
       <span class="arr" aria-hidden="true">→</span>
     </a></li>
     {% endfor %}
   </ol>
-  {% else %}
-  <p class="empty">Nothing on the calendar right now. When something's coming up, people on the email list hear first. <a class="arrow-link" href="/free/">Get the free 7-Day Reset</a></p>
-  {% endif %}
-  {% if past.length %}
+  <p class="empty"{% if up.length %} hidden{% endif %}>Nothing on the calendar right now. Join the email list and I'll let you know when something's on. <a class="arrow-link" href="/free/">Get the free 7-Day Reset</a></p>
+  <div class="past-wrap"{% if not past.length %} hidden{% endif %}>
   <h2 class="list-h list-h--past">Past events</h2>
   <ol class="elist elist--past">
     {% for e in past %}<li><a href="{{ e.url }}"><time class="elist__date" datetime="{{ e.date | isoDate }}"><span>{{ e.date | dayNum }}</span>{{ e.date | monthShort }}</time><span class="elist__main"><span class="elist__title">{{ e.data.title }}</span></span></a></li>{% endfor %}
   </ol>
-  {% endif %}
+  </div>
 </section>

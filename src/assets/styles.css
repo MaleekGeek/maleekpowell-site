@@ -536,4 +536,5 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .elist--past .elist__date { width: 3.5rem; }
 .elist--past .elist__date span { font-size: 1.4rem; }
 .cal-wrap { padding-bottom: clamp(3rem, 6vw, 5rem); }
+.chip-note:empty { margin: 0; }
 .chip-note { margin: -1rem 0 2rem; color: var(--soft); font-size: max(1.0625rem, var(--step-body)); }

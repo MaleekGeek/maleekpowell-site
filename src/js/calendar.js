@@ -110,6 +110,22 @@
     days.querySelector('[data-key="' + focusKey + '"]').focus();
   });
 
+  // The lists below are built when the site is published. Move any event that has
+  // finished since then from Coming up to Past, using the visitor's own date.
+  var up = document.querySelector('.elist--up'), pastList = document.querySelector('.elist--past');
+  if (up && pastList) {
+    up.querySelectorAll('li').forEach(function (li) {
+      var t = li.querySelector('time');
+      if (!t || t.getAttribute('datetime') >= today) return;
+      li.classList.add('in');
+      var meta = li.querySelector('.elist__meta'); if (meta) meta.remove();
+      var arr = li.querySelector('.arr'); if (arr) arr.remove();
+      pastList.insertBefore(li, pastList.firstChild);
+      pastList.closest('.past-wrap').hidden = false;
+    });
+    if (!up.children.length) { var none = up.nextElementSibling; if (none && none.classList.contains('empty')) none.hidden = false; }
+  }
+
   cal.hidden = false;
   render(false);
 })();

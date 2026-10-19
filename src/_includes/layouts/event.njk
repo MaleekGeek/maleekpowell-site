@@ -5,7 +5,7 @@ layout: layouts/base.njk
   <header class="event__head">
     <p class="event__date" data-reveal><time datetime="{{ page.date | isoDate }}"><span class="event__day">{{ page.date | dayNum }}</span><span class="event__mon">{{ page.date | monthShort }}</span></time></p>
     <div>
-      <p class="post__meta" data-reveal><span>{{ kind }}</span>{% if time %} · {{ time }}{% endif %}{% if place %} · {{ place }}{% endif %}</p>
+      <p class="post__meta" data-reveal><span>{{ kind }}</span>{% if time %} · {{ time | withZone }}{% endif %}{% if place %} · {{ place }}{% endif %}</p>
       <h1 data-reveal style="--i:1">{% if sample %}[Sample] {% endif %}{{ title }}</h1>
       {% if summary %}<p class="post__lead" data-reveal style="--i:2">{{ summary }}</p>{% endif %}
       {% if link %}<a class="pill" href="{{ link }}" rel="noopener" target="_blank" data-reveal style="--i:3">Save my spot</a>{% endif %}

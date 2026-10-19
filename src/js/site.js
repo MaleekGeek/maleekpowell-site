@@ -63,7 +63,7 @@ document.documentElement.classList.add('js');
       cards.forEach(function (c) { var show = f === 'all' || c.dataset.kind === f; c.hidden = !show; if (show) n++; });
       if (empty) empty.hidden = n > 0;
       var note = document.querySelector('.chip-note'), on = document.querySelector('[data-filter="' + f + '"]');
-      if (note) { note.textContent = (on && on.dataset.note) || ''; note.hidden = !note.textContent; }
+      if (note) note.textContent = on && on.dataset.note ? on.dataset.note + ' ' + (n === 1 ? '1 post.' : n + ' posts.') : '';
     };
     chips.forEach(function (c) { c.addEventListener('click', function () { setF(c.dataset.filter); }); });
     var q = new URLSearchParams(location.search).get('theme');

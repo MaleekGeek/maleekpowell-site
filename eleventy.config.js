@@ -30,11 +30,14 @@ export default function (eleventyConfig) {
     api.getFilteredByGlob("src/events/*.md").filter((i) => i.data.permalink !== false).sort((a, b) => a.date - b.date)
   );
   // Events as JSON for the calendar (read by /js/calendar.js)
+  // Event times are Jamaica time unless the time typed in already names a zone.
+  const withZone = (t) => !t ? "" : (/time/i.test(t) || /\b(GMT|UTC|[A-Z]{2,4}T)\b/.test(t)) ? t : `${t} Jamaica time`;
+  eleventyConfig.addFilter("withZone", withZone);
   eleventyConfig.addFilter("eventsJson", (events) =>
     JSON.stringify((events || []).map((e) => ({
       title: (e.data.sample ? "[Sample] " : "") + e.data.title,
       date: new Date(e.date).toISOString().slice(0, 10),
-      time: e.data.time || "",
+      time: withZone(e.data.time),
       place: e.data.place || "",
       kind: e.data.kind || "",
       url: e.url,

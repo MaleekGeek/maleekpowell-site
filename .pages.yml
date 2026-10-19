@@ -137,7 +137,7 @@ content:
       - name: time
         label: Time
         type: string
-        description: "Like 7:00 pm (Jamaica time)"
+        description: "Like 7:00 pm. Shown as Jamaica time unless you type another zone, like 7:00 pm EST."
       - name: kind
         label: Type
         type: select
