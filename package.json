@@ -5,7 +5,7 @@
   "description": "maleekpowell.com: full videos by Maleek Powell. Eleventy static site.",
   "type": "module",
   "scripts": {
-    "build": "eleventy",
+    "build": "eleventy && node scripts/check-launch.mjs",
     "serve": "eleventy --serve",
     "clean": "rm -rf _site"
   },

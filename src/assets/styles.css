@@ -386,6 +386,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .video-head .meta { color: var(--accent); font-weight: 600; }
 .video-top .player { grid-column: 1 / 10; }
 .video-top .video-title { grid-column: 10 / 13; align-self: end; }
+.video-top .note-box { grid-column: 1 / 13; }
 @media (max-width: 800px) { .video-top .player, .video-top .video-title { grid-column: 1 / 13; } .tile { min-height: 27rem; } }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .chapters { scroll-padding-inline: var(--margin); }

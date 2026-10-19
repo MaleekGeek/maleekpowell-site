@@ -41,7 +41,7 @@ If `npm install` fails on a network drive because of symlinks, use `npm install 
 - Library > Security: set **Allowed domains** to `maleekpowell.com` (plus the pages.dev preview address while testing), then turn on **Block direct URL file access**.
 - The home page hero plays a direct MP4 from Bunny so it can be paused: turn on **MP4 fallback** for the library, and copy the CDN host name (like `vz-xxxx-xxx`, without `.b-cdn.net`) into Site settings > Hero video. If direct URL access is blocked, check the hero still plays on maleekpowell.com.
 - Set a low-balance alert in Bunny billing.
-- **Test with the first real video:** the content security policy in `src/_headers` allows `iframe.mediadelivery.net`, `player.mediadelivery.net` and `*.b-cdn.net`. Open a video page and the home page with the browser console open and check for CSP errors. If Bunny uses another host, add it to `src/_headers`.
+- **Test with the first real video:** the content security policy in `src/_headers` allows `iframe.mediadelivery.net`, `player.mediadelivery.net` and `*.b-cdn.net`. Open a video page and the home page with the browser console open and check for CSP errors. If Bunny uses another host, add it to `src/_headers`. Also check that the hero video's captions file (`.vtt`) loads from Bunny's CDN: in the Network tab it should return 200, and Bunny's response must include an `Access-Control-Allow-Origin` header that allows the site, or the captions won't show.
 
 ### Payments
 - Patreon and Lemon Squeezy are **plain links only**. Don't add the Lemon Squeezy overlay script (the CSP would block it anyway).
@@ -61,3 +61,7 @@ If `npm install` fails on a network drive because of symlinks, use `npm install 
 - No API keys or passwords in the repo. Bunny library and video IDs and the Kit form ID are public and fine.
 - No inline scripts: all JavaScript is in `src/js/site.js`.
 - Fonts are self-hosted in `src/fonts/` (Oswald and DM Sans, both SIL Open Font License; licences included). No Google Fonts.
+
+## Launch check
+
+`npm run build` runs `scripts/check-launch.mjs` after Eleventy. Once **Show sample videos** is off, the build fails if any page still contains `[NEEDS`, `[Confirm` or `[Build` placeholder text, and it lists where.
