@@ -123,6 +123,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .tile .scrim { position: absolute; inset: auto 0 0 0; height: 60%; background: /* taste-skill-ignore: neutral scrim under text on photo */ linear-gradient(to top, rgba(0,0,0,.85), transparent); z-index: -1; }
 .tile .arr { flex: none; font-family: var(--display); font-size: var(--step-head); line-height: .95; color: var(--ink); transition: transform 240ms var(--ease), color 180ms; }
 .tile h3 { font-size: var(--step-head); line-height: .95; }
+/* Same-height heading and text boxes so headings, bars and text line up across a row */
+.tile h3 { min-height: 1.9em; display: flex; align-items: flex-end; }
+.tile p { min-height: 3.1em; }
 .tile .row { display: flex; align-items: flex-end; gap: 1rem; }
 .tile p { margin-top: .6rem; max-width: 30ch; color: var(--ink); }
 .tile:hover .arr, .tile:focus-visible .arr { transform: translateX(8px); color: var(--accent); }
