@@ -7,7 +7,7 @@ permalink: /about/
 {% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
 <section class="page-head">
   <h1 data-reveal>About Maleek</h1>
-  <p class="intro-line" data-reveal style="--i:1">Host of Yardy Life on Fame 95 FM.<br>[NEEDS MALEEK: confirm the name you want on the site]</p>
+  <p class="intro-line" data-reveal style="--i:1">Host of Yardy Life on Fame 95 FM.</p>
 </section>
 <section class="split" aria-labelledby="story-h">
   <div class="l prose" data-reveal>
@@ -35,10 +35,6 @@ permalink: /about/
   <a class="tile photo t3" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1"><span class="cap">Your photo: in the studio</span><span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>Maleek's travel and lifestyle show on Fame 95 FM.</p></a>
 </section>
 
-<section class="story wrap story-page" aria-labelledby="tl-h">
-  <h2 id="tl-h" data-reveal>My story</h2>
-  {% include "partials/chapters.njk" %}
-</section>
 <section class="split" aria-labelledby="why-h">
   <div class="l prose" data-reveal>
     <h2 id="why-h">Why the videos live here</h2>
