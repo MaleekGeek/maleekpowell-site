@@ -107,7 +107,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 /* ---------- intro ---------- */
 .intro { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); column-gap: var(--gutter); padding-block: var(--section); align-items: center; }
 .intro__text { grid-column: 1 / 8; }
-.intro__text h2 { font-size: var(--step-lead); margin-bottom: 1rem; color: var(--soft); }
+.intro__text h2.statement { margin: 0; color: var(--ink); }
 .statement { font-family: var(--display); font-weight: 500; text-transform: uppercase; font-size: clamp(2.25rem, 1rem + 3.4vw, 5.5rem); line-height: 1.02; max-width: 20ch; }
 .intro__more { margin-top: 2rem; max-width: 44ch; font-size: max(1.125rem, var(--step-body)); }
 .statement .hl { font-weight: 700; }
