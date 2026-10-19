@@ -3,9 +3,6 @@
   "url": "https://maleekpowell.com",
   "heroMode": "video",
   "heroVideo": {
-    "bunnyLibraryId": "",
-    "bunnyVideoId": "",
-    "pullZone": "",
     "poster": "/assets/video/banner-poster.webp",
     "file": "/assets/video/banner.mp4"
   },

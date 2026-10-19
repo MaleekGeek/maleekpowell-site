@@ -3,7 +3,7 @@ layout: layouts/base.njk
 ---
 {% from "partials/macros.njk" import vcard, signupBox with context %}
 {% set heavy = heavy or theme == "Mental health" or theme == "Healing & resilience" %}
-{% set hasIds = bunnyLibraryId and bunnyVideoId and not (bunnyVideoId | string).startsWith("SAMPLE") %}
+{% set yt = youtube | ytId %}
 <section class="video-top" aria-label="Video">
   <div class="video-head">
     {% set fullTitle = ("[Sample] " if sample else "") + title %}
@@ -16,13 +16,13 @@ layout: layouts/base.njk
   </aside>
   {% endif %}
   <div class="player photo" data-reveal style="--i:1">
-    {% if hasIds %}
-    {#- Bunny Stream player: nothing plays until pressed; captions default to English. -#}
-    <iframe src="https://iframe.mediadelivery.net/embed/{{ bunnyLibraryId }}/{{ bunnyVideoId }}?autoplay=false&preload=false&captions=en"
-      title="Video: {{ title }}" loading="lazy"
+    {% if yt %}
+    {#- YouTube, privacy-enhanced domain: nothing plays until pressed; captions on by default; related videos from this channel only. -#}
+    <iframe src="https://www.youtube-nocookie.com/embed/{{ yt }}?rel=0&cc_load_policy=1&cc_lang_pref=en&playsinline=1"
+      title="Video: {{ title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
       allow="accelerometer; gyroscope; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
     {% else %}
-    <span class="cap">Video player placeholder: add the Bunny library and video IDs</span>
+    <span class="cap">Video player placeholder: add the YouTube link</span>
     <span class="play" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 30 30"><path d="M9 5 L26 15 L9 25 Z" fill="currentColor"/></svg></span>
     {% endif %}
   </div>

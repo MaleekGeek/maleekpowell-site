@@ -32,6 +32,12 @@ export default function (eleventyConfig) {
   // Events as JSON for the calendar (read by /js/calendar.js)
   // Event times are Jamaica time unless the time typed in already names a zone.
   const withZone = (t) => !t ? "" : (/time/i.test(t) || /\b(GMT|UTC|[A-Z]{2,4}T)\b/.test(t)) ? t : `${t} Jamaica time`;
+  // A YouTube link or a bare ID -> the 11-character video ID ("" if it doesn't look like one)
+  eleventyConfig.addFilter("ytId", (v) => {
+    const s = String(v || "").trim();
+    const m = s.match(/(?:youtu\.be\/|[?&]v=|\/(?:embed|shorts|live)\/)([\w-]{11})/) || s.match(/^([\w-]{11})$/);
+    return m ? m[1] : "";
+  });
   eleventyConfig.addFilter("withZone", withZone);
   eleventyConfig.addFilter("eventsJson", (events) =>
     JSON.stringify((events || []).map((e) => ({

@@ -66,17 +66,6 @@ document.documentElement.classList.add('js');
     drift();
   }
 
-  // Captions toggle for the hero video
-  document.querySelectorAll('.cc').forEach(function (cc) {
-    cc.addEventListener('click', function () {
-      var on = cc.getAttribute('aria-pressed') !== 'true';
-      cc.setAttribute('aria-pressed', on); cc.textContent = on ? 'CC on' : 'CC off';
-      document.querySelectorAll('.hero__vid').forEach(function (v) {
-        for (var i = 0; i < v.textTracks.length; i++) v.textTracks[i].mode = on ? 'showing' : 'hidden';
-      });
-    });
-  });
-
   // Library filter (/watch/?theme=...)
   var chips = document.querySelectorAll('[data-filter]');
   if (chips.length) {

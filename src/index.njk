@@ -4,31 +4,24 @@ title: Home
 ---
 {% from "partials/macros.njk" import slot, vcard, signupForm with context %}
 {% set hv = site.heroVideo %}
-{% set heroSrc = ("https://" + hv.pullZone + ".b-cdn.net/" + hv.bunnyVideoId) if (hv.pullZone and hv.bunnyVideoId) else "" %}
-{#- A short silent clip can also live in the repo (hv.file); Bunny wins when both are set. -#}
-{% set heroFile = hv.file if not heroSrc else "" %}
+{#- The hero is a short silent clip stored in the site (hv.file). YouTube can't play as a clean background video. -#}
+{% set heroFile = hv.file %}
 {% set n = collections.videos | length %}
 <section class="hero" data-hero="{{ site.heroMode or 'video' }}" aria-label="Maleek Powell">
   {#- Hero mode comes from site.json "heroMode": "video" or "photo". Same type layout over both. -#}
   <div class="hero__media hero__media--video photo">
     <div class="poster photo{% if hv.poster %} has-img{% endif %}" style="--tone:#262626; --x:58%; --y:36%">{% if hv.poster %}<img class="fill" src="{{ hv.poster }}" alt="">{% endif %}</div>
-    {#- Hero video from Bunny Stream (direct MP4 must be enabled on the library).
-        Rules: muted autoplay only, never with sound (site.js starts it muted, and not at all under reduced motion);
-        Pause stops the video element itself; captions on by default. -#}
-    {% if heroSrc %}
-    <video class="hero__vid" src="{{ heroSrc }}/play_720p.mp4" poster="{{ hv.poster or (heroSrc + '/thumbnail.jpg') }}" muted loop playsinline preload="metadata" crossorigin="anonymous" aria-hidden="true">
-      <track kind="captions" srclang="en" label="English" src="{{ heroSrc }}/captions/en.vtt" default>
-    </video>
-    {% elif heroFile %}
+    {#- Rules: muted autoplay only, never with sound (site.js starts it muted, and not at all under reduced motion);
+        Pause stops the video element itself. Keep it a silent clip with no speech, so it needs no captions. -#}
+    {% if heroFile %}
     <video class="hero__vid" src="{{ heroFile }}" poster="{{ hv.poster }}" muted loop playsinline preload="metadata" aria-hidden="true"></video>
     {% else %}
-    <p class="cap">Hero video not set yet: add the Bunny IDs in Site settings</p>
+    <p class="cap">Hero video not set yet: add a short clip in Site settings</p>
     {% endif %}
   </div>
   {{ slot("div", "hero__media hero__media--photo", "Hero photo not set yet: add it in Site settings", site.heroPhoto, "Maleek Powell", "--tone:#303030; --x:40%; --y:34%") }}
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="controls">
-    {% if heroSrc %}<button class="ctl cc" type="button" aria-pressed="true">CC on</button>{% endif %}
     <button class="ctl pause" type="button" aria-pressed="false">Pause motion</button>
   </div>
   <div class="hero__name">

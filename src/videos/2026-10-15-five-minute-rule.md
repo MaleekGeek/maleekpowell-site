@@ -3,8 +3,7 @@ sample: true
 title: The five-minute rule
 date: 2026-10-15
 theme: Discipline
-bunnyLibraryId: "000000"
-bunnyVideoId: SAMPLE-0001
+youtube: ""
 thumbnail: ""
 length: "14:20"
 summary: "[Sample summary] If starting feels impossible, start smaller than you think."

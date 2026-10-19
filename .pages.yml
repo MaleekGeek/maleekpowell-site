@@ -42,14 +42,10 @@ content:
         required: true
         options:
           values: [Motivation, Discipline, Mental health, Healing & resilience]
-      - name: bunnyLibraryId
-        label: Bunny library ID
+      - name: youtube
+        label: YouTube link
         type: string
-        description: "Bunny Stream > your library > API: Video Library ID (a number). Public, safe to save here."
-      - name: bunnyVideoId
-        label: Bunny video ID
-        type: string
-        description: "Bunny Stream > the video > copy its Video ID (GUID)."
+        description: "Paste the video's link from YouTube (Share > Copy link). Public or unlisted both work."
       - name: thumbnail
         label: Thumbnail
         type: image
@@ -178,19 +174,13 @@ content:
         options:
           values: [video, photo]
       - name: heroVideo
-        label: Hero video (Bunny)
+        label: Hero video
         type: object
         fields:
-          - { name: bunnyLibraryId, label: Bunny library ID, type: string }
-          - { name: bunnyVideoId, label: Bunny video ID, type: string }
-          - name: pullZone
-            label: Bunny CDN host name
-            type: string
-            description: "The part before .b-cdn.net, like vz-1234abcd-567 (Library > API > CDN Hostname)"
           - name: file
-            label: Or a short silent clip stored in the site
+            label: Short silent clip stored in the site
             type: string
-            description: "Path like /assets/video/banner.mp4. Used only when the Bunny IDs are empty. Keep it under 10 seconds-ish and a few MB."
+            description: "Path like /assets/video/banner.mp4. Keep it short, silent and a few MB."
           - name: poster
             label: Poster image (shown before the video plays)
             type: image
