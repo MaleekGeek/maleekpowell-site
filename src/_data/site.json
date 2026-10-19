@@ -6,8 +6,8 @@
     "bunnyLibraryId": "",
     "bunnyVideoId": "",
     "pullZone": "",
-    "poster": "",
-    "file": ""
+    "poster": "/assets/video/banner-poster.webp",
+    "file": "/assets/video/banner.mp4"
   },
   "heroPhoto": "",
   "kitFormId": "",
@@ -35,5 +35,5 @@
     "about": ""
   },
   "dummyPhotos": true,
-  "aiImageNote": false
+  "aiImageNote": true
 }
