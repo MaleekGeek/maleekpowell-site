@@ -83,6 +83,29 @@ title: Home
 </section>
 {% endif %}
 
+
+{% set nextEv = (collections.events | upcoming(buildDate))[0] %}
+{% set lastPost = collections.journal[0] %}
+{% if nextEv or lastPost %}
+<section class="also" aria-label="Events and journal">
+  {% if nextEv %}
+  <a class="also__card next-event" href="{{ nextEv.url }}" data-date="{{ nextEv.date | isoDate }}" data-reveal>
+    <span class="also__label">Next event</span>
+    <span class="also__row"><time class="elist__date" datetime="{{ nextEv.date | isoDate }}"><span>{{ nextEv.date | dayNum }}</span>{{ nextEv.date | monthShort }}</time>
+    <span class="also__main"><span class="also__title">{% if nextEv.data.sample %}[Sample] {% endif %}{{ nextEv.data.title }}</span><span class="also__meta">{{ nextEv.data.kind }}{% if nextEv.data.time %} · {{ nextEv.data.time | withZone }}{% endif %}</span></span></span>
+    <span class="also__more">See the event <span aria-hidden="true">→</span></span>
+  </a>
+  {% endif %}
+  {% if lastPost %}
+  <a class="also__card" href="{{ lastPost.url }}" data-reveal style="--i:1">
+    <span class="also__label">From the journal</span>
+    <span class="also__main"><span class="also__meta">{{ lastPost.data.category }} · {{ lastPost.date | readableDate }}</span><span class="also__title">{% if lastPost.data.sample %}[Sample] {% endif %}{{ lastPost.data.title }}</span></span>
+    <span class="also__more">Read it <span aria-hidden="true">→</span></span>
+  </a>
+  {% endif %}
+</section>
+{% endif %}
+
 <section class="more-from" aria-labelledby="more-h">
   <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
   <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>My documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>

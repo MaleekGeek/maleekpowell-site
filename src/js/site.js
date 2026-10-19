@@ -70,6 +70,13 @@ document.documentElement.classList.add('js');
     if (q && document.querySelector('[data-filter="' + q + '"]')) setF(q);
   }
 
+  // Home: hide the next-event card once that event has passed (the page is built ahead of time)
+  var ne = document.querySelector('.next-event');
+  if (ne) {
+    var d = new Date(), t = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    if (ne.dataset.date < t) { ne.hidden = true; var also = ne.closest('.also'); if (also && !also.querySelector('.also__card:not([hidden])')) also.hidden = true; }
+  }
+
   // Signup forms: until the Kit form ID is set, don't submit anywhere
   document.querySelectorAll('form.form[data-mock]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
