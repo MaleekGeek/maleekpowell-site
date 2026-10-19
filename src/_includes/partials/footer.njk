@@ -16,7 +16,7 @@
     {% include "partials/crisis.njk" %}
     <p class="not-therapy">I share personal experience, not professional advice. This isn't therapy. <a href="/terms/">Terms and disclaimer</a></p>
     <div class="legal">
-      <p>© Maleek Powell · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · {{ site.postalAddress or "[Postal address for email law]" }}</p>
+      <p>© Maleek Powell · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>{% if site.postalAddress %} · {{ site.postalAddress }}{% endif %}</p>
       <a href="#top">Back to top</a>
     </div>
   </div>
