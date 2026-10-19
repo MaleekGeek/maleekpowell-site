@@ -575,3 +575,6 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 /* separate translate/scale properties so they stack with the poster's drift animation */
 /* Portraits: the main subject, so lighter than the background photos and framed from the top */
 .photo.shot > img.fill, .photo.intro__portrait > img.fill { filter: grayscale(1) contrast(1.05) brightness(.85); object-position: 50% 15%; }
+
+/* Real photos: keep heads in frame on tall shots */
+.tile.photo > img.fill, .work__shot.photo > img.fill { object-position: 50% 18%; }
