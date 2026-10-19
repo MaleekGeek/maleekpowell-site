@@ -1,0 +1,31 @@
+---
+layout: layouts/base.njk
+title: "Check your inbox"
+description: "Confirm your email to get day 1."
+permalink: /thanks/
+noindex: true
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>Check your inbox.</h1>
+  <p class="intro-line" data-reveal style="--i:1">Tap the confirm link and day 1 is on its way. Can't see it? Check spam or promotions, and drag it into your main inbox so the rest don't get lost.</p>
+</section>
+<section class="split" aria-labelledby="wait-h">
+  <div class="l" data-reveal>
+    <h2 id="wait-h" class="bigtext" style="margin-bottom:1.5rem">While you wait</h2>
+    {% if collections.videos | length %}
+    <div class="cards" style="grid-template-columns:1fr">
+      {{ vcard(collections.videos[0], 0) }}
+    </div>
+    {% else %}
+    <p>New videos are on the way.</p>
+    {% endif %}
+  </div>
+  <div class="r prose" data-reveal style="--i:1">
+    {% if site.membershipLaunched %}
+    <p>If you want to go deeper, members get a longer session every week.</p>
+    <p><a class="arrow-link" href="/join/">See what's in it</a></p>
+    {% endif %}
+    <p><a class="arrow-link" href="/watch/">Keep watching</a></p>
+  </div>
+</section>

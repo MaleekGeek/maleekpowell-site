@@ -1,0 +1,21 @@
+---
+layout: layouts/base.njk
+title: "Start here"
+description: "From Instagram? Start here."
+permalink: /start/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>You came from Instagram. Good.</h1>
+  <p class="intro-line" data-reveal style="--i:1">The clips are short. The full videos are here, free.</p>
+</section>
+<section class="section" aria-label="Where to go next">
+  <div class="linkcards">
+    <a class="linkcard" href="{{ collections.videos[0].url if (collections.videos | length) else '/watch/' }}" data-reveal><h2>Watch the full video</h2><p>The latest one, start to finish.</p><span class="arr" aria-hidden="true">→</span></a>
+    <a class="linkcard primary" href="/free/" data-reveal style="--i:1"><h2>Free 7-Day Reset</h2><p>One small thing a day for a week.</p><span class="arr" aria-hidden="true">→</span></a>
+    {% if site.membershipLaunched %}
+    <a class="linkcard" href="/join/" data-reveal style="--i:2"><h2>Become a member</h2><p>Go deeper every week.</p><span class="arr" aria-hidden="true">→</span></a>
+    {% endif %}
+    <a class="linkcard" href="{{ site.instagramUrl }}" data-reveal style="--i:3"><h2>Clips on Instagram</h2><p>@maleek_powell</p><span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+---
+layout: layouts/base.njk
+title: "Privacy"
+description: "How Maleek Powell handles your email and visits."
+permalink: /privacy/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>Privacy</h1>
+  <p class="intro-line" data-reveal style="--i:1">Plain-English draft. The facts must match the final build.</p>
+</section>
+<section class="section">
+  <div class="prose">
+    <h2>What I collect</h2>
+    <p>If you sign up, your email address, plus whether you open or click my emails. Visit counts on the site are anonymous and use no cookies.</p>
+    <h2>Why</h2>
+    <p>To send you new videos and the occasional note from me, and to see which ones help.</p>
+    <h2>Who handles it</h2>
+    <p>The site is hosted on Cloudflare, which also counts visits anonymously. My email list runs on Kit, which stores your address and tracks opens and clicks. Videos play from Bunny Stream, which collects anonymous playback data and saves where you stopped in your browser's local storage so you can pick up where you left off. Memberships run on Patreon and purchases on Lemon Squeezy, so if you join or buy, they handle your payment details, not me.</p>
+    <p class="mock-note">[Build check: confirm player cookies and analytics setup, per reviews 02 and 04]</p>
+    <h2>Leaving</h2>
+    <p>Every email has an unsubscribe link. One tap and you're off the list.</p>
+    <h2>Questions</h2>
+    <p>Email {{ site.businessEmail or "[NEEDS MALEEK: business email]" }}.</p>
+    <p class="mock-note">This is a plain-language draft, not legal advice.</p>
+  </div>
+</section>

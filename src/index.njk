@@ -1,0 +1,129 @@
+---
+layout: layouts/base.njk
+title: Home
+---
+{% from "partials/macros.njk" import slot, vcard, signupForm with context %}
+{% set hv = site.heroVideo %}
+{% set heroSrc = ("https://" + hv.pullZone + ".b-cdn.net/" + hv.bunnyVideoId) if (hv.pullZone and hv.bunnyVideoId) else "" %}
+{% set n = collections.videos | length %}
+<section class="hero" data-hero="{{ site.heroMode or 'video' }}" aria-label="Maleek Powell">
+  {#- Hero mode comes from site.json "heroMode": "video" or "photo". Same type layout over both. -#}
+  <div class="hero__media hero__media--video photo" aria-label="Background video of Maleek, muted, with captions">
+    <div class="poster photo{% if hv.poster %} has-img{% endif %}" style="--tone:#262626; --x:58%; --y:36%">{% if hv.poster %}<img class="fill" src="{{ hv.poster }}" alt="">{% endif %}</div>
+    {#- Hero video from Bunny Stream (direct MP4 must be enabled on the library).
+        Rules: muted autoplay only, never with sound (site.js starts it muted, and not at all under reduced motion);
+        Pause stops the video element itself; captions on by default. -#}
+    {% if heroSrc %}
+    <video class="hero__vid" src="{{ heroSrc }}/play_720p.mp4" poster="{{ hv.poster or (heroSrc + '/thumbnail.jpg') }}" muted loop playsinline preload="metadata" crossorigin="anonymous" aria-hidden="true">
+      <track kind="captions" srclang="en" label="English" src="{{ heroSrc }}/captions/en.vtt" default>
+    </video>
+    {% else %}
+    <p class="cap">Hero video not set yet: add the Bunny IDs in Site settings</p>
+    {% endif %}
+  </div>
+  {{ slot("div", "hero__media hero__media--photo", "Hero photo not set yet: add it in Site settings", site.heroPhoto, "Maleek Powell", "--tone:#303030; --x:40%; --y:34%") }}
+  <div class="controls">
+    <button class="ctl cc" type="button" aria-pressed="true">CC on</button>
+    <button class="ctl pause" type="button" aria-pressed="false">Pause motion</button>
+  </div>
+  <div class="hero__name">
+    <h1>Maleek</h1>
+    <p class="who" style="--d:350ms">Full videos on discipline, mental health and getting back up.</p>
+  </div>
+  <div class="hero__foot">
+    <p class="hero__lead" style="--d:450ms">Discipline for the days you don't feel like it. Healing for the days you need it.</p>
+    <div class="signup-top" id="reset-top" style="--d:600ms">
+      <h2>Start the 7-Day Reset. It's free.</h2>
+      {{ signupForm("e1") }}
+    </div>
+  </div>
+</section>
+
+<section class="intro wrap" id="intro" aria-labelledby="intro-h">
+  <div class="intro__text">
+    <h2 id="intro-h" data-reveal>Why this site</h2>
+    <p class="statement" data-reveal style="--i:1">Full videos on <span class="hl">discipline</span>, <span class="hl">mental health</span> and <span class="hl">getting back up</span>. <span class="hl">The real conversation is here.</span></p>
+    <p class="intro__more" data-reveal style="--i:1">The clips are on Instagram. This site is where the full videos live, where nobody's algorithm decides whether you see them.</p>
+    <a class="arrow-link" href="/about/" data-reveal style="--i:2">About Maleek <svg viewBox="0 0 22 22" aria-hidden="true"><path d="M2 11h17M13 5l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg></a>
+  </div>
+  {{ slot("figure", "intro__portrait", "Your photo: black-and-white portrait", site.photos.portrait, "Maleek Powell", "", 'data-reveal style="--i:2"') }}
+</section>
+
+{% macro countLine(c) %}{% if c == 1 %}1 video{% elif c > 1 %}{{ c }} videos{% else %}New videos soon{% endif %}{% endmacro %}
+<section class="pillars" aria-labelledby="pillars-h">
+  <h2 id="pillars-h" class="sr-head" data-reveal>Pick what you need</h2>
+  {% set tiles = [
+    ["t1", "Motivation", "For when you need somebody to tell you straight.", site.photos.motivation, "Your photo: Maleek mid-conversation"],
+    ["t2 accent", "Discipline", "Showing up when the feeling's gone.", site.photos.discipline, "Your photo: early morning"],
+    ["t3", "Mental health", "Real talk about what's going on in your head.", site.photos.mentalHealth, "Your photo: a quiet moment"],
+    ["t4 wide", "Healing & resilience", "Getting back up, slower than you'd like, but getting up.", site.photos.healing, "Your photo: walking outside"]
+  ] %}
+  {% for t in tiles %}
+  <a class="tile photo {{ t[0] }}{% if t[3] %} has-img{% endif %}" href="/watch/?theme={{ t[1] | urlencode }}">{% if t[3] %}<img class="fill" src="{{ t[3] }}" alt="" loading="lazy">{% else %}<span class="cap">{{ t[4] }}</span>{% endif %}<span class="scrim"></span><h3>{{ t[1] }}</h3><span class="bar" aria-hidden="true"></span><span class="count">{{ countLine(collections.videos | countTheme(t[1])) }}</span><p>{{ t[2] }}</p></a>
+  {% endfor %}
+  <a class="tile photo t5 accent{% if site.photos.everyVideo %} has-img{% endif %}" href="/watch/">{% if site.photos.everyVideo %}<img class="fill" src="{{ site.photos.everyVideo }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: behind the camera</span>{% endif %}<span class="scrim"></span><h3>Every video</h3><span class="bar" aria-hidden="true"></span><span class="count">{{ countLine(n) }}</span><p>Every full video, newest first.</p></a>
+</section>
+
+<section class="wall" id="videos" aria-labelledby="wall-h">
+  <div class="wall__rows" aria-hidden="true">
+    {% for r in range(0, 4) %}
+    <div class="wall__row">{% for v in collections.videos | cycle(10 + r) %}{% if v and v.data.thumbnail %}<span class="thumb photo has-img"><img class="fill" src="{{ v.data.thumbnail }}" alt="" loading="lazy"></span>{% else %}<span class="thumb photo"></span>{% endif %}{% endfor %}</div>
+    {% endfor %}
+  </div>
+  <div class="wall__center">
+    <h2 id="wall-h" data-reveal>New on the site</h2>
+    <p data-reveal style="--i:1">Every full video, newest first. Pick a theme or just start at the top. Captions are on; use the CC button to turn them off.</p>
+    <a class="pill" href="/watch/" data-reveal style="--i:2">Watch the videos</a>
+  </div>
+</section>
+
+{% if n %}
+<section class="latest" aria-labelledby="latest-h">
+  <h2 id="latest-h" data-reveal>Latest</h2>
+  <div class="cards">
+    {% for v in collections.videos.slice(0, 3) %}{{ vcard(v, loop.index0) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="more-from" aria-labelledby="more-h">
+  <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
+  <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>My documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
+  <a class="tile photo t3{% if site.photos.yardyLife %} has-img{% endif %}" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1">{% if site.photos.yardyLife %}<img class="fill" src="{{ site.photos.yardyLife }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: in the studio</span>{% endif %}<span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>The radio show I host on Fame 95 FM.</p></a>
+</section>
+
+<section class="story wrap" id="story" aria-labelledby="story-h">
+  <h2 id="story-h" data-reveal>My story</h2>
+  {% include "partials/chapters.njk" %}
+  <p class="more"><a class="pill" href="/about/">Read my story</a></p>
+</section>
+
+<section class="reset" id="reset" aria-labelledby="reset-h">
+  <h2 id="reset-h" data-reveal>Start the 7-Day Reset. It's free.</h2>
+  <div class="reset__body" data-reveal style="--i:1">
+    <p>One small thing to do each day for a week, straight to your inbox. After that, you get every new video by email, so the algorithm doesn't get a say.</p>
+    {{ signupForm("e2", true) }}
+    <p class="fine">Free. Unsubscribe any time with one click. <a href="/privacy/">How I handle your email</a></p>
+  </div>
+</section>
+
+<section class="work photo" id="work" aria-labelledby="work-h">
+  {{ slot("figure", "work__shot", "Your photo: Maleek speaking with people", site.photos.work, "Maleek Powell", "", "data-reveal") }}
+  <div class="work__text" data-reveal style="--i:1">
+    <h2 id="work-h">Work with Maleek</h2>
+    <p>For brand partnerships, collaborations and speaking. [Confirm with Maleek which of these to offer]</p>
+    <p>Email me at {{ site.businessEmail or "[business email to come]" }}.</p>
+    <a class="pill" href="/contact/">Get in touch</a>
+  </div>
+</section>
+
+{% if site.membershipLaunched %}
+<section class="members" id="members" aria-labelledby="members-h">
+  <h2 id="members-h" data-reveal>Go deeper with me every week</h2>
+  <div class="members__body" data-reveal style="--i:1">
+    <p class="lead">The main videos stay free, <span class="hl">always.</span></p>
+    <p>Membership is for when you want more than the video.</p>
+    <a class="pill" href="/join/">Become a member</a>
+  </div>
+</section>
+{% endif %}

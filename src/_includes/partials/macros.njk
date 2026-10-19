@@ -1,0 +1,37 @@
+{#- A photo slot. Shows the real image when `img` is set, otherwise the dark placeholder with its caption. -#}
+{% macro slot(tag="figure", cls="", cap="", img="", alt="", style="", attrs="") -%}
+<{{ tag }} class="{{ cls }} photo{% if img %} has-img{% endif %}"{% if style %} style="{{ style }}"{% endif %} {{ attrs | safe }}>{% if img %}<img class="fill" src="{{ img }}" alt="{{ alt }}" loading="lazy" decoding="async">{% else %}{% if tag == "figure" %}<figcaption class="cap">{{ cap }}</figcaption>{% else %}<span class="cap">{{ cap }}</span>{% endif %}{% endif %}{{ caller() if caller }}</{{ tag }}>
+{%- endmacro %}
+
+{#- A video card for the library, "keep watching" and "latest". -#}
+{% macro vcard(v, i=0) -%}
+{% set tones = ["#2b2b2b", "#353535", "#262626", "#303030"] %}
+<a class="vcard" href="{{ v.url }}" data-kind="{{ v.data.theme }}" data-reveal style="--i:{{ i % 3 }}">
+  {% if v.data.thumbnail %}<span class="thumb photo has-img"><img class="fill" src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async"></span>{% else %}<span class="thumb photo" style="--tone:{{ tones[i % 4] }}; --x:{{ 35 + (i * 13) % 40 }}%"><span class="cap">Video still</span></span>{% endif %}
+  <h3>{% if v.data.sample %}[Sample] {% endif %}{{ v.data.title }}</h3>
+  <span class="meta"><span>{{ v.data.theme }}</span><span>{{ v.data.length }}</span></span>
+  <p>{{ v.data.summary }}</p>
+</a>
+{%- endmacro %}
+
+{#- The 7-Day Reset signup form. Always POST, field name email_address (Kit). With no site.kitFormId it never submits:
+    site.js stops it and shows a "not connected yet" message, and without JS the action is "#" so the email never lands in a URL. -#}
+{% macro signupForm(id, dark=false) -%}
+<form class="form" method="post"
+  {% if site.kitFormId %}action="https://app.convertkit.com/forms/{{ site.kitFormId }}/subscriptions"{% else %}action="#" data-mock="true"{% endif %}>
+  <label for="{{ id }}">Your email</label>
+  <input id="{{ id }}" type="email" name="email_address" autocomplete="email" placeholder="you@example.com" required>
+  <button class="pill{% if dark %} pill--dark{% endif %}" type="submit">Send me day 1</button>
+  <p class="done" role="status"></p>
+</form>
+{%- endmacro %}
+
+{#- The full signup box (used under every video and on /free/). -#}
+{% macro signupBox(id) -%}
+<section class="signup-box" aria-labelledby="{{ id }}-h" data-reveal>
+  <h2 id="{{ id }}-h">Start the 7-Day Reset. It's free.</h2>
+  <p>One small thing to do each day for a week, straight to your inbox. After that, you get every new video by email, so the algorithm doesn't get a say.</p>
+  {{ signupForm(id, true) }}
+  <p class="fine">Free. Unsubscribe any time with one click. <a href="/privacy/">How I handle your email</a></p>
+</section>
+{%- endmacro %}

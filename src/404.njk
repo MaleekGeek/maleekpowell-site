@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+title: "Page not found"
+description: "Page not found."
+permalink: /404.html
+noindex: true
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>Page not found</h1>
+  <p class="intro-line" data-reveal style="--i:1">This page doesn't exist, or it moved. The full videos are still here.</p>
+</section>
+<section class="section" aria-label="Where to go">
+  <div class="linkcards">
+    <a class="linkcard primary" href="/" data-reveal><h2>Home</h2><p>Start from the top.</p><span class="arr" aria-hidden="true">→</span></a>
+    <a class="linkcard" href="/watch/" data-reveal style="--i:1"><h2>Watch</h2><p>Every full video, newest first.</p><span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>

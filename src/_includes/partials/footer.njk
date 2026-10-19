@@ -1,0 +1,16 @@
+<footer class="footer" id="contact-links">
+  <nav class="social{% if not site.membershipLaunched %} social--3{% endif %}" aria-label="Elsewhere">
+    <a data-reveal href="{{ site.instagramUrl }}">Instagram<span>{{ site.instagramHandle }}</span></a>
+    <a data-reveal href="/free/">7-Day Reset<span>Free, by email</span></a>
+    {% if site.membershipLaunched %}<a data-reveal href="/join/">Membership<span>Become a member</span></a>{% endif %}
+    <a data-reveal href="/contact/">Contact<span>Get in touch</span></a>
+  </nav>
+  <div class="foot">
+    {% include "partials/crisis.njk" %}
+    <p class="not-therapy">I share personal experience, not professional advice. This isn't therapy. <a href="/terms/">Terms and disclaimer</a></p>
+    <div class="legal">
+      <p>© Maleek Powell · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · {{ site.postalAddress or "[Postal address for email law]" }}</p>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>

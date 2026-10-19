@@ -1,0 +1,54 @@
+---
+layout: layouts/base.njk
+---
+{% from "partials/macros.njk" import vcard, signupBox with context %}
+{% set heavy = heavy or theme == "Mental health" or theme == "Healing & resilience" %}
+{% set hasIds = bunnyLibraryId and bunnyVideoId and not (bunnyVideoId | string).startsWith("SAMPLE") %}
+<section class="video-top" aria-label="Video">
+  <div class="video-head">
+    {% set fullTitle = ("[Sample] " if sample else "") + title %}
+    <h1 data-reveal{% if fullTitle | length > 26 %} class="long"{% endif %}>{{ fullTitle }}</h1>
+    <p class="meta" data-reveal style="--i:1">{{ theme }} · {{ length }} · <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+  </div>
+  <div class="player photo" data-reveal style="--i:1">
+    {% if hasIds %}
+    {#- Bunny Stream player: nothing plays until pressed; captions default to English. -#}
+    <iframe src="https://iframe.mediadelivery.net/embed/{{ bunnyLibraryId }}/{{ bunnyVideoId }}?autoplay=false&preload=false&captions=en"
+      title="Video: {{ title }}" loading="lazy"
+      allow="accelerometer; gyroscope; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    {% else %}
+    <span class="cap">Video player placeholder: add the Bunny library and video IDs</span>
+    <span class="play" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 30 30"><path d="M9 5 L26 15 L9 25 Z" fill="currentColor"/></svg></span>
+    {% endif %}
+  </div>
+  <div class="video-title">
+    <p data-reveal style="--i:2">{{ summary }}</p>
+    <p class="mock-note" data-reveal style="--i:3">Captions are on. Use the CC button in the player to turn them off.</p>
+  </div>
+</section>
+<div class="video-info">
+  <div class="main">
+    {{ signupBox("vs") }}
+    {% if heavy %}
+    <aside class="note-box" aria-label="Safety note" data-reveal>
+      <p>This video is me sharing what I've lived and learned. It's not therapy and it's not medical advice. If you're struggling right now, please talk to someone who can help. <a href="#crisis">Find help near you</a></p>
+    </aside>
+    {% endif %}
+    <section class="video-body" aria-label="Notes and transcript" data-reveal>
+      {{ content | safe }}
+    </section>
+    <p>Want the next one in your inbox? <a class="arrow-link" href="/free/">Send me day 1 of the Reset</a> or <a class="arrow-link" href="/watch/">Keep watching</a></p>
+  </div>
+  <div class="side">
+    {% if music %}<p class="mock-note">Music: {{ music }}</p>{% endif %}
+  </div>
+</div>
+{% set next = collections.videos | related(page.url, theme, 3) %}
+{% if next | length %}
+<section class="section" aria-labelledby="next-h">
+  <h2 id="next-h">Keep watching</h2>
+  <div class="cards">
+    {% for v in next %}{{ vcard(v, loop.index0) }}{% endfor %}
+  </div>
+</section>
+{% endif %}

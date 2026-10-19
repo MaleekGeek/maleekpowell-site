@@ -1,0 +1,86 @@
+document.documentElement.classList.add('js');
+(function () {
+  var html = document.documentElement;
+
+  // Menu
+  var btn = document.querySelector('.menu-btn'), menu = document.getElementById('menu');
+  function setMenu(open) { menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', open); if (open) menu.querySelector('a').focus(); }
+  btn.addEventListener('click', function () { setMenu(true); });
+  menu.querySelector('.close').addEventListener('click', function () { setMenu(false); btn.focus(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); btn.focus(); } });
+
+  // Fit the hero name to the width with whatever font is showing (fallback included)
+  var name = document.querySelector('.hero__name h1');
+  function fitName() {
+    if (!name) return;
+    name.style.fontSize = '';
+    var box = name.parentElement, cs = getComputedStyle(box);
+    var avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    name.style.display = 'inline-block';
+    var w = name.scrollWidth, fs = parseFloat(getComputedStyle(name).fontSize);
+    if (w > avail) name.style.fontSize = Math.floor(fs * avail / w * 0.98) + 'px';
+    name.style.display = '';
+  }
+  fitName();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitName);
+  window.addEventListener('resize', fitName);
+
+  // Hero video: muted autoplay only, never with sound; poster only under reduced motion
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.hero__vid').forEach(function (v) {
+    v.muted = true;
+    if (v.getAttribute('src') && !reduce) v.play().catch(function () {});
+  });
+
+  // Pause every looping move, and the hero video itself
+  document.querySelectorAll('.pause').forEach(function (pz) {
+    pz.addEventListener('click', function () {
+      var on = pz.getAttribute('aria-pressed') !== 'true';
+      document.querySelectorAll('.pause').forEach(function (p) { p.setAttribute('aria-pressed', on); p.textContent = on ? 'Play motion' : 'Pause motion'; });
+      html.classList.toggle('paused', on);
+      document.querySelectorAll('.hero__vid[src]').forEach(function (v) { on ? v.pause() : v.play().catch(function () {}); });
+    });
+  });
+
+  // Captions toggle for the hero video
+  document.querySelectorAll('.cc').forEach(function (cc) {
+    cc.addEventListener('click', function () {
+      var on = cc.getAttribute('aria-pressed') !== 'true';
+      cc.setAttribute('aria-pressed', on); cc.textContent = on ? 'CC on' : 'CC off';
+      document.querySelectorAll('.hero__vid').forEach(function (v) {
+        for (var i = 0; i < v.textTracks.length; i++) v.textTracks[i].mode = on ? 'showing' : 'hidden';
+      });
+    });
+  });
+
+  // Library filter (/watch/?theme=...)
+  var chips = document.querySelectorAll('[data-filter]');
+  if (chips.length) {
+    var cards = document.querySelectorAll('.vcard[data-kind]'), empty = document.querySelector('.empty');
+    var setF = function (f) {
+      var n = 0;
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c.dataset.filter === f); });
+      cards.forEach(function (c) { var show = f === 'all' || c.dataset.kind === f; c.hidden = !show; if (show) n++; });
+      if (empty) empty.hidden = n > 0;
+    };
+    chips.forEach(function (c) { c.addEventListener('click', function () { setF(c.dataset.filter); }); });
+    var q = new URLSearchParams(location.search).get('theme');
+    if (q && document.querySelector('[data-filter="' + q + '"]')) setF(q);
+  }
+
+  // Signup forms: until the Kit form ID is set, don't submit anywhere
+  document.querySelectorAll('form.form[data-mock]').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = f.querySelector('.done');
+      if (d) d.textContent = 'Sign-up isn’t connected yet. It will be as soon as the email list is set up.';
+    });
+  });
+
+  // Entrances
+  var els = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  } else { els.forEach(function (el) { el.classList.add('in'); }); }
+})();

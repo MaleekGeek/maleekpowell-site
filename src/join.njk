@@ -1,0 +1,41 @@
+---
+layout: layouts/base.njk
+title: "Membership"
+description: "Go deeper with Maleek Powell every week."
+permalink: /join/
+noindexUntilLaunch: true
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>Go deeper with me every week</h1>
+  <p class="intro-line" data-reveal style="--i:1">The main videos stay free, always. Membership is for when you want more than the video.</p>
+</section>
+<section class="split" aria-labelledby="get-h">
+  <div class="l prose" data-reveal>
+    <h2 id="get-h">What members get</h2>
+    <ul class="list-plain">
+      <li data-reveal><strong>Every [day]:</strong> a [15 to 20] minute session going further than the free video. The story behind it, and a plan for your week.</li>
+      <li data-reveal><strong>Once a month:</strong> a live Q&amp;A, recorded if you miss it.</li>
+      <li data-reveal><strong>Once a month:</strong> a one-page journal sheet.</li>
+      <li data-reveal><strong>A day or two early:</strong> every public video.</li>
+      <li data-reveal><strong>Everything so far:</strong> the full archive.</li>
+    </ul>
+    <p class="mock-note">[NEEDS MALEEK: confirm what you can keep up every week. Price set on Patreon later; not shown here.]</p>
+    <p><a class="pill" href="{{ site.patreonUrl or '#' }}">Join on Patreon</a></p>
+    <p class="mock-note">Opens Patreon in your browser. Join here in your browser rather than in the Patreon iPhone app, where the price is higher.</p>
+  </div>
+  <figure class="r shot photo" data-reveal style="--i:1"><figcaption class="cap">Your photo: a members session</figcaption></figure>
+</section>
+<section class="section" aria-labelledby="faq-h">
+  <h2 id="faq-h">Questions</h2>
+  <div class="faq">
+    <div data-reveal><h3>What do I actually get?</h3><p>Every [day], a [15 to 20] minute session that goes further than the free video. Plus a monthly live Q&amp;A and a monthly journal sheet, early access to the public videos, and everything that's come before.</p></div>
+    <div data-reveal><h3>Where do I watch?</h3><p>On Patreon, in your browser or the Patreon app, once you've joined.</p></div>
+    <div data-reveal><h3>How do I pay?</h3><p>Through Patreon. It handles the card payment, billing and any tax, and I never see your card details. Join here in your browser, because the price is higher in the Patreon iPhone app.</p></div>
+    <div data-reveal><h3>Can I cancel?</h3><p>Yes, any time, from your Patreon account.</p></div>
+    <div data-reveal><h3>Refunds?</h3><p>Patreon handles refunds under its own rules. If something's gone wrong, email me at {{ site.businessEmail or "[NEEDS MALEEK: business email]" }} and I'll help where I can.</p></div>
+    <div data-reveal><h3>Is the free stuff going away?</h3><p>No. The main videos, the 7-Day Reset and the weekly email stay free.</p></div>
+    <div data-reveal><h3>Is this therapy?</h3><p>No. It's me sharing what I've lived and what helps me keep going. If you need professional support, you deserve it, and there's help listed <a href="#crisis">here</a>.</p></div>
+  </div>
+  
+</section>

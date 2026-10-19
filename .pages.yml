@@ -1,0 +1,148 @@
+# Pages CMS config (https://pagescms.org/docs/configuration/)
+# Sign in at app.pagescms.org with GitHub and open this repo.
+# Every Save is a commit, and Cloudflare Pages rebuilds the site.
+
+media:
+  - name: thumbs
+    label: Video thumbnails
+    input: src/assets/thumbs
+    output: /assets/thumbs
+    categories: [image]
+  - name: photos
+    label: Site photos
+    input: src/assets/photos
+    output: /assets/photos
+    categories: [image]
+
+content:
+  - name: videos
+    label: Videos
+    type: collection
+    path: src/videos
+    filename: "{year}-{month}-{day}-{primary}.md"   # primary = title, slugified
+    view:
+      fields: [title, date, theme]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: theme
+        label: Theme
+        type: select
+        required: true
+        options:
+          values: [Motivation, Discipline, Mental health, Healing & resilience]
+      - name: bunnyLibraryId
+        label: Bunny library ID
+        type: string
+        description: "Bunny Stream > your library > API: Video Library ID (a number). Public, safe to save here."
+      - name: bunnyVideoId
+        label: Bunny video ID
+        type: string
+        description: "Bunny Stream > the video > copy its Video ID (GUID)."
+      - name: thumbnail
+        label: Thumbnail
+        type: image
+        options:
+          media: thumbs
+      - name: length
+        label: Length
+        type: string
+        description: "Like 14:20"
+      - name: summary
+        label: Summary
+        type: text
+        description: "One or two sentences for the cards and search engines."
+      - name: heavy
+        label: Heavy topic (shows the safety note)
+        type: boolean
+        description: "Mental health and Healing videos always show it."
+      - name: music
+        label: Music credit
+        type: string
+      - name: sample
+        label: Sample video (placeholder)
+        type: boolean
+        description: "Leave off for real videos. Samples hide when 'Show sample videos' is off."
+      - name: body
+        label: Notes and transcript
+        type: rich-text
+
+  - name: site
+    label: Site settings
+    type: file
+    path: src/_data/site.json
+    format: json
+    fields:
+      # Kept as hidden fields so saving the form never drops them from site.json.
+      - { name: name, label: Site name, type: string, hidden: true }
+      - { name: url, label: Site address, type: string, hidden: true }
+      - name: heroMode
+        label: Hero (top of home page)
+        type: select
+        options:
+          values: [video, photo]
+      - name: heroVideo
+        label: Hero video (Bunny)
+        type: object
+        fields:
+          - { name: bunnyLibraryId, label: Bunny library ID, type: string }
+          - { name: bunnyVideoId, label: Bunny video ID, type: string }
+          - name: pullZone
+            label: Bunny CDN host name
+            type: string
+            description: "The part before .b-cdn.net, like vz-1234abcd-567 (Library > API > CDN Hostname)"
+          - name: poster
+            label: Poster image (shown before the video plays)
+            type: image
+            options:
+              media: photos
+      - name: heroPhoto
+        label: Hero photo (used when Hero = photo)
+        type: image
+        options:
+          media: photos
+      - name: kitFormId
+        label: Kit form ID
+        type: string
+        description: "The number in your Kit form's embed code. Empty = forms show a 'not connected yet' message."
+      - { name: patreonUrl, label: Patreon link, type: string }
+      - { name: adventureSquadUrl, label: Adventure Squad link, type: string }
+      - { name: yardyLifeUrl, label: Yardy Life link, type: string }
+      - { name: instagramUrl, label: Instagram link, type: string }
+      - { name: instagramHandle, label: Instagram handle, type: string }
+      - { name: businessEmail, label: Business email, type: string }
+      - name: postalAddress
+        label: Postal address (shown in the footer, needed for email law)
+        type: string
+      - name: showSamples
+        label: Show sample videos
+        type: boolean
+      - name: membershipLaunched
+        label: Membership launched
+        type: boolean
+        description: "Off hides every membership mention and the home teaser."
+      - name: photos
+        label: Photos
+        type: object
+        fields:
+          - { name: portrait, label: Portrait (home intro), type: image, options: { media: photos } }
+          - { name: motivation, label: Motivation tile, type: image, options: { media: photos } }
+          - { name: discipline, label: Discipline tile, type: image, options: { media: photos } }
+          - { name: mentalHealth, label: Mental health tile, type: image, options: { media: photos } }
+          - { name: healing, label: Healing & resilience tile, type: image, options: { media: photos } }
+          - { name: everyVideo, label: Every video tile, type: image, options: { media: photos } }
+          - { name: adventureSquad, label: Adventure Squad tile, type: image, options: { media: photos } }
+          - { name: yardyLife, label: Yardy Life tile, type: image, options: { media: photos } }
+          - { name: work, label: Work with Maleek, type: image, options: { media: photos } }
+          - { name: about, label: About page, type: image, options: { media: photos } }

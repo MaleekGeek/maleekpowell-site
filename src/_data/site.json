@@ -1,0 +1,34 @@
+{
+  "name": "Maleek Powell",
+  "url": "https://maleekpowell.com",
+  "heroMode": "video",
+  "heroVideo": {
+    "bunnyLibraryId": "",
+    "bunnyVideoId": "",
+    "pullZone": "",
+    "poster": ""
+  },
+  "heroPhoto": "",
+  "kitFormId": "",
+  "patreonUrl": "",
+  "adventureSquadUrl": "",
+  "yardyLifeUrl": "",
+  "instagramUrl": "https://www.instagram.com/maleek_powell/",
+  "instagramHandle": "@maleek_powell",
+  "businessEmail": "",
+  "postalAddress": "",
+  "showSamples": true,
+  "membershipLaunched": false,
+  "photos": {
+    "portrait": "",
+    "motivation": "",
+    "discipline": "",
+    "mentalHealth": "",
+    "healing": "",
+    "everyVideo": "",
+    "adventureSquad": "",
+    "yardyLife": "",
+    "work": "",
+    "about": ""
+  }
+}

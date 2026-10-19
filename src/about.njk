@@ -1,0 +1,43 @@
+---
+layout: layouts/base.njk
+title: "About"
+description: "Maleek Powell, in their own words."
+permalink: /about/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>About Maleek</h1>
+  <p class="intro-line" data-reveal style="--i:1">Host of Yardy Life on Fame 95 FM.<br>[NEEDS MALEEK: confirm the name you want on the site]</p>
+</section>
+<section class="split" aria-labelledby="story-h">
+  <div class="l prose" data-reveal>
+    <h2 id="story-h" class="sr-only">My story</h2>
+    <p class="bigtext">I started making this during the pandemic. It was a scary time for a lot of people, and <span class="hl">it hit me too.</span></p>
+    <p>It wasn't just COVID. I'd left corporate to start my own business. A year before the pandemic, my family went through a tragic loss. So much was changing at once, and I couldn't find the words for any of it.</p>
+    <p>I kept hoping somebody would say something. Some hope, some motivation, anything that felt like a way out. It never came.</p>
+    <p>So I started saying those words to myself. Then I started posting them. And it was clear it wasn't just me who needed them.</p>
+    <p>There are a lot of people out there who can't find the words for what they're going through. I couldn't either, until I eventually found them. <strong>So I decided to be that voice.</strong></p>
+  </div>
+  <figure class="r shot photo" data-reveal style="--i:1"><figcaption class="cap">Your photo: portrait (alt text to write once the photo exists)</figcaption></figure>
+</section>
+<section class="more-from" aria-labelledby="more-h">
+  <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
+  <a class="tile photo t2" href="{{ site.adventureSquadUrl or '#' }}" data-reveal><span class="cap">Your photo: Adventure Squad</span><span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>My documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
+  <a class="tile photo t3" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1"><span class="cap">Your photo: in the studio</span><span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>The radio show I host on Fame 95 FM.</p></a>
+</section>
+
+<section class="story wrap story-page" aria-labelledby="tl-h">
+  <h2 id="tl-h" data-reveal>My story</h2>
+  {% include "partials/chapters.njk" %}
+</section>
+<section class="split" aria-labelledby="why-h">
+  <div class="l prose" data-reveal>
+    <h2 id="why-h">Why this site exists</h2>
+    <p>Instagram is where you'll catch the clips. But a minute isn't enough for some things. This site is where the full videos live, where nobody's algorithm decides whether you see them.</p>
+  </div>
+  <div class="r prose" data-reveal style="--i:1">
+    <h2>What this is and isn't</h2>
+    <p>I'm not a therapist and this isn't therapy. I share what I've been through and what's helped me. If you need more than that, you deserve real support, and there's no shame in getting it. <a href="#crisis">Find help near you</a></p>
+    <p><a class="pill" href="/free/">Get the free 7-Day Reset</a></p>
+  </div>
+</section>
