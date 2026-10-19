@@ -28,10 +28,10 @@ title: Home
   </div>
   <div class="hero__name">
     <h1>Maleek</h1>
-    <p class="who" style="--d:350ms">Full videos on discipline, mental health and getting back up.</p>
+    <p class="who" style="--d:350ms">For when you can't find the words for what you're going through.</p>
   </div>
   <div class="hero__foot">
-    <p class="hero__lead" style="--d:450ms">Discipline for the days you don't feel like it. Healing for the days you need it.</p>
+    <p class="hero__lead" style="--d:450ms">I couldn't find them either, for a long time. So I started saying them out loud.</p>
     <div class="signup-top" id="reset-top" style="--d:600ms">
       <h2>Start the 7-Day Reset. It's free.</h2>
       {{ signupForm("e1") }}
@@ -51,11 +51,11 @@ title: Home
 
 {% macro countLine(c) %}{% if c == 1 %}1 video{% elif c > 1 %}{{ c }} videos{% else %}New videos soon{% endif %}{% endmacro %}
 <section class="pillars" aria-labelledby="pillars-h">
-  <h2 id="pillars-h" class="sr-head" data-reveal>Pick what you need</h2>
+  <h2 id="pillars-h" class="sr-head" data-reveal>What are you dealing with today?</h2>
   {% set tiles = [
     ["t1", "Motivation", "For when you need somebody to tell you straight.", site.photos.motivation, "Your photo: Maleek mid-conversation"],
-    ["t2 accent", "Discipline", "Showing up when the feeling's gone.", site.photos.discipline, "Your photo: early morning"],
-    ["t3", "Mental health", "Real talk about what's going on in your head.", site.photos.mentalHealth, "Your photo: a quiet moment"],
+    ["t2 accent", "Discipline", "For when you don't feel like it and you have to do it anyway.", site.photos.discipline, "Your photo: early morning"],
+    ["t3", "Mental health", "For when your head is loud and you can't explain why.", site.photos.mentalHealth, "Your photo: a quiet moment"],
     ["t4 wide", "Healing & resilience", "Getting back up, slower than you'd like, but getting up.", site.photos.healing, "Your photo: walking outside"]
   ] %}
   {% for t in tiles %}
@@ -71,8 +71,8 @@ title: Home
     {% endfor %}
   </div>
   <div class="wall__center">
-    <h2 id="wall-h" data-reveal>New on the site</h2>
-    <p data-reveal style="--i:1">Every full video, newest first. Pick a theme or just start at the top. Captions are on; use the CC button to turn them off.</p>
+    <h2 id="wall-h" data-reveal>Just posted</h2>
+    <p data-reveal style="--i:1">Newest at the top. Start anywhere. Captions are on, tap CC if you want them off.</p>
     <a class="pill" href="/watch/" data-reveal style="--i:2">Watch the videos</a>
   </div>
 </section>
@@ -101,7 +101,7 @@ title: Home
 <section class="reset" id="reset" aria-labelledby="reset-h">
   <h2 id="reset-h" data-reveal>Start the 7-Day Reset. It's free.</h2>
   <div class="reset__body" data-reveal style="--i:1">
-    <p>One small thing to do each day for a week, straight to your inbox. After that, you get every new video by email, so the algorithm doesn't get a say.</p>
+    <p>Seven days, one small thing a day, in your inbox every morning. After that I'll email you each new video, so you don't have to hope Instagram shows it to you.</p>
     {{ signupForm("e2", true) }}
     <p class="fine">Free. Unsubscribe any time with one click. <a href="/privacy/">How I handle your email</a></p>
   </div>
@@ -111,7 +111,7 @@ title: Home
   {{ slot("figure", "work__shot", "Your photo: Maleek speaking with people", site.photos.work, "Maleek Powell", "", "data-reveal") }}
   <div class="work__text" data-reveal style="--i:1">
     <h2 id="work-h">Work with Maleek</h2>
-    <p>For brand partnerships, collaborations and speaking. [Confirm with Maleek which of these to offer]</p>
+    <p>Want to work together? Brand partnerships, collabs, speaking. Email me and tell me what you have in mind. [Confirm with Maleek which of these to offer]</p>
     <p>Email me at {{ site.businessEmail or "[business email to come]" }}.</p>
     <a class="pill" href="/contact/">Get in touch</a>
   </div>
@@ -119,11 +119,11 @@ title: Home
 
 {% if site.membershipLaunched %}
 <section class="members" id="members" aria-labelledby="members-h">
-  <h2 id="members-h" data-reveal>Go deeper with me every week</h2>
+  <h2 id="members-h" data-reveal>Want more than the video?</h2>
   <div class="members__body" data-reveal style="--i:1">
-    <p class="lead">The main videos stay free, <span class="hl">always.</span></p>
-    <p>Membership is for when you want more than the video.</p>
-    <a class="pill" href="/join/">Become a member</a>
+    <p class="lead">The free videos aren't going <span class="hl">anywhere.</span></p>
+    <p>Membership is for when you want me to go further, with the story behind it and a plan for your week.</p>
+    <a class="pill" href="/join/">See what members get</a>
   </div>
 </section>
 {% endif %}
