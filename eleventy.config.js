@@ -4,6 +4,11 @@
 import { readFileSync } from "node:fs";
 
 export default function (eleventyConfig) {
+  // .gitignore lists the videos pulled from YouTube at build time, so don't let Eleventy skip them.
+  eleventyConfig.setUseGitIgnore(false);
+  eleventyConfig.ignores.add("_site/**");
+  eleventyConfig.ignores.add(".taste-skill/**");
+
   // Static files copied as-is
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/js": "js" });

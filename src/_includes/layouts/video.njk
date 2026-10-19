@@ -8,7 +8,7 @@ layout: layouts/base.njk
   <div class="video-head">
     {% set fullTitle = ("[Sample] " if sample else "") + title %}
     <h1 data-reveal{% if fullTitle | length > 26 %} class="long"{% endif %}>{{ fullTitle }}</h1>
-    <p class="meta" data-reveal style="--i:1">{{ theme }} · {{ length }} · <time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+    <p class="meta" data-reveal style="--i:1">{% if theme %}{{ theme }} · {% endif %}{% if length %}{{ length }} · {% endif %}<time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
   </div>
   {% if heavy %}
   <aside class="note-box" aria-label="Safety note" data-reveal>

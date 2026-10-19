@@ -202,6 +202,11 @@ content:
       - { name: instagramHandle, label: Instagram handle, type: string }
       - { name: tiktokUrl, label: TikTok link, type: string }
       - { name: facebookUrl, label: Facebook link, type: string }
+      - name: youtubeUrl
+        label: YouTube channel link
+        type: string
+        description: "Your main channel. Its newest videos are added to the site by themselves."
+      - { name: youtubeChannelId, label: YouTube channel ID, type: string, hidden: true }
       - { name: businessEmail, label: Business email, type: string }
       - name: postalAddress
         label: Postal address (shown in the footer, needed for email law)

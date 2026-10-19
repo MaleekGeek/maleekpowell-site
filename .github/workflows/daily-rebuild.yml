@@ -1,0 +1,19 @@
+# Rebuilds the live site once a day so new YouTube uploads show up on their own.
+# Needs one repo secret: CF_DEPLOY_HOOK (Cloudflare > Workers & Pages > maleekpowell-site >
+# Settings > Builds > Deploy hooks > add one for the main branch, then copy its URL).
+name: Daily rebuild
+on:
+  schedule:
+    - cron: "0 12 * * *" # 7:00 am Jamaica time
+  workflow_dispatch:
+permissions: {}
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask Cloudflare Pages to rebuild
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "CF_DEPLOY_HOOK isn't set yet, nothing to do."; exit 0; fi
+          curl -fsS -X POST "$HOOK" > /dev/null && echo "Rebuild requested."

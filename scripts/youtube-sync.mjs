@@ -1,0 +1,98 @@
+// Before each build: pull the newest videos from Maleek's YouTube channel into src/videos/.
+// Uses YouTube's public feed (no API key). The feed only lists the 15 newest uploads; Shorts are skipped.
+// Each video becomes src/videos/yt-<id>.md (not committed) with its thumbnail in src/assets/thumbs/.
+// A video Maleek added by hand with the same YouTube link wins, so he can add notes or a transcript that way.
+// Any network problem only prints a warning, so the site still builds.
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, unlinkSync, existsSync } from "node:fs";
+
+const site = JSON.parse(readFileSync("src/_data/site.json", "utf8"));
+const VIDEOS = "src/videos", THUMBS = "src/assets/thumbs";
+const feedFile = process.env.YT_FEED_FILE; // test hook: read the feed from a file instead of YouTube
+
+// Theme from a hashtag in the description, like #discipline
+const TAGS = [
+  [/#motivation\b/i, "Motivation"],
+  [/#discipline\b/i, "Discipline"],
+  [/#mentalhealth\b/i, "Mental health"],
+  [/#(healing|resilience)\b/i, "Healing & resilience"],
+];
+
+const ytId = (v) => {
+  const s = String(v || "").trim();
+  const m = s.match(/(?:youtu\.be\/|[?&]v=|\/(?:embed|shorts|live)\/)([\w-]{11})/) || s.match(/^([\w-]{11})$/);
+  return m ? m[1] : "";
+};
+const decode = (s) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+const tag = (xml, name) => { const m = xml.match(new RegExp(`<${name}[^>]*>([\\s\\S]*?)</${name}>`)); return m ? decode(m[1].trim()) : ""; };
+// "[" plus a capital letter is how the launch check spots unfinished placeholders, so use round brackets instead.
+const unbracket = (s) => s.replace(/\[/g, "(").replace(/\]/g, ")");
+const escHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/{/g, "&#123;").replace(/}/g, "&#125;");
+const slugify = (s) => s.toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/[\s_-]+/g, "-").slice(0, 60).replace(/-$/, "");
+
+async function get(url) {
+  const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (maleekpowell.com build)", "accept-language": "en" } });
+  if (!res.ok) throw new Error(`${res.status} for ${url}`);
+  return res;
+}
+
+async function channelId() {
+  if (site.youtubeChannelId) return site.youtubeChannelId.trim();
+  const url = site.youtubeUrl || "";
+  const direct = url.match(/\/channel\/(UC[\w-]{22})/);
+  if (direct) return direct[1];
+  if (!url) return "";
+  const html = await (await get(url)).text();
+  const m = html.match(/"externalId":"(UC[\w-]{22})"/) || html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/channel\/(UC[\w-]{22})"/) || html.match(/"channelId":"(UC[\w-]{22})"/);
+  if (!m) throw new Error("couldn't find the channel ID on " + url);
+  return m[1];
+}
+
+async function main() {
+  // Clear last build's pulled videos so removed ones disappear
+  for (const f of readdirSync(VIDEOS)) if (/^yt-.*\.md$/.test(f)) unlinkSync(`${VIDEOS}/${f}`);
+  if (!site.youtubeUrl && !site.youtubeChannelId && !feedFile) return console.log("YouTube sync: no channel set, skipped.");
+
+  let xml;
+  if (feedFile) xml = readFileSync(feedFile, "utf8");
+  else xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${await channelId()}`)).text();
+
+  // IDs already added by hand
+  const manual = new Set();
+  for (const f of readdirSync(VIDEOS)) if (f.endsWith(".md")) { const m = readFileSync(`${VIDEOS}/${f}`, "utf8").match(/^youtube:\s*"?([^"\n]*)"?/m); const id = m && ytId(m[1]); if (id) manual.add(id); }
+
+  mkdirSync(THUMBS, { recursive: true });
+  let added = 0;
+  for (const entry of xml.split("<entry>").slice(1)) {
+    const id = tag(entry, "yt:videoId");
+    if (!id || manual.has(id)) continue;
+    if (/href="https:\/\/www\.youtube\.com\/shorts\//.test(entry)) continue; // full videos only
+    const title = unbracket(tag(entry, "title"));
+    const desc = unbracket(tag(entry, "media:description"));
+    const date = tag(entry, "published").slice(0, 10);
+    const theme = (TAGS.find(([re]) => re.test(desc)) || [, ""])[1];
+    const clean = desc.replace(/(^|\s)#\w+/g, "").trim();
+    const summary = (clean.split(/\n\s*\n|\n/)[0] || "").slice(0, 220);
+    const body = clean.split(/\n\s*\n/).map((p) => `<p>${escHtml(p.trim()).replace(/\n/g, "<br>")}</p>`).join("\n");
+
+    // Thumbnail saved into the site, so visitors' browsers never call Google just to see the list
+    let thumb = "";
+    try {
+      if (!feedFile) {
+        const img = Buffer.from(await (await get(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)).arrayBuffer());
+        writeFileSync(`${THUMBS}/yt-${id}.jpg`, img);
+      }
+      if (feedFile || existsSync(`${THUMBS}/yt-${id}.jpg`)) thumb = `/assets/thumbs/yt-${id}.jpg`;
+    } catch (e) { console.warn(`YouTube sync: no thumbnail for ${id} (${e.message})`); }
+
+    const fm = {
+      title, date, theme, youtube: `https://youtu.be/${id}`, thumbnail: thumb, length: "", summary,
+      fromYouTube: true, slug: slugify(title) || id,
+    };
+    const yaml = Object.entries(fm).map(([k, v]) => `${k}: ${typeof v === "string" ? JSON.stringify(v) : v}`).join("\n");
+    writeFileSync(`${VIDEOS}/yt-${id}.md`, `---\n${yaml}\n---\n${body}\n`);
+    added++;
+  }
+  console.log(`YouTube sync: ${added} video(s) from the channel.`);
+}
+
+main().catch((e) => console.warn("YouTube sync skipped:", e.message));

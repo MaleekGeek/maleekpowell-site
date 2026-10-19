@@ -4,6 +4,8 @@ The website, built with Eleventy 3. Pages live in `src/`, videos in `src/videos/
 
 ## For Maleek: publish a new video
 
+**New uploads on your main YouTube channel show up on the site by themselves** (the site checks once a day and on every save). Put a tag in the YouTube description to file it under a theme: #motivation, #discipline, #mentalhealth, or #healing (or #resilience). Untagged videos still show under Every video. Shorts are skipped. Only your 15 newest uploads are picked up, so use the steps below for older videos, or when you want to add notes, a transcript, your own thumbnail or the length. An entry you add by hand replaces the automatic one for the same video.
+
 1. **Upload to YouTube.** Set it to Public. Member-only videos and audio go straight into a Patreon post instead, not on YouTube. Add your captions file in YouTube Studio > Subtitles, English.
 2. **Copy the link.** On the video, tap Share > Copy link.
 3. **Open Pages CMS.** Go to app.pagescms.org, sign in with GitHub, open the site, and click **Videos > Add an entry**.
@@ -38,6 +40,8 @@ If `npm install` fails on a network drive because of symlinks, use `npm install 
 - Add Kit's SPF, DKIM and DMARC records for maleekpowell.com in Cloudflare DNS.
 
 ### YouTube
+- **Automatic videos:** `scripts/youtube-sync.mjs` runs before each build and reads the channel set in Site settings > YouTube channel link. If YouTube ever blocks the channel lookup, put the channel ID (starts with UC) in `youtubeChannelId` in `src/_data/site.json`.
+- **Daily refresh:** `.github/workflows/daily-rebuild.yml` asks Cloudflare to rebuild every morning. It needs a deploy hook: Cloudflare > Workers & Pages > maleekpowell-site > Settings > Builds > Deploy hooks > add one for `main`, copy its URL, then GitHub > the repo > Settings > Secrets and variables > Actions > New secret named `CF_DEPLOY_HOOK`.
 - Video pages embed from `www.youtube-nocookie.com` (YouTube's privacy-enhanced mode). Nothing plays until pressed, captions show by default, and suggested videos at the end come from your own channel.
 - **Test with the first real video:** open its page with the browser console open and check for CSP errors. `src/_headers` allows frames from `www.youtube-nocookie.com` only.
 - In YouTube Studio, allow embedding on each video (it's on by default).
