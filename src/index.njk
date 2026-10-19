@@ -10,7 +10,7 @@ title: Home
 {% set n = collections.videos | length %}
 <section class="hero" data-hero="{{ site.heroMode or 'video' }}" aria-label="Maleek Powell">
   {#- Hero mode comes from site.json "heroMode": "video" or "photo". Same type layout over both. -#}
-  <div class="hero__media hero__media--video photo" aria-label="Background video{% if heroSrc %}, muted, with captions{% endif %}">
+  <div class="hero__media hero__media--video photo">
     <div class="poster photo{% if hv.poster %} has-img{% endif %}" style="--tone:#262626; --x:58%; --y:36%">{% if hv.poster %}<img class="fill" src="{{ hv.poster }}" alt="">{% endif %}</div>
     {#- Hero video from Bunny Stream (direct MP4 must be enabled on the library).
         Rules: muted autoplay only, never with sound (site.js starts it muted, and not at all under reduced motion);
