@@ -64,4 +64,4 @@ If `npm install` fails on a network drive because of symlinks, use `npm install 
 
 ## Launch check
 
-`npm run build` runs `scripts/check-launch.mjs` after Eleventy. Once **Show sample videos** is off, the build fails if any page still contains `[NEEDS`, `[Confirm` or `[Build` placeholder text, and it lists where.
+`npm run build` runs `scripts/check-launch.mjs` after Eleventy. Once **Show sample videos** is off, the build fails if any page still has placeholder text (anything in square brackets that starts with a capital letter, like `[NEEDS MALEEK: …]`, `[Year]` or `[Yardy Life link]`), and it lists where.

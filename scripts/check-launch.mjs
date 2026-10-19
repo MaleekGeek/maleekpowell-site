@@ -5,7 +5,8 @@ import { join } from "node:path";
 const site = JSON.parse(readFileSync("src/_data/site.json", "utf8"));
 if (site.showSamples !== false) process.exit(0);
 
-const markers = ["[NEEDS", "[Confirm", "[Build"];
+// Any "[" followed by a capital letter is a placeholder, like [NEEDS MALEEK: ...], [Year] or [Yardy Life link].
+const placeholder = /\[[A-Z][^\]\n]{0,120}\]?/g;
 const found = [];
 
 function walk(dir) {
@@ -13,8 +14,10 @@ function walk(dir) {
     const path = join(dir, name);
     if (statSync(path).isDirectory()) walk(path);
     else if (path.endsWith(".html")) {
-      readFileSync(path, "utf8").split("\n").forEach((line, i) => {
-        for (const m of markers) if (line.includes(m)) found.push(`${path}:${i + 1}  ${line.trim().slice(0, 120)}`);
+      // Skip script and style blocks so code like arrays or CSS selectors doesn't trip the check.
+      const html = readFileSync(path, "utf8").replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, (m) => m.replace(/[^\n]/g, " "));
+      html.split("\n").forEach((line, i) => {
+        for (const m of line.match(placeholder) || []) found.push(`${path}:${i + 1}  ${m}`);
       });
     }
   }
