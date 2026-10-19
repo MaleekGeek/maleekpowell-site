@@ -87,9 +87,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .hero__media .cap { top: auto; bottom: 1rem; left: auto; right: var(--margin); }
 .hero__name { align-self: center; justify-self: center; text-align: center; padding: 4rem var(--margin) 0; }
 .hero__name h1 { font-size: var(--step-hero); color: var(--accent); line-height: .85; letter-spacing: -0.01em; }
-.hero__name .who { margin-top: 1.25rem; font-size: max(1.125rem, var(--step-body)); font-weight: 600; max-width: 36ch; margin-inline: auto; }
 .hero__foot { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: var(--gutter); padding: 0 var(--margin) var(--margin); }
-.hero__lead { max-width: 30ch; font-size: max(1.125rem, var(--step-body)); font-weight: 600; }
 .scroll { justify-self: center; display: grid; justify-items: center; gap: .25rem; font-family: var(--display); text-transform: uppercase; font-size: var(--step-small); text-decoration: none; color: var(--ink); }
 .scroll svg { width: 20px; height: 20px; color: var(--accent); }
 .signup-top { justify-self: end; width: min(100%, 26rem); }
@@ -251,7 +249,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
   @keyframes bob { 50% { transform: translateY(5px); } }
   @keyframes slide { to { transform: translateX(-12rem); } }
   .js .hero__name h1 { animation: rise 1100ms var(--ease) both; }
-  .js .hero__name .who, .js .hero__foot > * { animation: rise 800ms var(--ease) both; animation-delay: var(--d, 300ms); }
+  .js .hero__foot > * { animation: rise 800ms var(--ease) both; animation-delay: var(--d, 300ms); }
   .js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity 700ms var(--ease), transform 800ms var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
   .js [data-reveal].in { opacity: 1; transform: none; }
   @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
@@ -419,3 +417,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 /* Footer row with three links (membership not launched yet) */
 .social--3 { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 760px) { .social--3 { grid-template-columns: 1fr 1fr; } .social--3 a:last-child { grid-column: 1 / -1; } }
+
+/* Hero sign-up sits centred on its own (Maleek, 2026-10-19) */
+.hero__foot { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+.signup-top { justify-self: center; text-align: center; }
+.signup-top .form { justify-content: center; }
+@media (max-width: 800px) { .signup-top { justify-self: center; } }
