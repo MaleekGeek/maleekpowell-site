@@ -16,6 +16,7 @@ permalink: /journal/
     {% for c in cats %}<button type="button" data-filter="{{ c }}" aria-pressed="false">{{ c }}</button>
     {% endfor %}
   </div>
+  <p class="sr-only filter-count" aria-live="polite"></p>
   <div class="cards">
     {% for p in collections.journal %}
     <a class="vcard pcard" href="{{ p.url }}" data-kind="{{ p.data.category }}" data-reveal style="--i:{{ loop.index0 % 3 }}">
