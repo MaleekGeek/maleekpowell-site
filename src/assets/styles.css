@@ -594,3 +594,9 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
   .about-top > .l { grid-column: 1; grid-row: 1; }
   .about-top > .r { grid-column: 1; grid-row: 2; height: auto; width: min(70%, 22rem); aspect-ratio: 1; }
 }
+/* Wide screens: the two halves of a split sit together in the middle instead of at opposite edges */
+@media (min-width: 801px) {
+  .split { grid-template-columns: minmax(0, 40rem) minmax(0, 36rem); justify-content: center; align-items: center; column-gap: clamp(2rem, 5vw, 6rem); }
+  .split > .l { grid-column: 1; } .split > .r { grid-column: 2; }
+  .split > .shot { max-height: 78vh; }
+}
