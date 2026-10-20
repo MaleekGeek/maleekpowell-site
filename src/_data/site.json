@@ -22,7 +22,7 @@
   "showSamples": true,
   "membershipLaunched": false,
   "photos": {
-    "portrait": "/assets/photos/portrait-front.webp",
+    "portrait": "/assets/photos/work.webp",
     "motivation": "/assets/photos/motivation.webp",
     "discipline": "/assets/photos/discipline.webp",
     "mentalHealth": "/assets/photos/mental-health.webp",
@@ -30,7 +30,7 @@
     "everyVideo": "/assets/photos/every-video.webp",
     "adventureSquad": "/assets/photos/adventure-squad.webp",
     "yardyLife": "/assets/photos/yardy-life.webp",
-    "work": "/assets/photos/work.webp",
+    "work": "/assets/photos/portrait-front.webp",
     "about": "/assets/photos/portrait.webp",
     "company": "/assets/photos/company.webp"
   },

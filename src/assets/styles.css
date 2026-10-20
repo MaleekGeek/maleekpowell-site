@@ -576,7 +576,8 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .photo.shot > img.fill, .photo.intro__portrait > img.fill { filter: grayscale(1) contrast(1.05) brightness(.85); object-position: 50% 15%; }
 
 /* Real photos: keep heads in frame on tall shots */
-.tile.photo > img.fill, .work__shot.photo > img.fill { object-position: 50% 18%; }
+.tile.photo > img.fill { object-position: 50% 18%; }
+.work__shot.photo > img.fill { object-position: 50% 8%; filter: grayscale(1) contrast(1.05) brightness(.8); } /* no text over it, so it can be brighter */
 /* About: wide photo under the story */
 .about-wide { padding: 0 var(--margin) var(--section); }
 .about-wide__shot { margin: 0; aspect-ratio: 16 / 9; border-radius: var(--radius, 12px); overflow: hidden; }
