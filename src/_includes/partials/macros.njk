@@ -7,7 +7,7 @@
 {% macro vcard(v, i=0) -%}
 {% set tones = ["#2b2b2b", "#353535", "#262626", "#303030"] %}
 <a class="vcard" href="{{ v.url }}" data-kind="{{ v.data.theme }}" data-reveal style="--i:{{ i % 3 }}">
-  {% if v.data.thumbnail %}<span class="thumb photo has-img"><img class="fill" src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async"></span>{% else %}<span class="thumb photo" style="--tone:{{ tones[i % 4] }}; --x:{{ 35 + (i * 13) % 40 }}%"><span class="cap">Video still</span></span>{% endif %}
+  {% if v.data.thumbnail and v.data.vertical %}<span class="thumb photo has-img thumb--vertical"><img class="fill" src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async"><img class="fg" src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async"></span>{% elif v.data.thumbnail %}<span class="thumb photo has-img"><img class="fill" src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async"></span>{% else %}<span class="thumb photo" style="--tone:{{ tones[i % 4] }}; --x:{{ 35 + (i * 13) % 40 }}%"><span class="cap">Video still</span></span>{% endif %}
   <h3>{% if v.data.sample %}[Sample] {% endif %}{{ v.data.title }}</h3>
   <span class="meta">{% if v.data.theme %}<span>{{ v.data.theme }}</span>{% endif %}{% if v.data.length %}<span>{{ v.data.length }}</span>{% endif %}</span>
   <p>{{ v.data.summary }}</p>

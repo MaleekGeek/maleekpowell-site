@@ -4,7 +4,7 @@ layout: layouts/base.njk
 {% from "partials/macros.njk" import vcard, signupBox with context %}
 {% set heavy = heavy or theme == "Mental health" or theme == "Healing & resilience" %}
 {% set yt = youtube | ytId %}
-<section class="video-top" aria-label="Video">
+<section class="video-top{% if vertical %} video-top--vertical{% endif %}" aria-label="Video">
   <div class="video-head">
     {% set fullTitle = ("[Sample] " if sample else "") + title %}
     <h1 data-reveal{% if fullTitle | length > 26 %} class="long"{% endif %}>{{ fullTitle }}</h1>
@@ -12,7 +12,8 @@ layout: layouts/base.njk
   </div>
   {% if heavy %}
   <aside class="note-box" aria-label="Safety note" data-reveal>
-    <p>This video is me sharing what I've lived and learned. It's not therapy and it's not medical advice. If you're struggling right now, please talk to someone who can help. <a href="#crisis">Find help near you</a></p>
+    {% if vertical %}<p>What I've lived, not therapy or medical advice. <a href="#crisis">Find help near you</a></p>
+    {% else %}<p>This video is me sharing what I've lived and learned. It's not therapy and it's not medical advice. If you're struggling right now, please talk to someone who can help. <a href="#crisis">Find help near you</a></p>{% endif %}
   </aside>
   {% endif %}
   <div class="player photo{% if vertical %} player--vertical{% endif %}" data-reveal style="--i:1">
@@ -28,7 +29,13 @@ layout: layouts/base.njk
   </div>
   <div class="video-title">
     <p data-reveal style="--i:2">{{ summary }}</p>
+    {%- if captions == "burned-in" %}
+    <p class="mock-note" data-reveal style="--i:3">Captions are in the video.</p>
+    {%- elif captions == "youtube" or (not captions and not vertical) %}
     <p class="mock-note" data-reveal style="--i:3">Captions are on. Use the CC button in the player to turn them off.</p>
+    {%- elif not captions %}
+    <p class="mock-note" data-reveal style="--i:3">Captions are in the video where available.</p>
+    {%- endif %}
   </div>
 </section>
 <div class="video-info">

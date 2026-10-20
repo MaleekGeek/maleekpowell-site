@@ -42,6 +42,12 @@ content:
         required: true
         options:
           values: [Motivation, Discipline, Mental health, Healing & resilience]
+      - name: captions
+        label: Captions
+        type: select
+        description: "Burned-in = the words are part of the video. YouTube = turned on with the CC button."
+        options:
+          values: [burned-in, youtube, none]
       - name: vertical
         label: Vertical video (filmed upright, like a Reel)
         type: boolean

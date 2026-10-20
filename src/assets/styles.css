@@ -624,6 +624,24 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
   .about-top > .r { height: auto; aspect-ratio: auto; width: clamp(18rem, 30vw, 34rem); }
 }
 .story-shot { max-width: 24rem; }
-/* Vertical videos (filmed upright): a tall player instead of black bars at the sides */
-.player--vertical { aspect-ratio: 9 / 16; width: auto; height: min(80vh, 46rem); max-width: 100%; justify-self: center; }
-@media (max-width: 800px) { .player--vertical { height: auto; width: min(100%, 26rem); } }
+/* Vertical videos (filmed upright): tall player beside the title and notes, nothing left floating */
+.player--vertical { aspect-ratio: 9 / 16; width: auto; max-width: 100%; justify-self: center; }
+.video-top--vertical { grid-template-columns: auto minmax(0, 34rem); grid-template-rows: auto auto 1fr; justify-content: center; align-items: start; column-gap: clamp(2rem, 4vw, 4rem); }
+.video-top--vertical .player { grid-column: 1; grid-row: 1 / 4; height: min(82vh, 48rem); }
+.video-top--vertical .video-head { grid-column: 2; grid-row: 1; display: grid; justify-content: start; }
+.video-top--vertical .video-head h1, .video-top--vertical .video-head h1.long { font-size: clamp(2rem, 1.2rem + 2vw, 3.5rem); line-height: 1; }
+.video-top--vertical .note-box { grid-column: 2; grid-row: 2; padding: .9rem 1.1rem; }
+.video-top--vertical .video-title { grid-column: 2; grid-row: 3; align-self: start; }
+@media (max-width: 800px) {
+  /* Phones: short title, then the whole video on one screen, then the note and summary */
+  .video-top--vertical { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: 1rem; padding-top: calc(var(--margin) + 4.5rem); }
+  .video-top--vertical .video-head, .video-top--vertical .note-box, .video-top--vertical .video-title, .video-top--vertical .player { grid-column: 1; grid-row: auto; }
+  .video-top--vertical .video-head { order: 1; padding-bottom: 0; }
+  .video-top--vertical .video-head h1, .video-top--vertical .video-head h1.long { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  .video-top--vertical .player { order: 2; height: calc(100svh - 7.5rem); max-height: calc((100vw - 2 * var(--margin)) * 16 / 9); }
+  .video-top--vertical .note-box { order: 3; }
+  .video-top--vertical .video-title { order: 4; }
+}
+/* Cards for vertical videos: the upright frame in full, over a blurred copy, instead of a crop through his face */
+.thumb--vertical > img.fg { position: absolute; top: 0; bottom: 0; left: 50%; translate: -50% 0; height: 100%; aspect-ratio: 9 / 16; width: auto; object-fit: cover; z-index: -1; filter: grayscale(1) contrast(1.05); }
+.thumb--vertical > img.fill { filter: grayscale(1) blur(14px) brightness(.45); scale: 1.15; }

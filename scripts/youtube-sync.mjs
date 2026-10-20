@@ -80,7 +80,11 @@ async function main() {
     seen.add(id);
     // Shorts are vertical (Maleek's Instagram videos land on YouTube as Shorts), so they get the tall player
     const vertical = /href="https:\/\/www\.youtube\.com\/shorts\//.test(entry);
-    const title = unbracket(tag(entry, "title"));
+    // Hashtags and emoji help on YouTube but make a messy headline here, so the site title drops them.
+    // (Themes still come from the description.) To use a different title, add the video by hand with the same link.
+    const rawTitle = unbracket(tag(entry, "title"));
+    const title = rawTitle.replace(/(^|\s)#[\p{L}\p{N}_]+/gu, " ").replace(/[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{FE0F}\u{200D}\u{20E3}]/gu, "")
+      .replace(/\s+/g, " ").replace(/^[\s|\-–—:·]+|[\s|\-–—:·]+$/g, "").trim() || rawTitle.replace(/#/g, "").trim();
     const desc = unbracket(tag(entry, "media:description"));
     const date = tag(entry, "published").slice(0, 10);
     const theme = (TAGS.find(([re]) => re.test(desc)) || [, ""])[1];
