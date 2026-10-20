@@ -25,7 +25,7 @@ title: Home
     <button class="ctl pause" type="button" aria-pressed="false">Pause motion</button>
   </div>
   <div class="hero__name">
-    <h1>Maleek</h1>
+    <h1><span class="vh">Maleek</span><span class="name-l" aria-hidden="true">{% for c in "MALEEK" | list %}<span class="l" style="--k:{{ loop.index0 }}"><span>{{ c }}</span></span>{% endfor %}</span></h1>
   </div>
   <div class="hero__foot">
     <div class="signup-top" id="reset-top" style="--d:600ms">
@@ -57,6 +57,9 @@ title: Home
   {% endfor %}
   <a class="tile photo t5 accent{% if site.photos.everyVideo %} has-img{% endif %}" href="/watch/">{% if site.photos.everyVideo %}<img class="fill" src="{{ site.photos.everyVideo }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: behind the camera</span>{% endif %}<span class="scrim"></span><h3>Every video</h3><span class="bar" aria-hidden="true"></span><span class="count">{{ countLine(n) }}</span><p>Every full video, newest first.</p></a>
 </section>
+
+{#- Motion: a band of the four themes that slides sideways as you scroll (decorative; still under reduced motion). -#}
+<div class="ribbon" aria-hidden="true"><div class="ribbon__track">{% for i in range(0, 3) %}<span>Motivation</span><span class="o">Discipline</span><span>Mental health</span><span class="o">Healing &amp; resilience</span>{% endfor %}</div></div>
 
 <section class="wall" id="videos" aria-labelledby="wall-h">
   <div class="wall__rows" aria-hidden="true">
