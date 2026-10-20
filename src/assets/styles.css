@@ -648,17 +648,17 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .thumb--vertical > img.fill { filter: grayscale(1) blur(14px) brightness(.45); scale: 1.15; }
 
 /* Video pages: the signup box runs edge to edge as a band, content centred */
-.signup-box--band { padding: clamp(2.5rem, 5vw, 4rem) var(--margin); margin-bottom: var(--section); text-align: center; }
+.signup-box--band { padding: clamp(2.5rem, 5vw, 4rem) var(--margin); margin-bottom: clamp(2.5rem, 5vw, 4rem); text-align: center; }
 .signup-box--band > * { max-width: 44rem; margin-inline: auto; }
 .signup-box--band .form { justify-content: center; }
 .signup-box--band .form label { text-align: center; }
 .video-info { padding-bottom: clamp(2rem, 4vw, 3.5rem); }
-.signup-box--band { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 
 /* "Watch next" panel over the player when a video ends */
 .endcard { position: absolute; inset: 0; z-index: 2; display: grid; align-content: center; gap: 1rem; padding: clamp(.75rem, 3vw, 2rem); background: var(--bg); overflow: auto; }
 .endcard[hidden] { display: none; }
 .endcard__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1rem; }
+.endcard__h:focus { outline: none; }
 .endcard__h { font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: var(--step-lead); color: var(--accent); line-height: 1; }
 .endcard__again { background: none; border: 2px solid var(--ink); color: var(--ink); border-radius: 999px; padding: .4em 1em; min-height: 44px; font: inherit; font-weight: 600; white-space: nowrap; cursor: pointer; }
 .endcard__again:hover { border-color: var(--accent); color: var(--accent); }

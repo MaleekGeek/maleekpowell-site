@@ -122,7 +122,7 @@ document.documentElement.classList.add('js');
 (function () {
   var frame = document.querySelector('.player iframe'), card = document.querySelector('.endcard');
   if (!frame || !card) return;
-  function send(o) { if (frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify(o), '*'); }
+  function send(o) { if (frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify(o), 'https://www.youtube-nocookie.com'); }
   function hello() {
     send({ event: 'listening', id: 1, channel: 'widget' });
     send({ event: 'command', func: 'addEventListener', args: ['onStateChange'], id: 1, channel: 'widget' });
@@ -132,11 +132,16 @@ document.documentElement.classList.add('js');
     if (e.origin !== 'https://www.youtube-nocookie.com' || e.source !== frame.contentWindow) return;
     var d; try { d = JSON.parse(e.data); } catch (err) { return; }
     var state = d.event === 'onStateChange' ? d.info : (d.info && d.info.playerState);
-    if (state === 0) card.hidden = false;      // ended
+    if (state === 0 && card.hidden) {         // ended
+      var wasOnPlayer = document.activeElement === frame;
+      card.hidden = false;
+      if (wasOnPlayer) card.querySelector('.endcard__h').focus(); // only if they were on the player
+    }
     else if (state === 1) card.hidden = true;  // playing again
   });
   card.querySelector('.endcard__again').addEventListener('click', function () {
     card.hidden = true;
+    frame.focus();
     send({ event: 'command', func: 'seekTo', args: [0, true], id: 1, channel: 'widget' });
     send({ event: 'command', func: 'playVideo', args: [], id: 1, channel: 'widget' });
   });

@@ -26,7 +26,7 @@ layout: layouts/base.njk
     {%- if next | length %}
     {#- Shown by site.js when the video ends, in place of YouTube's own suggestions -#}
     <div class="endcard" role="region" aria-label="Watch next" hidden>
-      <div class="endcard__top"><p class="endcard__h">Watch next</p><button type="button" class="endcard__again">Watch again</button></div>
+      <div class="endcard__top"><p class="endcard__h" tabindex="-1">Watch next</p><button type="button" class="endcard__again">Watch again</button></div>
       <ul>
         {%- for v in next %}
         <li><a href="{{ v.url }}">{% if v.data.thumbnail %}<img src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async">{% else %}<i class="endcard__ph" aria-hidden="true"></i>{% endif %}<span>{% if v.data.sample %}[Sample] {% endif %}{{ v.data.title }}</span></a></li>
