@@ -654,3 +654,27 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .signup-box--band .form label { text-align: center; }
 .video-info { padding-bottom: clamp(2rem, 4vw, 3.5rem); }
 .signup-box--band { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+
+/* "Watch next" panel over the player when a video ends */
+.endcard { position: absolute; inset: 0; z-index: 2; display: grid; align-content: center; gap: 1rem; padding: clamp(.75rem, 3vw, 2rem); background: var(--bg); overflow: auto; }
+.endcard[hidden] { display: none; }
+.endcard__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem 1rem; }
+.endcard__h { font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: var(--step-lead); color: var(--accent); line-height: 1; }
+.endcard__again { background: none; border: 2px solid var(--ink); color: var(--ink); border-radius: 999px; padding: .4em 1em; min-height: 44px; font: inherit; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.endcard__again:hover { border-color: var(--accent); color: var(--accent); }
+.endcard ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.5rem, 1.5vw, 1rem); }
+.endcard a { display: grid; gap: .4rem; color: var(--ink); text-decoration: none; font-weight: 600; line-height: 1.25; }
+.endcard a:hover span, .endcard a:focus-visible span { color: var(--accent); }
+.endcard img, .endcard__ph { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; filter: grayscale(1); background: #262626; }
+/* Tall player, or a short wide one on a phone: a simple list */
+.player--vertical .endcard ul { grid-template-columns: 1fr; }
+.player--vertical .endcard a { display: flex; align-items: center; gap: .75rem; }
+.player--vertical .endcard img, .player--vertical .endcard__ph { width: 6.5rem; flex: none; }
+@media (max-width: 600px) {
+  .player:not(.player--vertical) .endcard { align-content: start; gap: .5rem; }
+  .player:not(.player--vertical) .endcard ul { grid-template-columns: 1fr; gap: .35rem; }
+  .player:not(.player--vertical) .endcard img, .player:not(.player--vertical) .endcard__ph { display: none; }
+  .player:not(.player--vertical) .endcard a { font-size: var(--step-small); padding: .3rem 0; border-bottom: 1px solid #333; }
+  .endcard__h { font-size: 1.25rem; }
+  .endcard__again { min-height: 36px; padding: .25em .9em; }
+}

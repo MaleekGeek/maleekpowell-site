@@ -4,6 +4,7 @@ layout: layouts/base.njk
 {% from "partials/macros.njk" import vcard, signupBox with context %}
 {% set heavy = heavy or theme == "Mental health" or theme == "Healing & resilience" %}
 {% set yt = youtube | ytId %}
+{% set next = collections.videos | related(page.url, theme, 3) %}
 <section class="video-top{% if vertical %} video-top--vertical{% endif %}" aria-label="Video">
   <div class="video-head">
     {% set fullTitle = ("[Sample] " if sample else "") + title %}
@@ -19,9 +20,20 @@ layout: layouts/base.njk
   <div class="player photo{% if vertical %} player--vertical{% endif %}" data-reveal style="--i:1">
     {% if yt %}
     {#- YouTube, privacy-enhanced domain: nothing plays until pressed; captions on by default; related videos from this channel only. -#}
-    <iframe src="https://www.youtube-nocookie.com/embed/{{ yt }}?rel=0&cc_load_policy=1&cc_lang_pref=en&playsinline=1"
+    <iframe src="https://www.youtube-nocookie.com/embed/{{ yt }}?rel=0&enablejsapi=1&cc_load_policy=1&cc_lang_pref=en&playsinline=1"
       title="Video: {{ title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
       allow="accelerometer; gyroscope; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    {%- if next | length %}
+    {#- Shown by site.js when the video ends, in place of YouTube's own suggestions -#}
+    <div class="endcard" role="region" aria-label="Watch next" hidden>
+      <div class="endcard__top"><p class="endcard__h">Watch next</p><button type="button" class="endcard__again">Watch again</button></div>
+      <ul>
+        {%- for v in next %}
+        <li><a href="{{ v.url }}">{% if v.data.thumbnail %}<img src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async">{% else %}<i class="endcard__ph" aria-hidden="true"></i>{% endif %}<span>{% if v.data.sample %}[Sample] {% endif %}{{ v.data.title }}</span></a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}
     {% else %}
     <span class="cap">Video player placeholder: add the YouTube link</span>
     <span class="play" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 30 30"><path d="M9 5 L26 15 L9 25 Z" fill="currentColor"/></svg></span>
@@ -50,7 +62,6 @@ layout: layouts/base.njk
   </div>
 </div>
 {{ signupBox("vs", "signup-box--band") }}
-{% set next = collections.videos | related(page.url, theme, 3) %}
 {% if next | length %}
 <section class="section" aria-labelledby="next-h">
   <h2 id="next-h">Keep watching</h2>

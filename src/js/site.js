@@ -116,3 +116,28 @@ document.documentElement.classList.add('js');
     window.addEventListener('beforeprint', function () { els.forEach(function (el) { el.classList.add('in'); }); });
   } else { els.forEach(function (el) { el.classList.add('in'); }); }
 })();
+
+// Video pages: when the YouTube video ends, cover the player with the site's own "Watch next" picks.
+// Talks to the embed by postMessage (enablejsapi=1), so no YouTube script is loaded on the page.
+(function () {
+  var frame = document.querySelector('.player iframe'), card = document.querySelector('.endcard');
+  if (!frame || !card) return;
+  function send(o) { if (frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify(o), '*'); }
+  function hello() {
+    send({ event: 'listening', id: 1, channel: 'widget' });
+    send({ event: 'command', func: 'addEventListener', args: ['onStateChange'], id: 1, channel: 'widget' });
+  }
+  frame.addEventListener('load', function () { hello(); setTimeout(hello, 1000); setTimeout(hello, 3000); });
+  window.addEventListener('message', function (e) {
+    if (e.origin !== 'https://www.youtube-nocookie.com' || e.source !== frame.contentWindow) return;
+    var d; try { d = JSON.parse(e.data); } catch (err) { return; }
+    var state = d.event === 'onStateChange' ? d.info : (d.info && d.info.playerState);
+    if (state === 0) card.hidden = false;      // ended
+    else if (state === 1) card.hidden = true;  // playing again
+  });
+  card.querySelector('.endcard__again').addEventListener('click', function () {
+    card.hidden = true;
+    send({ event: 'command', func: 'seekTo', args: [0, true], id: 1, channel: 'widget' });
+    send({ event: 'command', func: 'playVideo', args: [], id: 1, channel: 'widget' });
+  });
+})();
