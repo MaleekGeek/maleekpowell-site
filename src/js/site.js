@@ -135,12 +135,14 @@ document.documentElement.classList.add('js');
     if (state === 0 && card.hidden) {         // ended
       var wasOnPlayer = document.activeElement === frame;
       card.hidden = false;
+      frame.inert = true; // keep Tab off the hidden YouTube controls
       if (wasOnPlayer) card.querySelector('.endcard__h').focus(); // only if they were on the player
     }
-    else if (state === 1) card.hidden = true;  // playing again
+    else if (state === 1) { card.hidden = true; frame.inert = false; } // playing again
   });
   card.querySelector('.endcard__again').addEventListener('click', function () {
     card.hidden = true;
+    frame.inert = false;
     frame.focus();
     send({ event: 'command', func: 'seekTo', args: [0, true], id: 1, channel: 'widget' });
     send({ event: 'command', func: 'playVideo', args: [], id: 1, channel: 'widget' });
