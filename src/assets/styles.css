@@ -624,3 +624,6 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
   .about-top > .r { height: auto; aspect-ratio: auto; width: clamp(18rem, 30vw, 34rem); }
 }
 .story-shot { max-width: 24rem; }
+/* Vertical videos (filmed upright): a tall player instead of black bars at the sides */
+.player--vertical { aspect-ratio: 9 / 16; width: auto; height: min(80vh, 46rem); max-width: 100%; justify-self: center; }
+@media (max-width: 800px) { .player--vertical { height: auto; width: min(100%, 26rem); } }

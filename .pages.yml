@@ -42,6 +42,9 @@ content:
         required: true
         options:
           values: [Motivation, Discipline, Mental health, Healing & resilience]
+      - name: vertical
+        label: Vertical video (filmed upright, like a Reel)
+        type: boolean
       - name: youtube
         label: YouTube link
         type: string

@@ -1,5 +1,5 @@
 // Before each build: pull the newest videos from Maleek's YouTube channel into src/videos/.
-// Uses YouTube's public feed (no API key). The feed only lists the 15 newest uploads; Shorts are skipped.
+// Uses YouTube's public feed (no API key). The feed only lists the 15 newest uploads. Shorts come in marked vertical.
 // Each video becomes src/videos/yt-<id>.md (not committed) with its thumbnail in src/assets/thumbs/.
 // A video Maleek added by hand with the same YouTube link wins, so he can add notes or a transcript that way.
 // Any network problem only prints a warning, so the site still builds.
@@ -68,7 +68,8 @@ async function main() {
   for (const entry of xml.split("<entry>").slice(1)) {
     const id = tag(entry, "yt:videoId");
     if (!/^[\w-]{11}$/.test(id) || manual.has(id)) continue;
-    if (/href="https:\/\/www\.youtube\.com\/shorts\//.test(entry)) continue; // full videos only
+    // Shorts are vertical (Maleek's Instagram videos land on YouTube as Shorts), so they get the tall player
+    const vertical = /href="https:\/\/www\.youtube\.com\/shorts\//.test(entry);
     const title = unbracket(tag(entry, "title"));
     const desc = unbracket(tag(entry, "media:description"));
     const date = tag(entry, "published").slice(0, 10);
@@ -96,7 +97,7 @@ async function main() {
       title, date, theme, youtube: `https://youtu.be/${id}`, thumbnail: thumb, length: "", summary,
       // Safety note on everything except clearly light themes, since most videos touch heavy topics
       heavy: !["Motivation", "Discipline"].includes(theme),
-      fromYouTube: true, slug,
+      fromYouTube: true, slug, vertical,
     };
     const yaml = Object.entries(fm).map(([k, v]) => `${k}: ${typeof v === "string" ? JSON.stringify(v) : v}`).join("\n");
     writeFileSync(`${VIDEOS}/yt-${id}.md`, `---\n${yaml}\n---\n${body}\n`);

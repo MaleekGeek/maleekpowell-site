@@ -15,7 +15,7 @@ layout: layouts/base.njk
     <p>This video is me sharing what I've lived and learned. It's not therapy and it's not medical advice. If you're struggling right now, please talk to someone who can help. <a href="#crisis">Find help near you</a></p>
   </aside>
   {% endif %}
-  <div class="player photo" data-reveal style="--i:1">
+  <div class="player photo{% if vertical %} player--vertical{% endif %}" data-reveal style="--i:1">
     {% if yt %}
     {#- YouTube, privacy-enhanced domain: nothing plays until pressed; captions on by default; related videos from this channel only. -#}
     <iframe src="https://www.youtube-nocookie.com/embed/{{ yt }}?rel=0&cc_load_policy=1&cc_lang_pref=en&playsinline=1"
