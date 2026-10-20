@@ -600,3 +600,4 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
   .split > .l { grid-column: 1; } .split > .r { grid-column: 2; }
   .split > .shot { max-height: 78vh; }
 }
+.about-wide__shot { max-width: 83rem; margin-inline: auto; } /* same width as the photo and story pair above */
