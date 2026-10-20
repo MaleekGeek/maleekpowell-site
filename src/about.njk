@@ -11,20 +11,11 @@ permalink: /about/
     <p class="intro-line">Host of Yardy Life on Fame 95 FM.</p>
     <p class="bigtext">The pandemic hit a lot of people. For Maleek, <span class="hl">it landed on top of everything else.</span></p>
     <p>A year earlier came a tragic loss of a family member. He had also left his corporate job and put almost all his money into starting a business. Less than a year later, COVID hit that business hard. Almost every opportunity dried up, and he was stuck in a new home with rent, car payments and the everyday cost of living to cover.</p>
+    {% if site.photos.company %}{{ slot("figure", "story-shot", "", site.photos.company, "Maleek Powell smiling beside a screen showing his company's logo, Helios", "", "") }}{% endif %}
     <p>Many were going through the same thing. Like them, he kept hoping someone would spare a thoughtful word. Nobody did.</p>
     <p>So he started saying the words he needed to hear, first to himself, then in posts. Turns out he wasn't the only one who needed them. <strong>He decided to be that voice</strong> for anyone still looking for the words.</p>
   </div>
   {{ slot("figure", "r shot", "Your photo: portrait", site.photos.about, "Maleek Powell smiling, arms crossed", "", 'data-reveal style="--i:1"') }}
-</section>
-{% if site.photos.company %}<div class="about-wide">{{ slot("figure", "about-wide__shot", "", site.photos.company, "Maleek Powell smiling beside a screen showing his company's logo, Helios", "", "data-reveal") }}</div>{% endif %}
-<section class="roles" aria-labelledby="roles-h">
-  <h2 id="roles-h" data-reveal>What else Maleek does</h2>
-  <ul class="roles__list">
-    <li data-reveal><h3>Speaker</h3><p>Has worked with the FSC, Allied Security, Jamaica National, and high schools and prep schools, and spoken at events for students and staff.</p></li>
-    <li data-reveal style="--i:1"><h3>Videographer</h3><p>Runs a small production company, started in 2019, making mini documentaries and motivational content.</p></li>
-    <li data-reveal style="--i:2"><h3>Voice-over artist</h3></li>
-    <li data-reveal><h3>Road safety advocate</h3><p>Member of the National Helmet Wearing Coalition, pushing for certified helmets on every rider.</p></li>
-  </ul>
 </section>
 {% if press.articles.length %}
 <section class="media" id="media" aria-labelledby="media-h">
@@ -40,6 +31,16 @@ permalink: /about/
   </ul>
 </section>
 {% endif %}
+<section class="roles" aria-labelledby="roles-h">
+  <h2 id="roles-h" data-reveal>Multifaceted</h2>
+  <ul class="roles__list">
+    <li data-reveal><h3>Speaker</h3><p>FSC, Allied Security and Jamaica National have all put him in front of their people. So have high schools and prep schools, for students and staff alike.</p></li>
+    <li data-reveal style="--i:1"><h3>Videographer</h3><p>Behind the camera since 2019. His production company turns real stories into mini documentaries and motivational pieces that stay with you.</p></li>
+    <li data-reveal style="--i:2"><h3>Voice-over artist</h3><p>Hand him a script and he gives it a voice worth listening to.</p></li>
+    <li data-reveal><h3>Road safety advocate</h3><p>A member of the National Helmet Wearing Coalition, on a mission to get a certified helmet on every rider's head.</p></li>
+  </ul>
+</section>
+
 <section class="more-from" aria-labelledby="more-h">
   <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
   <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy" decoding="async">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>Maleek's documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>

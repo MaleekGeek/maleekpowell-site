@@ -615,3 +615,6 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .media__card:hover :is(.media__outlet, .media__foot, .media__arr), .media__card:focus-visible :is(.media__outlet, .media__foot, .media__arr) { color: var(--accent-ink); }
 /* Home: link to the About page under the statement */
 .intro__about { margin-top: 2rem; }
+/* About: Helios photo inside the story */
+.story-shot { margin: .4rem 0; aspect-ratio: 16 / 9; border-radius: var(--radius, 12px); overflow: hidden; position: relative; }
+.story-shot.photo > img.fill { filter: grayscale(1) contrast(1.05) brightness(.85); object-position: 50% 30%; }
