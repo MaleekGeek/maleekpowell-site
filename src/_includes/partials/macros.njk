@@ -27,8 +27,8 @@
 {%- endmacro %}
 
 {#- The full signup box (used under every video and on /free/). -#}
-{% macro signupBox(id) -%}
-<section class="signup-box" aria-labelledby="{{ id }}-h" data-reveal>
+{% macro signupBox(id, cls="") -%}
+<section class="signup-box{% if cls %} {{ cls }}{% endif %}" aria-labelledby="{{ id }}-h" data-reveal>
   <h2 id="{{ id }}-h">Start the 7-Day Reset. It's free.</h2>
   <p>One short email each morning for a week. After that I'll send you every new video, so you're not waiting on Instagram to show it to you.</p>
   {{ signupForm(id, true) }}

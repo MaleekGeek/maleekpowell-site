@@ -40,7 +40,6 @@ layout: layouts/base.njk
 </section>
 <div class="video-info">
   <div class="main">
-    {{ signupBox("vs") }}
     <section class="video-body" aria-label="Notes and transcript" data-reveal>
       {{ content | safe }}
     </section>
@@ -50,6 +49,7 @@ layout: layouts/base.njk
     {% if music %}<p class="mock-note">Music: {{ music }}</p>{% endif %}
   </div>
 </div>
+{{ signupBox("vs", "signup-box--band") }}
 {% set next = collections.videos | related(page.url, theme, 3) %}
 {% if next | length %}
 <section class="section" aria-labelledby="next-h">
