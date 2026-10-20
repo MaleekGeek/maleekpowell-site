@@ -34,7 +34,7 @@ permalink: /about/
     <li data-reveal style="--i:{{ loop.index0 % 3 }}"><a class="media__card" href="{{ a.url }}" rel="noopener" target="_blank">
       <span class="media__outlet">{{ a.outlet }}</span>
       <h3>{{ a.title }}</h3>
-      <span class="media__foot">{% if a.date %}<time datetime="{{ a.date }}">{{ a.date | readableDate }}</time>{% endif %}<span class="media__arr" aria-hidden="true">Read &#8599;</span><span class="sr-only"> (opens in a new tab)</span></span>
+      <span class="media__foot">{% if a.date %}<time datetime="{{ a.date }}">{{ a.date | readableDate }}</time>{% endif %}<span class="media__arr" aria-hidden="true">{% if a.kind == "video" %}Watch{% else %}Read{% endif %} &#8599;</span><span class="sr-only"> (opens in a new tab)</span></span>
     </a></li>
     {% endfor %}
   </ul>

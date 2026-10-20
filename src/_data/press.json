@@ -1,6 +1,12 @@
 {
   "articles": [
     {
+      "outlet": "Our Today",
+      "title": "Grief to advocacy: Maleek Powell's mission to save lives on Jamaica's roads",
+      "date": "2025-01-29",
+      "url": "https://our.today/grief-to-advocacy-maleek-powells-mission-to-save-lives-on-jamaicas-roads/"
+    },
+    {
       "outlet": "Jamaica Observer",
       "title": "From grief to advocacy",
       "date": "2025-01-26",
@@ -23,6 +29,19 @@
       "title": "Country love: Maleek Powell's passion for local travel honours the island's natural beauty",
       "date": "2022-09-24",
       "url": "https://jamaica-gleaner.com/article/lifestyle/20220924/country-love-maleek-powells-passion-local-travel-honours-islands-natural"
+    },
+    {
+      "outlet": "JIS",
+      "title": "Feature on Maleek's road safety advocacy",
+      "date": "2019-09-24",
+      "url": "https://jis.gov.jm/features/brother-channels-grief-over-sisters-death-into-advocacy-for-road-safety/"
+    },
+    {
+      "outlet": "Ministry of National Security",
+      "title": "Change doesn't start big, but it starts with all of us",
+      "date": "",
+      "url": "https://www.facebook.com/mnsgovjm/videos/change-doesnt-start-big-but-it-starts-with-all-of-us-maleek_powell-links-up-with/817614114075898/",
+      "kind": "video"
     }
   ]
 }
