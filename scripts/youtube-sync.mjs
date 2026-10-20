@@ -48,13 +48,21 @@ async function channelId() {
 }
 
 async function main() {
-  // Clear last build's pulled videos so removed ones disappear
-  for (const f of readdirSync(VIDEOS)) if (/^yt-.*\.md$/.test(f)) unlinkSync(`${VIDEOS}/${f}`);
   if (!site.youtubeUrl && !site.youtubeChannelId && !feedFile) return console.log("YouTube sync: no channel set, skipped.");
 
   let xml;
   if (feedFile) xml = readFileSync(feedFile, "utf8");
-  else xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${await channelId()}`)).text();
+  else {
+    const id = await channelId();
+    xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text();
+    // The main feed only holds the 15 newest uploads, Shorts included, so add the full-length-only list too.
+    // It's an unofficial feed, so if it fails the build carries on with the main one.
+    try { xml += await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UULF${id.slice(2)}`)).text(); }
+    catch (e) { console.warn("YouTube sync: full-length list unavailable,", e.message); }
+  }
+
+  // Only now that the feed arrived, clear last build's pulled videos so removed ones disappear
+  for (const f of readdirSync(VIDEOS)) if (/^yt-.*\.md$/.test(f)) unlinkSync(`${VIDEOS}/${f}`);
 
   // IDs already added by hand, and the page addresses they use (file name minus the date)
   const manual = new Set(), used = new Set();
@@ -65,9 +73,11 @@ async function main() {
 
   mkdirSync(THUMBS, { recursive: true });
   let added = 0;
+  const seen = new Set();
   for (const entry of xml.split("<entry>").slice(1)) {
     const id = tag(entry, "yt:videoId");
-    if (!/^[\w-]{11}$/.test(id) || manual.has(id)) continue;
+    if (!/^[\w-]{11}$/.test(id) || manual.has(id) || seen.has(id)) continue;
+    seen.add(id);
     // Shorts are vertical (Maleek's Instagram videos land on YouTube as Shorts), so they get the tall player
     const vertical = /href="https:\/\/www\.youtube\.com\/shorts\//.test(entry);
     const title = unbracket(tag(entry, "title"));
@@ -106,4 +116,9 @@ async function main() {
   console.log(`YouTube sync: ${added} video(s) from the channel.`);
 }
 
-main().catch((e) => console.warn("YouTube sync skipped:", e.message));
+main().catch((e) => {
+  // On Cloudflare, fail the build so the last good version stays live instead of a site with no videos.
+  // YouTube's feed has short outages; the next build (or the daily one) picks it up again.
+  if (process.env.CF_PAGES) { console.error("YouTube sync failed, keeping the current site live:", e.message); process.exit(1); }
+  console.warn("YouTube sync skipped:", e.message);
+});
