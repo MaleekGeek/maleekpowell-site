@@ -31,7 +31,7 @@ layout: layouts/base.njk
     <p data-reveal style="--i:2">{{ summary }}</p>
     {%- if captions == "burned-in" %}
     <p class="mock-note" data-reveal style="--i:3">Captions are in the video.</p>
-    {%- elif captions == "youtube" or (not captions and not vertical) %}
+    {%- elif captions == "youtube" %}
     <p class="mock-note" data-reveal style="--i:3">Captions are on. Use the CC button in the player to turn them off.</p>
     {%- elif not captions %}
     <p class="mock-note" data-reveal style="--i:3">Captions are in the video where available.</p>
