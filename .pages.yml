@@ -159,6 +159,22 @@ content:
         label: Details
         type: rich-text
 
+  - name: press
+    label: In the media
+    type: file
+    path: src/_data/press.json
+    format: json
+    fields:
+      - name: articles
+        label: Articles (shown on the About page, top first)
+        type: object
+        list: true
+        fields:
+          - { name: outlet, label: Outlet, type: string, description: "Like The Gleaner or Jamaica Observer" }
+          - { name: title, label: Headline, type: string }
+          - { name: date, label: Date, type: date, description: "Leave empty if you don't know it" }
+          - { name: url, label: Link to the article, type: string }
+
   - name: site
     label: Site settings
     type: file

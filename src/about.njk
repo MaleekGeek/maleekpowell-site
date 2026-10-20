@@ -25,8 +25,21 @@ permalink: /about/
     <li data-reveal style="--i:2"><h3>Voice-over artist</h3></li>
     <li data-reveal><h3>Road safety advocate</h3><p>Member of the National Helmet Wearing Coalition, pushing for certified helmets on every rider.</p></li>
   </ul>
-  <p class="roles__press" data-reveal>In the press: <a href="https://jamaica-gleaner.com/article/lifestyle/20221125/maleek-powell-encourages-locals-explore-jamaica" rel="noopener" target="_blank">The Gleaner</a></p>
 </section>
+{% if press.articles.length %}
+<section class="media" id="media" aria-labelledby="media-h">
+  <h2 id="media-h" data-reveal>In the media</h2>
+  <ul class="media__list">
+    {% for a in press.articles %}
+    <li data-reveal style="--i:{{ loop.index0 % 3 }}"><a class="media__card" href="{{ a.url }}" rel="noopener" target="_blank">
+      <span class="media__outlet">{{ a.outlet }}</span>
+      <h3>{{ a.title }}</h3>
+      <span class="media__foot">{% if a.date %}<time datetime="{{ a.date }}">{{ a.date | readableDate }}</time>{% endif %}<span class="media__arr" aria-hidden="true">Read &#8599;</span><span class="sr-only"> (opens in a new tab)</span></span>
+    </a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 <section class="more-from" aria-labelledby="more-h">
   <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
   <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy" decoding="async">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>Maleek's documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>

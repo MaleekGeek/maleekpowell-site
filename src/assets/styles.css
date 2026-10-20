@@ -600,4 +600,18 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
   .split > .l { grid-column: 1; } .split > .r { grid-column: 2; }
   .split > .shot { max-height: 78vh; }
 }
-.about-wide__shot { max-width: 83rem; margin-inline: auto; } /* same width as the photo and story pair above */
+.about-wide__shot { max-width: 44rem; margin-inline: auto; } /* smaller than the pair above, so it reads as a supporting photo */
+/* About: In the media, one box per article */
+.media { padding: 0 var(--margin) var(--section); }
+.media > h2 { font-size: var(--step-head); margin-bottom: 2rem; }
+.media__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: var(--gutter); }
+.media__list li { display: grid; }
+.media__card { display: grid; grid-template-rows: auto 1fr auto; gap: .9rem; padding: 1.5rem; background: var(--panel); border-top: 4px solid var(--accent); text-decoration: none; transition: background-color 180ms, color 180ms; }
+.media__outlet { font-family: var(--display); text-transform: uppercase; letter-spacing: .02em; color: var(--accent); }
+.media__card h3 { font-size: clamp(1.25rem, 1rem + .6vw, 1.6rem); line-height: 1.12; }
+.media__foot { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; color: var(--soft); font-size: var(--step-small); }
+.media__arr { margin-left: auto; font-family: var(--display); text-transform: uppercase; color: var(--accent); font-size: var(--step-body); }
+.media__card:hover, .media__card:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.media__card:hover :is(.media__outlet, .media__foot, .media__arr), .media__card:focus-visible :is(.media__outlet, .media__foot, .media__arr) { color: var(--accent-ink); }
+/* Home: link to the About page under the statement */
+.intro__about { margin-top: 2rem; }
