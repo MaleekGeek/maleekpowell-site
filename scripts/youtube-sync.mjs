@@ -63,7 +63,12 @@ async function main() {
   if (feedFile) xml = readFileSync(feedFile, "utf8");
   else {
     const id = await channelId();
-    xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text();
+    // The channel feed sometimes answers 404 for days; the uploads list (UU + the same ID) carries the same videos
+    try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text(); }
+    catch (e) {
+      console.warn("YouTube sync: channel feed unavailable,", e.message, "- trying the uploads list");
+      xml = await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UU${id.slice(2)}`)).text();
+    }
     // The main feed only holds the 15 newest uploads, Shorts included, so add the full-length-only list too.
     // It's an unofficial feed, so if it fails the build carries on with the main one.
     try { xml += await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UULF${id.slice(2)}`)).text(); }
