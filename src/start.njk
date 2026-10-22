@@ -8,10 +8,10 @@ permalink: /start/
 <section class="page-head">
   <h1 data-reveal>The full videos</h1>
 </section>
+{{ signupBox("st", "signup-box--band") }}
 <section class="section" aria-label="Where to go next">
   <div class="linkcards">
     <a class="linkcard" href="{{ collections.videos[0].url if (collections.videos | length) else '/watch/' }}" data-reveal><h2>Watch the full video</h2><p>The latest one, start to finish.</p><span class="arr" aria-hidden="true">→</span></a>
-    <a class="linkcard primary" href="/free/" data-reveal style="--i:1"><h2>Free 7-Day Reset</h2><p>One small thing a day for a week.</p><span class="arr" aria-hidden="true">→</span></a>
     {% if site.membershipLaunched %}
     <a class="linkcard" href="/join/" data-reveal style="--i:2"><h2>See what members get</h2><p>Go deeper every week.</p><span class="arr" aria-hidden="true">→</span></a>
     {% endif %}
