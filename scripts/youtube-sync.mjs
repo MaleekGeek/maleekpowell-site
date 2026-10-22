@@ -29,10 +29,19 @@ const unbracket = (s) => s.replace(/\[/g, "(").replace(/\]/g, ")");
 const escHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/{/g, "&#123;").replace(/}/g, "&#125;");
 const slugify = (s) => s.toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/[\s_-]+/g, "-").slice(0, 60).replace(/-$/, "");
 
-async function get(url) {
-  const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (maleekpowell.com build)", "accept-language": "en" } });
-  if (!res.ok) throw new Error(`${res.status} for ${url}`);
-  return res;
+async function get(url, tries = 3) {
+  for (let i = 1; ; i++) {
+    try {
+      const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (maleekpowell.com build)", "accept-language": "en" } });
+      if (!res.ok) throw new Error(`${res.status} for ${url}`);
+      return res;
+    } catch (e) {
+      // YouTube sometimes refuses a request or two from build servers, so wait and try again
+      if (i >= tries) throw e;
+      console.warn(`YouTube sync: try ${i} failed (${e.message}), retrying`);
+      await new Promise((r) => setTimeout(r, 3000 * i));
+    }
+  }
 }
 
 async function channelId() {
@@ -122,9 +131,14 @@ async function main() {
   console.log(`YouTube sync: ${added} video(s) from the channel.`);
 }
 
+const STATUS = "src/_data/ytSync.json"; // not committed; test builds show it on /watch/
+writeFileSync(STATUS, "{}");
 main().catch((e) => {
-  // On Cloudflare, fail the build so the last good version stays live instead of a site with no videos.
+  // On the live site (main), fail the build so the last good version stays live instead of a site with no videos.
   // YouTube's feed has short outages; the next build (or the daily one) picks it up again.
-  if (process.env.CF_PAGES) { console.error("YouTube sync failed, keeping the current site live:", e.message); process.exit(1); }
-  console.warn("YouTube sync skipped:", e.message);
+  if (process.env.CF_PAGES && process.env.CF_PAGES_BRANCH === "main") { console.error("YouTube sync failed, keeping the current site live:", e.message, e.cause || ""); process.exit(1); }
+  // Test builds carry on without the YouTube videos and say why on /watch/
+  const why = e.message + (e.cause ? ` (${e.cause.code || e.cause.message})` : "");
+  writeFileSync(STATUS, JSON.stringify({ error: why }));
+  console.warn("YouTube sync skipped:", why);
 });

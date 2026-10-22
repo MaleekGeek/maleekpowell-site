@@ -5,3 +5,4 @@ _site/
 # Pulled from YouTube at build time (scripts/youtube-sync.mjs)
 src/videos/yt-*.md
 src/assets/thumbs/yt-*.jpg
+src/_data/ytSync.json
