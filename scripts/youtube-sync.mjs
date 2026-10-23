@@ -56,6 +56,31 @@ async function channelId() {
   return m[1];
 }
 
+// Main path once Maleek adds a free YouTube Data API key (Cloudflare variable YT_API_KEY): the official way in.
+// Lists the 50 newest uploads; Shorts come from the channel's Shorts list (UUSH). The key never goes into a message.
+async function fromApi(id, key) {
+  const list = async (pl) => {
+    const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${pl}&key=${encodeURIComponent(key)}`);
+    if (!res.ok) throw new Error(`YouTube API answered ${res.status} for list ${pl}`);
+    return (await res.json()).items || [];
+  };
+  const items = await list(`UU${id.slice(2)}`);
+  const shorts = new Set();
+  try { for (const i of await list(`UUSH${id.slice(2)}`)) shorts.add(i.contentDetails.videoId); }
+  catch (e) { console.warn("YouTube sync: Shorts list unavailable,", e.message); }
+  let out = "";
+  for (const i of items) {
+    const v = i.contentDetails && i.contentDetails.videoId, sn = i.snippet || {};
+    const when = (i.contentDetails && i.contentDetails.videoPublishedAt) || sn.publishedAt;
+    if (!v || !when || /^(Private|Deleted) video$/.test(sn.title || "")) continue;
+    const link = shorts.has(v) ? `https://www.youtube.com/shorts/${v}` : `https://www.youtube.com/watch?v=${v}`;
+    out += `<entry><yt:videoId>${v}</yt:videoId><title>${xmlEsc(sn.title || "")}</title><link rel="alternate" href="${link}"/>` +
+      `<published>${xmlEsc(when)}</published><media:description>${xmlEsc(sn.description || "")}</media:description></entry>`;
+  }
+  if (!out) throw new Error("the YouTube API listed no videos");
+  return out;
+}
+
 // Pull the JSON object that follows `name = ` in a YouTube page (brace matching, strings respected)
 function pageJson(html, name) {
   const m = new RegExp(`${name}\\s*=\\s*\\{`).exec(html);
@@ -77,13 +102,14 @@ const xmlEsc = (v) => String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").rep
 // then read each video's own page for its title, description and date. Returns feed-shaped XML for the code below.
 async function fromChannelPages(id) {
   const ids = [];
+  let missed = 0;
   for (const [tab, vertical] of [["videos", false], ["shorts", true]]) {
     try {
       const html = await (await get(`https://www.youtube.com/channel/${id}/${tab}`)).text();
       const re = vertical ? /"reelWatchEndpoint":\{"videoId":"([\w-]{11})"/g : /"videoRenderer":\{"videoId":"([\w-]{11})"/g;
       let n = 0;
       for (const m of html.matchAll(re)) if (!ids.some((x) => x.v === m[1]) && n++ < 15) ids.push({ v: m[1], vertical });
-    } catch (e) { console.warn(`YouTube sync: ${tab} page unavailable,`, e.message); }
+    } catch (e) { console.warn(`YouTube sync: ${tab} page unavailable,`, e.message); missed++; }
   }
   if (!ids.length) throw new Error("no videos found on the channel pages either");
   let out = "";
@@ -93,13 +119,15 @@ async function fromChannelPages(id) {
       const p = pageJson(html, "ytInitialPlayerResponse") || {};
       const d = p.videoDetails || {}, mf = (p.microformat || {}).playerMicroformatRenderer || {};
       const when = mf.publishDate || mf.uploadDate;
-      if (!d.title || !when) continue;
+      if (!d.title || !when) { console.warn(`YouTube sync: no details on the page for ${v}`); missed++; continue; }
       const link = vertical ? `https://www.youtube.com/shorts/${v}` : `https://www.youtube.com/watch?v=${v}`;
       out += `<entry><yt:videoId>${v}</yt:videoId><title>${xmlEsc(d.title)}</title><link rel="alternate" href="${link}"/>` +
         `<published>${xmlEsc(new Date(when).toISOString())}</published><media:description>${xmlEsc(d.shortDescription || "")}</media:description></entry>`;
-    } catch (e) { console.warn(`YouTube sync: couldn't read video ${v},`, e.message); }
+    } catch (e) { console.warn(`YouTube sync: couldn't read video ${v},`, e.message); missed++; }
   }
   if (!out) throw new Error("couldn't read any video pages");
+  // Builds start clean, so on the live site a half-read list would quietly drop videos: stop instead
+  if (missed && process.env.CF_PAGES_BRANCH === "main") throw new Error(`${missed} channel or video page(s) couldn't be read`);
   return out;
 }
 
@@ -109,6 +137,13 @@ async function main() {
   let xml;
   if (feedFile) xml = readFileSync(feedFile, "utf8");
   else {
+    const id = await channelId();
+    if (process.env.YT_API_KEY) {
+      try { xml = await fromApi(id, process.env.YT_API_KEY); }
+      catch (e) { console.warn("YouTube sync: API unavailable,", e.message, "- trying the feeds"); }
+    }
+  }
+  if (!xml && !feedFile) {
     const id = await channelId();
     // The channel feed sometimes answers 404 for days; the uploads list (UU + the same ID) carries the same videos
     try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text(); }
