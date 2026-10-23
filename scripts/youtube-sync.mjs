@@ -32,7 +32,7 @@ const slugify = (s) => s.toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, ""
 async function get(url, tries = 3) {
   for (let i = 1; ; i++) {
     try {
-      const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (maleekpowell.com build)", "accept-language": "en" } });
+      const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (maleekpowell.com build)", "accept-language": "en", cookie: "SOCS=CAI; CONSENT=YES+" } });
       if (!res.ok) throw new Error(`${res.status} for ${url}`);
       return res;
     } catch (e) {
@@ -56,6 +56,53 @@ async function channelId() {
   return m[1];
 }
 
+// Pull the JSON object that follows `name = ` in a YouTube page (brace matching, strings respected)
+function pageJson(html, name) {
+  const m = new RegExp(`${name}\\s*=\\s*\\{`).exec(html);
+  if (!m) return null;
+  const start = m.index + m[0].length - 1;
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < html.length; i++) {
+    const c = html[i];
+    if (inStr) { if (esc) esc = false; else if (c === "\\") esc = true; else if (c === '"') inStr = false; continue; }
+    if (c === '"') inStr = true;
+    else if (c === "{") depth++;
+    else if (c === "}" && --depth === 0) { try { return JSON.parse(html.slice(start, i + 1)); } catch { return null; } }
+  }
+  return null;
+}
+const xmlEsc = (v) => String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+// Backup when YouTube's feeds are down: list the newest uploads from the channel's Videos and Shorts tabs,
+// then read each video's own page for its title, description and date. Returns feed-shaped XML for the code below.
+async function fromChannelPages(id) {
+  const ids = [];
+  for (const [tab, vertical] of [["videos", false], ["shorts", true]]) {
+    try {
+      const html = await (await get(`https://www.youtube.com/channel/${id}/${tab}`)).text();
+      const re = vertical ? /"reelWatchEndpoint":\{"videoId":"([\w-]{11})"/g : /"videoRenderer":\{"videoId":"([\w-]{11})"/g;
+      let n = 0;
+      for (const m of html.matchAll(re)) if (!ids.some((x) => x.v === m[1]) && n++ < 15) ids.push({ v: m[1], vertical });
+    } catch (e) { console.warn(`YouTube sync: ${tab} page unavailable,`, e.message); }
+  }
+  if (!ids.length) throw new Error("no videos found on the channel pages either");
+  let out = "";
+  for (const { v, vertical } of ids) {
+    try {
+      const html = await (await get(`https://www.youtube.com/watch?v=${v}`)).text();
+      const p = pageJson(html, "ytInitialPlayerResponse") || {};
+      const d = p.videoDetails || {}, mf = (p.microformat || {}).playerMicroformatRenderer || {};
+      const when = mf.publishDate || mf.uploadDate;
+      if (!d.title || !when) continue;
+      const link = vertical ? `https://www.youtube.com/shorts/${v}` : `https://www.youtube.com/watch?v=${v}`;
+      out += `<entry><yt:videoId>${v}</yt:videoId><title>${xmlEsc(d.title)}</title><link rel="alternate" href="${link}"/>` +
+        `<published>${xmlEsc(new Date(when).toISOString())}</published><media:description>${xmlEsc(d.shortDescription || "")}</media:description></entry>`;
+    } catch (e) { console.warn(`YouTube sync: couldn't read video ${v},`, e.message); }
+  }
+  if (!out) throw new Error("couldn't read any video pages");
+  return out;
+}
+
 async function main() {
   if (!site.youtubeUrl && !site.youtubeChannelId && !feedFile) return console.log("YouTube sync: no channel set, skipped.");
 
@@ -67,7 +114,12 @@ async function main() {
     try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text(); }
     catch (e) {
       console.warn("YouTube sync: channel feed unavailable,", e.message, "- trying the uploads list");
-      xml = await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UU${id.slice(2)}`)).text();
+      try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UU${id.slice(2)}`)).text(); }
+      catch (e2) {
+        // Both feeds down: read the channel's own Videos and Shorts pages instead
+        console.warn("YouTube sync: uploads list unavailable,", e2.message, "- reading the channel pages");
+        xml = await fromChannelPages(id);
+      }
     }
     // The main feed only holds the 15 newest uploads, Shorts included, so add the full-length-only list too.
     // It's an unofficial feed, so if it fails the build carries on with the main one.
