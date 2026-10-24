@@ -1,0 +1,72 @@
+---
+layout: layouts/base.njk
+---
+{% from "partials/macros.njk" import vcard, signupBox with context %}
+{% set heavy = heavy or theme == "Mental health" or theme == "Healing & resilience" %}
+{% set yt = youtube | ytId %}
+{% set next = collections.videos | related(page.url, theme, 3) %}
+<section class="video-top{% if vertical %} video-top--vertical{% endif %}" aria-label="Video">
+  <div class="video-head">
+    {% set fullTitle = ("[Sample] " if sample else "") + title %}
+    <h1 data-reveal{% if fullTitle | length > 26 %} class="long"{% endif %}>{{ fullTitle }}</h1>
+    <p class="meta" data-reveal style="--i:1">{% if theme %}{{ theme }} · {% endif %}{% if length %}{{ length }} · {% endif %}<time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+  </div>
+  {% if heavy %}
+  <aside class="note-box" aria-label="Safety note" data-reveal>
+    {% if vertical %}<p>What I've lived, not therapy or medical advice. <a href="#crisis">Find help near you</a></p>
+    {% else %}<p>This video is me sharing what I've lived and learned. It's not therapy and it's not medical advice. If you're struggling right now, please talk to someone who can help. <a href="#crisis">Find help near you</a></p>{% endif %}
+  </aside>
+  {% endif %}
+  <div class="player photo{% if vertical %} player--vertical{% endif %}" data-reveal style="--i:1">
+    {% if yt %}
+    {#- YouTube, privacy-enhanced domain: nothing plays until pressed; captions on by default; related videos from this channel only. -#}
+    <iframe src="https://www.youtube-nocookie.com/embed/{{ yt }}?rel=0&enablejsapi=1&cc_load_policy=1&cc_lang_pref=en&playsinline=1"
+      title="Video: {{ title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; gyroscope; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    {%- if next | length %}
+    {#- Shown by site.js when the video ends, in place of YouTube's own suggestions -#}
+    <div class="endcard" role="region" aria-label="Watch next" hidden>
+      <div class="endcard__top"><p class="endcard__h" tabindex="-1">Watch next</p><button type="button" class="endcard__again">Watch again</button></div>
+      <ul>
+        {%- for v in next %}
+        <li><a href="{{ v.url }}">{% if v.data.thumbnail %}<img src="{{ v.data.thumbnail }}" alt="" loading="lazy" decoding="async">{% else %}<i class="endcard__ph" aria-hidden="true"></i>{% endif %}<span>{% if v.data.sample %}[Sample] {% endif %}{{ v.data.title }}</span></a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif %}
+    {% else %}
+    <span class="cap">Video player placeholder: add the YouTube link</span>
+    <span class="play" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 30 30"><path d="M9 5 L26 15 L9 25 Z" fill="currentColor"/></svg></span>
+    {% endif %}
+  </div>
+  <div class="video-title">
+    <p data-reveal style="--i:2">{{ summary }}</p>
+    {%- if captions == "burned-in" %}
+    <p class="mock-note" data-reveal style="--i:3">Captions are in the video.</p>
+    {%- elif captions == "youtube" %}
+    <p class="mock-note" data-reveal style="--i:3">Captions are on. Use the CC button in the player to turn them off.</p>
+    {%- elif not captions %}
+    <p class="mock-note" data-reveal style="--i:3">Captions are in the video where available.</p>
+    {%- endif %}
+  </div>
+</section>
+<div class="video-info">
+  <div class="main">
+    <section class="video-body" aria-label="Notes and transcript" data-reveal>
+      {{ content | safe }}
+    </section>
+    <p>Want the next one in your inbox? <a class="arrow-link" href="/free/">Send me day 1 of the Reset</a> or <a class="arrow-link" href="/watch/">Keep watching</a></p>
+  </div>
+  <div class="side">
+    {% if music %}<p class="mock-note">Music: {{ music }}</p>{% endif %}
+  </div>
+</div>
+{{ signupBox("vs", "signup-box--band") }}
+{% if next | length %}
+<section class="section" aria-labelledby="next-h">
+  <h2 id="next-h">Keep watching</h2>
+  <div class="cards">
+    {% for v in next %}{{ vcard(v, loop.index0) }}{% endfor %}
+  </div>
+</section>
+{% endif %}

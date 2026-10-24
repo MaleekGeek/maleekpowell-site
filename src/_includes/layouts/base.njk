@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if title and page.url != "/" %}{{ title }} · {% endif %}Maleek Powell</title>
+<meta name="description" content="{{ description or 'Full videos by Maleek Powell on discipline, mental health and getting back up. Free to watch, with a free 7-Day Reset by email.' }}">
+{% if noindex or (noindexUntilLaunch and not site.membershipLaunched) %}<meta name="robots" content="noindex">{% endif %}
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+<link rel="preload" href="/fonts/oswald-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/motion.css">
+</head>
+<body>
+{% include "partials/header.njk" %}
+<main id="top">
+{{ content | safe }}
+</main>
+
+{% include "partials/footer.njk" %}
+<script src="/js/site.js"></script>
+<script src="/js/motion.js"></script>
+{% for s in scripts %}<script src="{{ s }}"></script>
+{% endfor %}
+</body>
+</html>

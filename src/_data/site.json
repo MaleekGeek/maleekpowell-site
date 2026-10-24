@@ -1,0 +1,39 @@
+{
+  "name": "Maleek Powell",
+  "url": "https://maleekpowell.com",
+  "heroMode": "video",
+  "heroVideo": {
+    "poster": "/assets/video/banner-poster.webp",
+    "file": "/assets/video/banner.mp4"
+  },
+  "heroPhoto": "",
+  "kitFormId": "",
+  "patreonUrl": "",
+  "adventureSquadUrl": "",
+  "yardyLifeUrl": "",
+  "instagramUrl": "https://www.instagram.com/maleek_powell/",
+  "instagramHandle": "@maleek_powell",
+  "tiktokUrl": "https://www.tiktok.com/@maleekpowell",
+  "facebookUrl": "https://www.facebook.com/copythatcool",
+  "youtubeUrl": "https://www.youtube.com/@copythatcool",
+  "youtubeChannelId": "UCcK4DuFqqtzVZGeZwOAfPSA",
+  "businessEmail": "hello@maleekpowell.com",
+  "postalAddress": "",
+  "showSamples": true,
+  "membershipLaunched": false,
+  "photos": {
+    "portrait": "/assets/photos/work.webp",
+    "motivation": "/assets/photos/motivation.webp",
+    "discipline": "/assets/photos/discipline.webp",
+    "mentalHealth": "/assets/photos/mental-health.webp",
+    "healing": "/assets/photos/healing.webp",
+    "everyVideo": "/assets/photos/every-video.webp",
+    "adventureSquad": "/assets/photos/adventure-squad.webp",
+    "yardyLife": "/assets/photos/yardy-life.webp",
+    "work": "/assets/photos/portrait-front.webp",
+    "about": "/assets/photos/portrait.webp",
+    "company": "/assets/photos/company.webp"
+  },
+  "dummyPhotos": true,
+  "aiImageNote": true
+}

@@ -1,0 +1,60 @@
+---
+layout: layouts/base.njk
+title: "About"
+description: "Maleek Powell's story."
+permalink: /about/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="about-top" aria-labelledby="about-h">
+  <div class="l prose" data-reveal>
+    <h1 id="about-h">About Maleek</h1>
+    <p class="intro-line">Host of Yardy Life on Fame 95 FM.</p>
+    <p class="bigtext">The pandemic hit a lot of people. For Maleek, <span class="hl">it landed on top of everything else.</span></p>
+    <p>Life was moving. He'd left his corporate job to build a business of his own, with big hopes for where it would go. Then, a year after a tragic loss of a family member, COVID pulled the rug out. The plans stalled, the motivation went with them, and just getting through each day became a struggle.</p>
+    {% if site.photos.company %}{{ slot("figure", "story-shot", "", site.photos.company, "Maleek Powell smiling beside a screen showing his company's logo, Helios", "", "") }}{% endif %}
+    <p>Many were going through the same thing. Like them, he kept hoping someone would spare a thoughtful word. Nobody did.</p>
+    <p>So he started saying the words he needed to hear, first to himself, then in posts. Turns out he wasn't the only one who needed them. <strong>He decided to be that voice</strong> for anyone still looking for the words.</p>
+  </div>
+  {{ slot("figure", "r shot", "Your photo: portrait", site.photos.about, "Maleek Powell smiling, arms crossed", "", 'data-reveal style="--i:1"') }}
+</section>
+{% if press.articles.length %}
+<section class="media" id="media" aria-labelledby="media-h">
+  <h2 id="media-h" data-reveal>In the media</h2>
+  <ul class="media__list">
+    {% for a in press.articles %}
+    <li data-reveal style="--i:{{ loop.index0 % 3 }}"><a class="media__card" href="{{ a.url }}" rel="noopener" target="_blank">
+      <span class="media__outlet">{{ a.outlet }}</span>
+      <h3>{{ a.title }}</h3>
+      <span class="media__foot">{% if a.date %}<time datetime="{{ a.date }}">{{ a.date | readableDate }}</time>{% endif %}<span class="media__arr" aria-hidden="true">{% if a.kind == "video" %}Watch{% else %}Read{% endif %} &#8599;</span><span class="sr-only"> (opens in a new tab)</span></span>
+    </a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+<section class="roles" aria-labelledby="roles-h">
+  <h2 id="roles-h" data-reveal>Multifaceted</h2>
+  <ul class="roles__list">
+    <li data-reveal><h3>Speaker</h3><p>FSC, Allied Security and Jamaica National have all put him in front of their people. So have high schools and prep schools, for students and staff alike.</p></li>
+    <li data-reveal style="--i:1"><h3>Videographer</h3><p>His production company, running since 2019, turns real stories into mini documentaries and motivational pieces that stay with you.</p></li>
+    <li data-reveal style="--i:2"><h3>Voice-over artist</h3><p>Hand him a script and he gives it a voice worth listening to.</p></li>
+    <li data-reveal><h3>Road safety advocate</h3><p>A member of the National Helmet Wearing Coalition, on a mission to get a certified helmet on every rider's head.</p></li>
+  </ul>
+</section>
+
+<section class="more-from" aria-labelledby="more-h">
+  <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
+  <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy" decoding="async">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>Maleek's documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
+  <a class="tile photo t3{% if site.photos.yardyLife %} has-img{% endif %}" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1">{% if site.photos.yardyLife %}<img class="fill" src="{{ site.photos.yardyLife }}" alt="" loading="lazy" decoding="async">{% else %}<span class="cap">Your photo: in the studio</span>{% endif %}<span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>Maleek's travel and lifestyle show on Fame 95 FM.</p></a>
+</section>
+
+<section class="split" aria-labelledby="why-h">
+  <div class="l prose" data-reveal>
+    <h2 id="why-h">Why the videos live here</h2>
+    <p>Some things need more than a minute on Instagram, so the full videos live here.</p>
+  </div>
+  <div class="r prose" data-reveal style="--i:1">
+    <h2>What this is and isn't</h2>
+    <p>I'm not a therapist and this isn't therapy. I'm sharing what I've been through and what's helped me. If you need more than that, please get real support. <a href="#crisis">Find help near you</a></p>
+    <p><a class="pill" href="/free/">Get the free 7-Day Reset</a></p>
+  </div>
+</section>

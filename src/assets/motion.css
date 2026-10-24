@@ -1,0 +1,114 @@
+/* Motion pass (2026-10-20). Rules from Emil Kowalski's skills and Impeccable (website/skills/):
+   every move has a purpose, transform/opacity/clip-path only, hover motion gated to mouse,
+   reduced motion = gentler, not zero. Scroll-linked effects use CSS scroll timelines where the
+   browser has them; elsewhere the page keeps the existing JS parallax and nothing breaks. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Hero name: one span per letter (only animated with motion allowed) */
+.name-l { display: inline-flex; }
+.name-l .l { display: inline-block; clip-path: inset(-25% -10% 0 -10%); }
+.name-l .l > span { display: inline-block; }
+
+/* Theme ribbon: big outlined words between the tiles and the video wall */
+.ribbon { overflow: hidden; padding-block: clamp(2.5rem, 6vw, 5rem); border-block: 1px solid #222; }
+.ribbon__track { display: flex; gap: .5em; width: max-content; font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: clamp(3.5rem, 2rem + 7vw, 9rem); line-height: .9; white-space: nowrap; }
+.ribbon__track span { color: transparent; -webkit-text-stroke: 1.5px #5a5a5a; }
+.ribbon__track span.o { color: var(--accent); -webkit-text-stroke: 0; }
+.ribbon__track span::after { content: "·"; margin-left: .5em; color: #3a3a3a; -webkit-text-stroke: 0; }
+
+/* Fix: tile bar grew by animating width (layout every frame). Scale it instead. */
+.tile h3 + .bar { width: 9rem; transform: scaleX(.5); transform-origin: left; transition: transform 300ms var(--ease-out); }
+.tile:hover .bar, .tile:focus-visible .bar { width: 9rem; transform: scaleX(1); }
+
+/* Fix: hover motion only for a real mouse (a tap on a phone fires hover and sticks) */
+@media not ((hover: hover) and (pointer: fine)) {
+  .vcard:hover .thumb, .arrow-link:hover svg, .elist a:hover .arr { transform: none; }
+  .tile:hover .arr, .tile:hover .bar { transform: none; }
+  .tile:hover .bar { transform: scaleX(.5); }
+}
+
+/* Press feedback on the main buttons and tiles */
+.pill:active, .tile:active, .vcard:active, .also__card:active { transform: scale(.98); }
+.tile, .vcard, .also__card { transition: transform 160ms var(--ease-out); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero: letters rise out of a mask, 60ms apart. This is the page's one authored moment. */
+  .js .hero__name h1 { animation: none; }
+  .js .name-l .l > span { transform: translateY(105%); animation: letter 1000ms var(--ease-out) forwards; animation-delay: calc(150ms + var(--k) * 60ms); }
+  @keyframes letter { to { transform: none; } }
+
+  /* Menu: wipes down from the top, links follow 40ms apart. Closing stays instant. */
+  .menu.open { animation: wipe 520ms var(--ease-drawer) both; }
+  .menu.open li { animation: rise-in 520ms var(--ease-out) both; }
+  .menu.open li:nth-child(2) { animation-delay: 40ms; } .menu.open li:nth-child(3) { animation-delay: 80ms; }
+  .menu.open li:nth-child(4) { animation-delay: 120ms; } .menu.open li:nth-child(5) { animation-delay: 160ms; }
+  .menu.open li:nth-child(6) { animation-delay: 200ms; } .menu.open li:nth-child(7) { animation-delay: 240ms; }
+  .menu.open li:nth-child(8) { animation-delay: 280ms; }
+  @keyframes wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(30px); } }
+
+  /* Page to page: a short crossfade instead of a hard cut (browsers that support it) */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation: 180ms var(--ease-out) both vt-out; }
+  ::view-transition-new(root) { animation: 320ms var(--ease-out) both vt-in; }
+  @keyframes vt-out { to { opacity: 0; } }
+  @keyframes vt-in { from { opacity: 0; } }
+
+  /* Photos reveal from the bottom once, when they first come into view (site.js adds .in) */
+  .js .intro__portrait[data-reveal], .js .work__shot[data-reveal] { opacity: 1; transform: none; clip-path: inset(0 0 100% 0); transition: clip-path 1100ms var(--ease-in-out); }
+  .js .intro__portrait[data-reveal].in, .js .work__shot[data-reveal].in { clip-path: inset(0); }
+
+  @supports (animation-timeline: view()) {
+    /* Hero exit: as you scroll away the name sinks back and the footage pushes in */
+    .hero__name { animation: name-out linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    .hero__media { animation: media-in linear both; animation-timeline: scroll(root); animation-range: 0 100svh; }
+    @keyframes name-out { to { transform: translateY(18svh) scale(.9); opacity: .15; } }
+    @keyframes media-in { to { transform: scale(1.12); } }
+
+    /* Statement: each word lights up as it passes the middle of the screen (motion.js splits the words) */
+    .statement .w { display: inline-block; color: #6b6b6b; animation: light linear both; animation-timeline: view(); animation-range: entry 40% cover 45%; }
+    .statement .hl .w, .statement .w.hl { --to: var(--accent); }
+    @keyframes light { to { color: var(--to, var(--ink)); } }
+
+    /* Tiles: the headline drifts a little faster than the photo behind it (two layers of depth) */
+    /* Tiles, ribbon and wall clip their overflow, which makes each its own scroll box, so they name
+       a view timeline and their children follow it (otherwise the children never move). */
+    .tile { view-timeline: --tile; }
+    .tile h3, .tile .bar, .tile .count, .tile p { animation: lift linear both; animation-timeline: --tile; animation-range: cover; }
+    @keyframes lift { from { translate: 0 24px; } to { translate: 0 -24px; } } /* translate, so it stacks with the bar's scale */
+
+    /* Ribbon slides sideways with the scroll, outlines one way */
+    .ribbon { view-timeline: --ribbon; }
+    .ribbon__track { animation: ribbon linear both; animation-timeline: --ribbon; animation-range: cover; }
+    @keyframes ribbon { from { transform: translateX(0); } to { transform: translateX(-12%); } }
+
+    /* Video wall tilts back like a table of screens, then lies flat as it reaches the middle */
+    .wall { perspective: 1200px; view-timeline: --wall; }
+    .wall__rows { transform-origin: 50% 100%; animation: tilt linear both; animation-timeline: --wall; animation-range: entry 0% cover 50%; }
+    @keyframes tilt { from { transform: rotateX(28deg) scale(1.15) translateY(8%); } to { transform: none; } }
+
+    /* Pause motion holds every scroll-linked move where it is */
+    .paused :is(.hero__name, .hero__media, .tile h3, .tile .bar, .tile .count, .tile p, .ribbon__track, .wall__rows) { animation: none; }
+    .paused .statement .w { animation: none; color: inherit; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Gentler, not zero: keep a soft fade on page change and on section entrances, no movement */
+  @view-transition { navigation: auto; }
+  ::view-transition-group(root) { animation-duration: 200ms; }
+  .js [data-reveal] { opacity: 0; transition: opacity 400ms ease; }
+  .js [data-reveal].in { opacity: 1; }
+}
+
+/* Polish found in the review (not motion, but part of the premium feel) */
+.menu ul { list-style: none; padding: 0; } /* the menu showed list bullets */
+@media (max-width: 800px) {
+  /* Phone hero: the footage stopped in a hard line above the sign-up box; fade it out instead */
+  .hero__media { -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent); mask-image: linear-gradient(to bottom, #000 72%, transparent); }
+}
