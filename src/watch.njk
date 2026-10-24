@@ -7,7 +7,7 @@ permalink: /watch/
 {% from "partials/macros.njk" import vcard with context %}
 <section class="page-head">
   <h1 data-reveal>Watch</h1>
-  {% if ytSync and ytSync.error %}<p class="mock-note" style="grid-column: 1 / -1">Test build only: YouTube videos couldn't be loaded this time ({{ ytSync.error }}).</p>{% endif %}
+  {% if ytSync and ytSync.error %}<p class="mock-note" style="grid-column: 1 / -1">Test build only: YouTube videos couldn't be loaded this time ({{ ytSync.error }}).</p>{% elif ytSync and ytSync.source %}<p class="mock-note" style="grid-column: 1 / -1">Test build only: {{ ytSync.added }} YouTube video(s) loaded through {{ ytSync.source }}.</p>{% endif %}
 </section>
 <section class="section" aria-labelledby="lib-h">
   <h2 id="lib-h" class="sr-only">All videos</h2>

@@ -131,6 +131,7 @@ async function fromChannelPages(id) {
   return out;
 }
 
+let source; // which way in worked, for the test-build note
 async function main() {
   if (!site.youtubeUrl && !site.youtubeChannelId && !feedFile) return console.log("YouTube sync: no channel set, skipped.");
 
@@ -139,21 +140,22 @@ async function main() {
   else {
     const id = await channelId();
     if (process.env.YT_API_KEY) {
-      try { xml = await fromApi(id, process.env.YT_API_KEY); }
+      try { xml = await fromApi(id, process.env.YT_API_KEY); source = "the official YouTube API"; }
       catch (e) { console.warn("YouTube sync: API unavailable,", e.message, "- trying the feeds"); }
     }
   }
   if (!xml && !feedFile) {
     const id = await channelId();
     // The channel feed sometimes answers 404 for days; the uploads list (UU + the same ID) carries the same videos
-    try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text(); }
+    try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`)).text(); source = "the channel feed"; }
     catch (e) {
       console.warn("YouTube sync: channel feed unavailable,", e.message, "- trying the uploads list");
-      try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UU${id.slice(2)}`)).text(); }
+      try { xml = await (await get(`https://www.youtube.com/feeds/videos.xml?playlist_id=UU${id.slice(2)}`)).text(); source = "the uploads list"; }
       catch (e2) {
         // Both feeds down: read the channel's own Videos and Shorts pages instead
         console.warn("YouTube sync: uploads list unavailable,", e2.message, "- reading the channel pages");
         xml = await fromChannelPages(id);
+        source = "the channel pages";
       }
     }
     // The main feed only holds the 15 newest uploads, Shorts included, so add the full-length-only list too.
@@ -220,7 +222,9 @@ async function main() {
     writeFileSync(`${VIDEOS}/yt-${id}.md`, `---\n${yaml}\n---\n${body}\n`);
     added++;
   }
-  console.log(`YouTube sync: ${added} video(s) from the channel.`);
+  console.log(`YouTube sync: ${added} video(s) from ${source || "the channel"}.`);
+  // Test builds say on /watch/ which way in worked, so a key change can be checked from the page
+  if (source && process.env.CF_PAGES_BRANCH !== "main") writeFileSync(STATUS, JSON.stringify({ source, added }));
 }
 
 const STATUS = "src/_data/ytSync.json"; // not committed; test builds show it on /watch/
