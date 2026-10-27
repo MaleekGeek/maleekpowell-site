@@ -1,0 +1,31 @@
+---
+layout: layouts/base.njk
+title: Journal
+description: Updates, insights, tips and news from Maleek Powell.
+permalink: /journal/
+---
+{% from "partials/macros.njk" import slot with context %}
+{% set cats = ["Update", "Insight", "Tips & tricks", "News"] %}
+<section class="page-head">
+  <h1 data-reveal>Journal</h1>
+</section>
+<section class="section" aria-labelledby="posts-h">
+  <h2 id="posts-h" class="sr-only">All posts</h2>
+  <div class="chips" role="group" aria-label="Filter posts">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    {% for c in cats %}<button type="button" data-filter="{{ c }}" aria-pressed="false">{{ c }}</button>
+    {% endfor %}
+  </div>
+  <p class="sr-only filter-count" aria-live="polite"></p>
+  <div class="cards">
+    {% for p in collections.journal %}
+    <a class="vcard pcard" href="{{ p.url }}" data-kind="{{ p.data.category }}" data-reveal style="--i:{{ loop.index0 % 3 }}">
+      {{ slot("span", "thumb", "Cover photo", p.data.cover, "") }}
+      <span class="meta"><span>{{ p.data.category }}</span><span>{{ p.date | readableDate }}</span></span>
+      <h3>{% if p.data.sample %}[Sample] {% endif %}{{ p.data.title }}</h3>
+      <p>{{ p.data.summary }}</p>
+    </a>
+    {% endfor %}
+  </div>
+  <p class="empty"{% if collections.journal | length %} hidden{% endif %}>Nothing written yet. Give me a minute.</p>
+</section>

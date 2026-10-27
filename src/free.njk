@@ -1,0 +1,25 @@
+---
+layout: layouts/base.njk
+title: "The 7-Day Reset"
+description: "A free 7-Day Reset by email from Maleek Powell."
+permalink: /free/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>The 7-Day Reset</h1>
+  <p class="intro-line" data-reveal style="--i:1">For when you've fallen off and you don't know where to start again.</p>
+</section>
+<section class="split" aria-labelledby="what-h">
+  <div class="l prose" data-reveal>
+    <h2 id="what-h">What you get</h2>
+    <ul class="list-plain">
+      <li>A short email every morning for 7 days, each with one small thing to do. Most take under 10 minutes.</li>
+      <li>A one-page guide you can print or keep on your phone.</li>
+      <li>After the week, every new video by email.</li>
+    </ul>
+  </div>
+  <div class="r" data-reveal style="--i:1">
+    {{ signupBox("fr") }}
+    <p class="mock-note" style="margin-top:1rem">This is motivation from my own experience, not therapy.</p>
+  </div>
+</section>

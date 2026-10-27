@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+title: Watch
+description: Every full video by Maleek Powell, newest first, by theme.
+permalink: /watch/
+---
+{% from "partials/macros.njk" import vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>Watch</h1>
+  {% if ytSync and ytSync.error %}<p class="mock-note" style="grid-column: 1 / -1">Test build only: YouTube videos couldn't be loaded this time ({{ ytSync.error }}).</p>{% elif ytSync and ytSync.source %}<p class="mock-note" style="grid-column: 1 / -1">Test build only: {{ ytSync.added }} YouTube video(s) loaded through {{ ytSync.source }}.</p>{% endif %}
+</section>
+<section class="section" aria-labelledby="lib-h">
+  <h2 id="lib-h" class="sr-only">All videos</h2>
+  <div class="chips" role="group" aria-label="Filter videos by theme">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    {% for t in themes %}<button type="button" data-filter="{{ t }}" aria-pressed="false">{{ t }}</button>
+    {% endfor %}
+  </div>
+  <div class="cards" aria-live="polite">
+    {% for v in collections.videos %}{{ vcard(v, loop.index0) }}
+    {% endfor %}
+    {% if site.membershipLaunched %}
+    <a class="vcard vcard--members" href="/join/" data-kind="Members" data-reveal style="--i:2">
+      <span class="thumb photo"><span class="cap">Your photo: recording a members audio</span></span>
+      <h3>For members</h3>
+      <span class="meta"><span>On Patreon</span></span>
+      <p>Members get a Sunday audio, the videos early, a monthly live Q&amp;A and a members chat.</p>
+    </a>
+    {% endif %}
+  </div>
+  <p class="empty"{% if collections.videos | length %} hidden{% endif %}>Nothing here yet. New videos are coming, and people on the email list hear first. <a class="arrow-link" href="/free/">Get the free 7-Day Reset</a></p>
+  <p class="sample-note">Every video has captions.</p>
+</section>

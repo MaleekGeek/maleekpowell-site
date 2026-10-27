@@ -1,0 +1,145 @@
+---
+layout: layouts/base.njk
+title: Home
+---
+{% from "partials/macros.njk" import slot, vcard, signupForm with context %}
+{% set hv = site.heroVideo %}
+{#- The hero is a short silent clip stored in the site (hv.file). YouTube can't play as a clean background video. -#}
+{% set heroFile = hv.file %}
+{% set n = collections.videos | length %}
+<section class="hero" data-hero="{{ site.heroMode or 'video' }}" aria-label="Maleek Powell">
+  {#- Hero mode comes from site.json "heroMode": "video" or "photo". Same type layout over both. -#}
+  <div class="hero__media hero__media--video photo">
+    <div class="poster photo{% if hv.poster %} has-img{% endif %}" style="--tone:#262626; --x:58%; --y:36%">{% if hv.poster %}<img class="fill" src="{{ hv.poster }}" alt="">{% endif %}</div>
+    {#- Rules: muted autoplay only, never with sound (site.js starts it muted, and not at all under reduced motion);
+        Pause stops the video element itself. Keep it a silent clip with no speech, so it needs no captions. -#}
+    {% if heroFile %}
+    <video class="hero__vid" src="{{ heroFile }}" poster="{{ hv.poster }}" muted loop playsinline preload="metadata" aria-hidden="true"></video>
+    {% else %}
+    <p class="cap">Hero video not set yet: add a short clip in Site settings</p>
+    {% endif %}
+  </div>
+  {{ slot("div", "hero__media hero__media--photo", "Hero photo not set yet: add it in Site settings", site.heroPhoto, "Maleek Powell", "--tone:#303030; --x:40%; --y:34%") }}
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="controls">
+    <button class="ctl pause" type="button" aria-pressed="false">Pause motion</button>
+  </div>
+  <div class="hero__name">
+    <h1><span class="vh">Maleek</span><span class="name-l" aria-hidden="true">{% for c in "MALEEK" | list %}<span class="l" style="--k:{{ loop.index0 }}"><span>{{ c }}</span></span>{% endfor %}</span></h1>
+  </div>
+  <div class="hero__foot">
+    <div class="signup-top" id="reset-top" style="--d:600ms">
+      <h2>Start the 7-Day Reset. <span class="free">It's free.</span></h2>
+      {{ signupForm("e1") }}
+    </div>
+  </div>
+</section>
+
+<section class="intro wrap" id="intro" aria-labelledby="intro-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
+  <div class="intro__text">
+    <h2 id="intro-h" class="statement" data-reveal><span class="hl">Discipline</span>, <span class="hl">mental health</span>, and <span class="hl">getting back up</span>. <span class="hl">The real conversation is here.</span></h2>
+    <p class="intro__about" data-reveal style="--i:1"><a class="pill" href="/about/">About Maleek</a></p>
+  </div>
+  {{ slot("figure", "intro__portrait", "Your photo: black-and-white portrait", site.photos.portrait, "Maleek Powell", "", 'data-reveal style="--i:2"') }}
+</section>
+
+{% macro countLine(c) %}{% if c == 1 %}1 video{% elif c > 1 %}{{ c }} videos{% else %}New videos soon{% endif %}{% endmacro %}
+<section class="pillars" aria-labelledby="pillars-h">
+  <h2 id="pillars-h" class="sr-head" data-reveal>What are you dealing with today?</h2>
+  {% set tiles = [
+    ["t1", "Motivation", "For when you need somebody to tell you straight.", site.photos.motivation, "Your photo: Maleek mid-conversation"],
+    ["t2 accent", "Discipline", "For when you don't feel like it and you have to do it anyway.", site.photos.discipline, "Your photo: early morning"],
+    ["t3", "Mental health", "For when your head is loud and you can't explain why.", site.photos.mentalHealth, "Your photo: a quiet moment"],
+    ["t4 wide", "Healing & resilience", "Getting back up, slower than you'd like, but getting up.", site.photos.healing, "Your photo: walking outside"]
+  ] %}
+  {% for t in tiles %}
+  <a class="tile photo {{ t[0] }}{% if t[3] %} has-img{% endif %}" href="/watch/?theme={{ t[1] | urlencode }}">{% if t[3] %}<img class="fill" src="{{ t[3] }}" alt="" loading="lazy">{% else %}<span class="cap">{{ t[4] }}</span>{% endif %}<span class="scrim"></span><h3>{{ t[1] }}</h3><span class="bar" aria-hidden="true"></span><span class="count">{{ countLine(collections.videos | countTheme(t[1])) }}</span><p>{{ t[2] }}</p></a>
+  {% endfor %}
+  <a class="tile photo t5 accent{% if site.photos.everyVideo %} has-img{% endif %}" href="/watch/">{% if site.photos.everyVideo %}<img class="fill" src="{{ site.photos.everyVideo }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: behind the camera</span>{% endif %}<span class="scrim"></span><h3>Every video</h3><span class="bar" aria-hidden="true"></span><span class="count">{{ countLine(n) }}</span><p>Every full video, newest first.</p></a>
+</section>
+
+{#- Motion: a band of the four themes that slides sideways as you scroll (decorative; still under reduced motion). -#}
+<div class="ribbon" aria-hidden="true"><div class="ribbon__track">{% for i in range(0, 3) %}<span>Motivation</span><span class="o">Discipline</span><span>Mental health</span><span class="o">Healing &amp; resilience</span>{% endfor %}</div></div>
+
+<section class="wall" id="videos" aria-labelledby="wall-h">
+  <div class="wall__rows" aria-hidden="true">
+    {% for r in range(0, 4) %}
+    <div class="wall__row">{% for v in collections.videos | cycle(10 + r) %}{% if v and v.data.thumbnail %}<span class="thumb photo has-img"><img class="fill" src="{{ v.data.thumbnail }}" alt="" loading="lazy"></span>{% else %}<span class="thumb photo"></span>{% endif %}{% endfor %}</div>
+    {% endfor %}
+  </div>
+  <div class="wall__center">
+    <h2 id="wall-h" data-reveal>Just posted</h2>
+    <a class="pill" href="/watch/" data-reveal style="--i:2">Watch the videos</a>
+  </div>
+</section>
+
+{% if n %}
+<section class="latest" aria-labelledby="latest-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
+  <h2 id="latest-h" data-reveal>Latest</h2>
+  <div class="cards">
+    {% for v in collections.videos.slice(0, 3) %}{{ vcard(v, loop.index0) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+
+{% set nextEvs = (collections.events | upcoming(buildDate)).slice(0, 3) %}{% set nextEv = nextEvs[0] %}
+{% set lastPost = collections.journal[0] %}
+{% if nextEv or lastPost %}
+<section class="also" aria-label="Events and journal">
+  {% for nextEv in nextEvs %}
+  <a class="also__card next-event" href="{{ nextEv.url }}" data-date="{{ nextEv.date | isoDate }}" {% if not loop.first %}hidden {% endif %}data-reveal>
+    <span class="also__label">Next event</span>
+    <span class="also__row"><time class="elist__date" datetime="{{ nextEv.date | isoDate }}"><span>{{ nextEv.date | dayNum }}</span>{{ nextEv.date | monthShort }}</time>
+    <span class="also__main"><span class="also__title">{% if nextEv.data.sample %}[Sample] {% endif %}{{ nextEv.data.title }}</span><span class="also__meta">{{ nextEv.data.kind }}{% if nextEv.data.time %} · {{ nextEv.data.time | withZone }}{% endif %}</span></span></span>
+    <span class="also__more">See the event <span aria-hidden="true">→</span></span>
+  </a>
+  {% endfor %}
+  {% if lastPost %}
+  <a class="also__card" href="{{ lastPost.url }}" data-reveal style="--i:1">
+    <span class="also__label">From the journal</span>
+    <span class="also__main"><span class="also__meta">{{ lastPost.data.category }} · {{ lastPost.date | readableDate }}</span><span class="also__title">{% if lastPost.data.sample %}[Sample] {% endif %}{{ lastPost.data.title }}</span></span>
+    <span class="also__more">Read it <span aria-hidden="true">→</span></span>
+  </a>
+  {% endif %}
+</section>
+{% endif %}
+
+<section class="more-from" aria-labelledby="more-h">
+  <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
+  <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>My documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
+  <a class="tile photo t3{% if site.photos.yardyLife %} has-img{% endif %}" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1">{% if site.photos.yardyLife %}<img class="fill" src="{{ site.photos.yardyLife }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: in the studio</span>{% endif %}<span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>The radio show I host on Fame 95 FM.</p></a>
+</section>
+
+<section class="reset" id="reset" aria-labelledby="reset-h">
+  <h2 id="reset-h" data-reveal>Start the 7-Day Reset. It's free.</h2>
+  <div class="reset__body" data-reveal style="--i:1">
+    <p>One short email each morning for a week. After that I'll send you every new video, so you're not waiting on Instagram to show it to you.</p>
+    {{ signupForm("e2", true) }}
+    <p class="fine">Free. Unsubscribe any time with one click. <a href="/privacy/">How I handle your email</a></p>
+  </div>
+</section>
+
+<section class="work photo" id="work" aria-labelledby="work-h">
+  {{ slot("figure", "work__shot", "Your photo: Maleek speaking with people", site.photos.work, "Maleek Powell", "", "data-reveal") }}
+  <div class="work__text" data-reveal style="--i:1">
+    <h2 id="work-h">Work with Maleek</h2>
+    <p>Speaking, video production, voice-over and brand partnerships. Email me with what you have in mind.</p>
+    <p>Email me at {{ site.businessEmail or "[business email to come]" }}.</p>
+    <a class="pill" href="/contact/">Get in touch</a>
+  </div>
+</section>
+
+{% if site.membershipLaunched %}
+<section class="members" id="members" aria-labelledby="members-h">
+  <div class="section-bg photo" aria-hidden="true"></div>
+  <h2 id="members-h" data-reveal>Membership</h2>
+  <div class="members__body" data-reveal style="--i:1">
+    <p class="lead">The free videos aren't going <span class="hl">anywhere.</span></p>
+    <p>Members get a 10-minute audio from me every Sunday, the videos early, a live Q&amp;A every month and a members-only chat.</p>
+    <a class="pill" href="/join/">See what members get</a>
+  </div>
+</section>
+{% endif %}

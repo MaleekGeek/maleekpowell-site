@@ -1,0 +1,17 @@
+<header class="top">
+  <a class="wordmark" href="/"><span class="mono" aria-hidden="true">MP</span><span>Maleek Powell</span></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+</header>
+<nav class="menu" id="menu" aria-label="Main">
+  <button class="close" type="button">Close</button>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/watch/">Watch</a></li>
+    <li><a href="/journal/">Journal</a></li>
+    <li><a href="/events/">Events</a></li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/contact/">Work with Maleek</a></li>
+    <li><a href="/free/">7-Day Reset</a></li>
+    {% if site.membershipLaunched %}<li><a href="/join/">Membership</a></li>{% endif %}
+  </ul>
+</nav>

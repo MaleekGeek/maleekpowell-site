@@ -1,0 +1,261 @@
+# Pages CMS config (https://pagescms.org/docs/configuration/)
+# Sign in at app.pagescms.org with GitHub and open this repo.
+# Every Save is a commit, and Cloudflare Pages rebuilds the site.
+
+media:
+  - name: thumbs
+    label: Video thumbnails
+    input: src/assets/thumbs
+    output: /assets/thumbs
+    categories: [image]
+  - name: photos
+    label: Site photos
+    input: src/assets/photos
+    output: /assets/photos
+    categories: [image]
+
+content:
+  - name: videos
+    label: Videos
+    type: collection
+    path: src/videos
+    filename: "{year}-{month}-{day}-{primary}.md"   # primary = title, slugified
+    view:
+      fields: [title, date, theme]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: theme
+        label: Theme
+        type: select
+        required: true
+        options:
+          values: [Motivation, Discipline, Mental health, Healing & resilience]
+      - name: captions
+        label: Captions
+        type: select
+        description: "Burned-in = the words are part of the video. YouTube = turned on with the CC button."
+        options:
+          values: [burned-in, youtube, none]
+      - name: vertical
+        label: Vertical video (filmed upright, like a Reel)
+        type: boolean
+      - name: youtube
+        label: YouTube link
+        type: string
+        description: "Paste the video's link from YouTube (Share > Copy link). Public or unlisted both work."
+      - name: thumbnail
+        label: Thumbnail
+        type: image
+        options:
+          media: thumbs
+      - name: length
+        label: Length
+        type: string
+        description: "Like 14:20"
+      - name: summary
+        label: Summary
+        type: text
+        description: "One or two sentences for the cards and search engines."
+      - name: heavy
+        label: Heavy topic (shows the safety note)
+        type: boolean
+        description: "Mental health and Healing videos always show it."
+      - name: music
+        label: Music credit
+        type: string
+      - name: sample
+        label: Sample video (placeholder)
+        type: boolean
+        description: "Leave off for real videos. Samples hide when 'Show sample videos' is off."
+      - name: body
+        label: Notes and transcript
+        type: rich-text
+
+  - name: journal
+    label: Journal
+    type: collection
+    path: src/journal
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, category]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values: [Update, Insight, Tips & tricks, News]
+      - name: cover
+        label: Cover photo (optional)
+        type: image
+        options:
+          media: photos
+      - name: summary
+        label: Summary
+        type: text
+        description: "One or two sentences for the cards and search engines."
+      - name: sample
+        label: Sample post (placeholder)
+        type: boolean
+        description: "Leave off for real posts."
+      - name: body
+        label: Post
+        type: rich-text
+
+  - name: events
+    label: Events
+    type: collection
+    path: src/events
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, kind]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: asc
+    fields:
+      - { name: title, label: Event name, type: string, required: true }
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: time
+        label: Time
+        type: string
+        description: "Like 7:00 pm. Shown as Jamaica time unless you type another zone, like 7:00 pm EST."
+      - name: kind
+        label: Type
+        type: select
+        required: true
+        options:
+          values: [Online, In person]
+      - name: place
+        label: Place
+        type: string
+        description: "Venue and town, or the platform for online events."
+      - name: link
+        label: Sign-up or ticket link
+        type: string
+        description: "Optional. Shows a 'Get a spot' button."
+      - name: summary
+        label: Summary
+        type: text
+      - name: sample
+        label: Sample event (placeholder)
+        type: boolean
+        description: "Leave off for real events."
+      - name: body
+        label: Details
+        type: rich-text
+
+  - name: press
+    label: In the media
+    type: file
+    path: src/_data/press.json
+    format: json
+    fields:
+      - name: articles
+        label: Articles (shown on the About page, top first)
+        type: object
+        list: true
+        fields:
+          - { name: outlet, label: Outlet, type: string, description: "Like The Gleaner or Jamaica Observer" }
+          - { name: title, label: Headline, type: string }
+          - { name: date, label: Date, type: date, description: "Leave empty if you don't know it" }
+          - { name: url, label: Link to the article, type: string }
+          - { name: kind, label: Type, type: select, options: { values: [article, video] }, description: "Video shows Watch instead of Read" }
+
+  - name: site
+    label: Site settings
+    type: file
+    path: src/_data/site.json
+    format: json
+    fields:
+      # Kept as hidden fields so saving the form never drops them from site.json.
+      - { name: name, label: Site name, type: string, hidden: true }
+      - { name: url, label: Site address, type: string, hidden: true }
+      - name: heroMode
+        label: Hero (top of home page)
+        type: select
+        options:
+          values: [video, photo]
+      - name: heroVideo
+        label: Hero video
+        type: object
+        fields:
+          - name: file
+            label: Short silent clip stored in the site
+            type: string
+            description: "Path like /assets/video/banner.mp4. Keep it short, silent and a few MB."
+          - name: poster
+            label: Poster image (shown before the video plays)
+            type: image
+            options:
+              media: photos
+      - name: heroPhoto
+        label: Hero photo (used when Hero = photo)
+        type: image
+        options:
+          media: photos
+      - name: kitFormId
+        label: Kit form ID
+        type: string
+        description: "The number in your Kit form's embed code. Empty = forms show a 'not connected yet' message."
+      - { name: patreonUrl, label: Patreon link, type: string }
+      - { name: adventureSquadUrl, label: Adventure Squad link, type: string }
+      - { name: yardyLifeUrl, label: Yardy Life link, type: string }
+      - { name: instagramUrl, label: Instagram link, type: string }
+      - { name: instagramHandle, label: Instagram handle, type: string }
+      - { name: tiktokUrl, label: TikTok link, type: string }
+      - { name: facebookUrl, label: Facebook link, type: string }
+      - name: youtubeUrl
+        label: YouTube channel link
+        type: string
+        description: "Your main channel. Its newest videos are added to the site by themselves."
+      - { name: youtubeChannelId, label: YouTube channel ID, type: string, hidden: true }
+      - { name: businessEmail, label: Business email, type: string }
+      - name: postalAddress
+        label: Postal address (shown in the footer, needed for email law)
+        type: string
+      - name: showSamples
+        label: Show sample videos
+        type: boolean
+      - name: membershipLaunched
+        label: Membership launched
+        type: boolean
+        description: "Off hides every membership mention and the home teaser."
+      - name: photos
+        label: Photos
+        type: object
+        fields:
+          - { name: portrait, label: Portrait (home intro), type: image, options: { media: photos } }
+          - { name: motivation, label: Motivation tile, type: image, options: { media: photos } }
+          - { name: discipline, label: Discipline tile, type: image, options: { media: photos } }
+          - { name: mentalHealth, label: Mental health tile, type: image, options: { media: photos } }
+          - { name: healing, label: Healing & resilience tile, type: image, options: { media: photos } }
+          - { name: everyVideo, label: Every video tile, type: image, options: { media: photos } }
+          - { name: adventureSquad, label: Adventure Squad tile, type: image, options: { media: photos } }
+          - { name: yardyLife, label: Yardy Life tile, type: image, options: { media: photos } }
+          - { name: work, label: Work with Maleek, type: image, options: { media: photos } }
+          - { name: about, label: About page, type: image, options: { media: photos } }
+          - { name: company, label: "About page: wide photo under the story", type: image, options: { media: photos } }
