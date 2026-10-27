@@ -5,12 +5,12 @@
 @font-face { font-family: "DM Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/dm-sans-latin-400-normal.woff2") format("woff2"); }
 @font-face { font-family: "DM Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("/fonts/dm-sans-latin-600-normal.woff2") format("woff2"); }
 :root {
-  --bg: #0e0f12;
-  --panel: #181a20;
-  --ink: #ffffff;
-  --soft: #b5b5b5;
-  --accent: #8fb3ff;
-  --accent-ink: #0e0f12;
+  --bg: #0b1426;
+  --panel: #13203a;
+  --ink: #f3efe7;
+  --soft: #aeb8cc;
+  --accent: #e3b24f;
+  --accent-ink: #0b1426;
 
   --display: "Oswald", "Arial Narrow", sans-serif;
   --text: "DM Sans", "Helvetica Neue", Arial, sans-serif;
@@ -164,7 +164,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .reset__body { grid-column: 8 / 13; }
 .reset__body p { font-weight: 600; }
 .reset .form input { border-color: var(--accent-ink); background: var(--accent); color: var(--accent-ink); }
-.reset .form input::placeholder { color: #2b3d63; }
+.reset .form input::placeholder { color: #5c4413; }
 .reset .fine { margin-top: .75rem; font-size: var(--step-small); }
 .reset :focus-visible { outline-color: var(--accent-ink); }
 
@@ -303,7 +303,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .signup-box h2 { font-size: var(--step-lead); }
 .signup-box p { font-weight: 600; margin-top: .5rem; }
 .signup-box .form input { border-color: var(--accent-ink); background: var(--accent); color: var(--accent-ink); }
-.signup-box .form input::placeholder { color: #2b3d63; }
+.signup-box .form input::placeholder { color: #5c4413; }
 .signup-box .fine { margin-top: .75rem; font-size: var(--step-small); }
 .signup-box a { color: var(--accent-ink); }
 .signup-box :focus-visible { outline-color: var(--accent-ink); }
@@ -423,7 +423,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; text-transform: uppe
 .signup-top .form { justify-content: center; }
 @media (max-width: 800px) { .signup-top { justify-self: center; } }
 /* 7-Day Reset in the hero: more presence (Maleek, 2026-10-19) */
-.signup-top { width: min(100%, 40rem); padding: clamp(1.25rem, 2.5vw, 2rem); background: rgba(14,15,18,.72); border-top: 6px solid var(--accent); backdrop-filter: blur(6px); }
+.signup-top { width: min(100%, 40rem); padding: clamp(1.25rem, 2.5vw, 2rem); background: rgba(11,20,38,.72); border-top: 6px solid var(--accent); backdrop-filter: blur(6px); }
 .signup-top h2 { font-size: clamp(2rem, 1.1rem + 2.6vw, 3.5rem); line-height: .98; }
 .signup-top h2 .free { color: var(--accent); }
 .signup-top .form { margin-top: 1.25rem; }
@@ -493,7 +493,7 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
 .cal__day:hover { border-color: var(--soft); }
 .cal__day.past { color: #8c8c8c; }
 .cal__day.today { border-color: var(--ink); }
-.cal__day.has { background: #1a2740; color: var(--ink); }
+.cal__day.has { background: #2e2610; color: var(--ink); }
 .cal__dot { position: absolute; left: .55rem; bottom: .55rem; width: clamp(8px, 1.2vw, 12px); aspect-ratio: 1; border-radius: 50%; background: var(--accent); }
 .cal__day[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .cal__day[aria-pressed="true"] .cal__dot { background: var(--accent-ink); }
