@@ -64,6 +64,7 @@ export default function (eleventyConfig) {
   );
 
   // Pick n items, cycling through the list (for the decorative video wall)
+  eleventyConfig.addFilter("withThumbs", (videos) => (videos || []).filter((v) => v.data.thumbnail).length);
   eleventyConfig.addFilter("cycle", (list, n) => {
     const out = [];
     if (!list || !list.length) return Array.from({ length: n }, () => null);

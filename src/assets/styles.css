@@ -678,3 +678,45 @@ body::after { content: ""; position: fixed; inset: 0; z-index: 100; pointer-even
   .endcard__h { font-size: 1.25rem; }
   .endcard__again { min-height: 36px; padding: .25em .9em; }
 }
+
+/* ---------- Review pass, 2026-11-13 (Maleek approved items 5 to 12) ---------- */
+/* Brighter photos. The scrims still sit under the words, so the text keeps its contrast. */
+.tile.photo > img.fill { filter: grayscale(1) contrast(1.05) brightness(.78); }
+.hero__media > .poster > img.fill, .hero__media--photo > img.fill { filter: grayscale(1) contrast(1.05) brightness(.85); }
+.hero__vid { filter: grayscale(1) brightness(.85); }
+.hero__media.has-img::before { display: none; } /* the hero already has .hero__scrim; two scrims made it too dark */
+.hero__scrim { background: /* taste-skill-ignore: scrim behind hero name */ linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.5) 40%, rgba(0,0,0,.42) 100%); }
+
+/* Phone: portraits fill the width instead of sitting small to one side */
+@media (max-width: 800px) {
+  .intro__portrait { width: 100%; aspect-ratio: 4 / 5; justify-self: stretch; }
+  .about-top > .r { width: 100%; aspect-ratio: 4 / 5; }
+  .split .shot { width: 100%; aspect-ratio: 4 / 5; }
+}
+
+/* Home without the moving wall: Latest leads, with the link under the cards */
+.latest--lead { padding-top: var(--section); }
+.latest__more { margin-top: 2.5rem; }
+
+/* Help block: numbers fold behind one tap (open on video pages) */
+.crisis__more { grid-column: 7 / 13; }
+.crisis__more > ul { grid-column: auto; }
+.crisis__more > summary { display: inline-flex; align-items: center; gap: .6rem; min-height: 48px; padding: 0 1.2rem; border: 2px solid var(--accent); border-radius: 999px; cursor: pointer; list-style: none; font-family: var(--display); font-weight: 500; text-transform: uppercase; color: var(--accent); }
+.crisis__more > summary::-webkit-details-marker { display: none; }
+.crisis__more > summary::after { content: "+"; font-size: 1.3em; line-height: 1; }
+.crisis__more[open] > summary::after { content: "\2212"; }
+.crisis__more > summary:hover { background: var(--accent); color: var(--accent-ink); }
+.crisis__more[open] > summary { margin-bottom: 1.25rem; }
+@media (max-width: 800px) { .crisis__more { grid-column: 1 / 13; margin-top: 1rem; } .crisis__more > ul { margin-top: 0; } }
+@media print { .crisis__more > summary { display: none; } }
+
+/* Computer: page links across the top; the three lines stay for phones and tablets */
+.topnav { display: none; }
+@media (min-width: 1000px) {
+  .topnav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
+  .topnav a { font-family: var(--display); font-weight: 500; font-size: 1.0625rem; text-transform: uppercase; text-decoration: none; letter-spacing: .02em; padding: .6rem 0; text-shadow: 0 1px 12px rgba(0,0,0,.7); transition: color 180ms; }
+  .topnav a:hover, .topnav a[aria-current="page"] { color: var(--accent); }
+  .topnav .topnav__cta { padding: .55rem 1.1rem; border: 2px solid var(--accent); border-radius: 999px; color: var(--accent); text-shadow: none; background: rgba(0,0,0,.45); }
+  .topnav .topnav__cta:hover, .topnav .topnav__cta[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
+  .menu-btn { display: none; }
+}
