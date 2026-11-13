@@ -2,7 +2,7 @@
 sample: true
 title: One small thing before bed
 date: 2026-10-10
-category: Tips & tricks
+category: Mind & body
 cover: ""
 summary: "[Sample summary] A tip post: one practical thing people can try today."
 ---

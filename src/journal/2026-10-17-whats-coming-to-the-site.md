@@ -2,7 +2,7 @@
 sample: true
 title: What's coming to the site
 date: 2026-10-17
-category: Update
+category: Motivation
 cover: ""
 summary: "[Sample summary] A short update post: what's new, what's next."
 ---

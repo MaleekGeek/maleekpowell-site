@@ -2,7 +2,7 @@
 sample: true
 title: What I learned this month
 date: 2026-10-03
-category: Insight
+category: Growth
 cover: ""
 summary: "[Sample summary] An insight post: something you noticed or learned, and what you're doing with it."
 ---
