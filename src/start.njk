@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+title: "Start here"
+description: "From Instagram? Start here."
+permalink: /start/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>The full videos</h1>
+</section>
+{{ signupBox("st", "signup-box--band") }}
+<section class="section" aria-label="Where to go next">
+  <div class="linkcards">
+    <a class="linkcard" href="{{ collections.videos[0].url if (collections.videos | length) else '/watch/' }}" data-reveal><h2>Watch the full video</h2><p>The latest one, start to finish.</p><span class="arr" aria-hidden="true">→</span></a>
+    {% if site.membershipLaunched %}
+    <a class="linkcard" href="/join/" data-reveal style="--i:2"><h2>See what members get</h2><p>Go deeper every week.</p><span class="arr" aria-hidden="true">→</span></a>
+    {% endif %}
+    <a class="linkcard" href="{{ site.instagramUrl }}" data-reveal style="--i:3"><h2>Clips on Instagram</h2><p>@maleek_powell</p><span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+---
+layout: layouts/base.njk
+title: "Contact"
+description: "Get in touch with Maleek Powell."
+permalink: /contact/
+---
+{% from "partials/macros.njk" import slot, signupBox, signupForm, vcard with context %}
+<section class="page-head">
+  <h1 data-reveal>Get in touch</h1>
+</section>
+<section class="work photo" id="work" aria-labelledby="work-h">
+  <figure class="work__shot photo" data-reveal><figcaption class="cap">Your photo: Maleek speaking with people</figcaption></figure>
+  <div class="work__text" data-reveal style="--i:1">
+    <h2 id="work-h">Work with Maleek</h2>
+    <p>Host of Yardy Life on Fame 95 FM.</p>
+    <p>Speaking, video production, voice-over and brand partnerships. Email me with what you have in mind.</p>
+    <p>Email: {{ site.businessEmail or "[NEEDS MALEEK: business email]" }}</p>
+    <a class="pill" href="mailto:{{ site.businessEmail }}">Email Maleek</a>
+  </div>
+  <p class="cap">Background photo placeholder</p>
+</section>
+<section class="section" aria-labelledby="dm-h" style="padding-top: var(--section)">
+  <div class="note-box prose">
+    <h2 id="dm-h">Please read before you write</h2>
+    <p><strong>I'll never DM you asking for money, your passwords or your card details. If someone using my name does, it isn't me. Please report the account.</strong></p>
+    <p>I read everything, but I can't give crisis support over email or DMs. If you're in crisis, please contact local emergency services or a helpline. <a href="#crisis">Find help near you</a></p>
+  </div>
+</section>
