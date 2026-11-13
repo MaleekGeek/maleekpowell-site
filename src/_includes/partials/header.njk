@@ -1,8 +1,17 @@
 <header class="top">
   <a class="wordmark" href="/"><span class="mono" aria-hidden="true">MP</span><span>Maleek Powell</span></a>
+  <nav class="topnav" aria-label="Main">
+    <a href="/watch/">Watch</a>
+    <a href="/journal/">Journal</a>
+    <a href="/events/">Events</a>
+    <a href="/about/">About</a>
+    <a href="/contact/">Work with Maleek</a>
+    {% if site.membershipLaunched %}<a href="/join/">Membership</a>{% endif %}
+    <a class="topnav__cta" href="/free/">7-Day Reset</a>
+  </nav>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
-<nav class="menu" id="menu" aria-label="Main">
+<nav class="menu" id="menu" aria-label="Menu">
   <button class="close" type="button">Close</button>
   <ul>
     <li><a href="/">Home</a></li>
