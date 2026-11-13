@@ -9,6 +9,17 @@ document.documentElement.classList.add('js');
   menu.querySelector('.close').addEventListener('click', function () { setMenu(false); btn.focus(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('open')) { setMenu(false); btn.focus(); } });
 
+  // Top links: mark the page you're on
+  var here = location.pathname;
+  document.querySelectorAll('.topnav a').forEach(function (a) { var h = a.getAttribute('href'); if (here === h || (h !== '/' && here.indexOf(h) === 0)) a.setAttribute('aria-current', 'page'); });
+
+  // Help numbers: any "Find help near you" link opens the folded list
+  var more = document.querySelector('.crisis__more');
+  function openHelp() { if (more && location.hash === '#crisis') more.open = true; }
+  window.addEventListener('hashchange', openHelp); openHelp();
+  document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href$="#crisis"]'); if (a && more) more.open = true; });
+  window.addEventListener('beforeprint', function () { if (more) more.open = true; });
+
   // Fit the hero name to the width with whatever font is showing (fallback included)
   var name = document.querySelector('.hero__name h1');
   function fitName() {

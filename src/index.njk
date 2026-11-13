@@ -62,6 +62,9 @@ title: Home
 {#- Motion: a band of the four themes that slides sideways as you scroll (decorative; still under reduced motion). -#}
 <div class="ribbon" aria-hidden="true"><div class="ribbon__track">{% for i in range(0, 3) %}<span>Motivation</span><span class="o">Discipline</span><span>Mental health</span><span class="o">Healing &amp; resilience</span>{% endfor %}</div></div>
 
+{#- The moving wall needs real thumbnails to look right. With fewer than 8 it is skipped and Latest carries the link instead. -#}
+{% set wallReady = (collections.videos | withThumbs) >= 8 %}
+{% if wallReady %}
 <section class="wall" id="videos" aria-labelledby="wall-h">
   <div class="wall__rows" aria-hidden="true">
     {% for r in range(0, 4) %}
@@ -73,14 +76,16 @@ title: Home
     <a class="pill" href="/watch/" data-reveal style="--i:2">Watch the videos</a>
   </div>
 </section>
+{% endif %}
 
 {% if n %}
-<section class="latest" aria-labelledby="latest-h">
+<section class="latest{% if not wallReady %} latest--lead{% endif %}" aria-labelledby="latest-h">
   <div class="section-bg photo" aria-hidden="true"></div>
   <h2 id="latest-h" data-reveal>Latest</h2>
   <div class="cards">
     {% for v in collections.videos.slice(0, 3) %}{{ vcard(v, loop.index0) }}{% endfor %}
   </div>
+  {% if not wallReady %}<p class="latest__more" data-reveal><a class="pill" href="/watch/">Watch the videos</a></p>{% endif %}
 </section>
 {% endif %}
 
@@ -110,7 +115,7 @@ title: Home
 <section class="more-from" aria-labelledby="more-h">
   <h2 id="more-h" class="sr-head" data-reveal>More from Maleek</h2>
   <a class="tile photo t2{% if site.photos.adventureSquad %} has-img{% endif %}" href="{{ site.adventureSquadUrl or '#' }}" data-reveal>{% if site.photos.adventureSquad %}<img class="fill" src="{{ site.photos.adventureSquad }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: Adventure Squad</span>{% endif %}<span class="scrim"></span><h3>Adventure Squad</h3><span class="bar" aria-hidden="true"></span><span class="count">On YouTube{% if not site.adventureSquadUrl %} · [Adventure Squad YouTube link]{% endif %}</span><p>My documentary channel: travel, lifestyle and Jamaicans doing cool things.</p></a>
-  <a class="tile photo t3{% if site.photos.yardyLife %} has-img{% endif %}" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1">{% if site.photos.yardyLife %}<img class="fill" src="{{ site.photos.yardyLife }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: in the studio</span>{% endif %}<span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>The radio show I host on Fame 95 FM.</p></a>
+  <a class="tile photo t3{% if site.photos.yardyLife %} has-img{% endif %}" href="{{ site.yardyLifeUrl or '#' }}" data-reveal style="--i:1">{% if site.photos.yardyLife %}<img class="fill" src="{{ site.photos.yardyLife }}" alt="" loading="lazy">{% else %}<span class="cap">Your photo: in the studio</span>{% endif %}<span class="scrim"></span><h3>Yardy Life</h3><span class="bar" aria-hidden="true"></span><span class="count">Fame 95 FM{% if not site.yardyLifeUrl %} · [Yardy Life link]{% endif %}</span><p>My travel and lifestyle show on Fame 95 FM.</p></a>
 </section>
 
 <section class="reset" id="reset" aria-labelledby="reset-h">
