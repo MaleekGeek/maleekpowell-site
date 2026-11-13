@@ -69,6 +69,20 @@ If `npm install` fails on a network drive because of symlinks, use `npm install 
 
 `npm run build` runs `scripts/check-launch.mjs` after Eleventy. Once **Show sample videos** is off, the build fails if any page still has placeholder text (anything in square brackets that starts with a capital letter, like `[NEEDS MALEEK: …]`, `[Year]` or `[Yardy Life link]`), and it lists where.
 
+## Safety check
+
+`npm run build` also runs `scripts/check-security.mjs` on every build, test or live. The build stops, and the last good site stays up, if any of these slip in:
+
+- the security headers file is missing, a header was removed, or the content security policy was loosened (inline scripts allowed, and so on)
+- a script written inside a page, a script loaded from another site, or inline `on...=` code
+- a link that runs code (`javascript:`, `data:`), for example one pasted into Pages CMS by mistake or by someone who got into the account
+- a form that isn't `method="post"` or sends anywhere other than Kit
+- a frame from anywhere other than YouTube's privacy-enhanced player
+- a new-tab link without `rel="noopener"`
+- private files (`.env`, config, source maps) copied into the public site
+
+Plain `http://` links only print a warning.
+
 ## Stand-in photos (test build only)
 
 While `"dummyPhotos": true` in `src/_data/site.json`, every empty photo spot shows a random black-and-white stock photo from picsum.photos (Unsplash licence), with its "Your photo: …" label still on top so you know what goes there. Before launch: add your own photos, set `"dummyPhotos": false`, and remove `https://picsum.photos https://fastly.picsum.photos` from `img-src` in `src/_headers`. The launch check fails until both are done.
