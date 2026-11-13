@@ -15,7 +15,7 @@ Your brain makes waste while it works, the same way your body does. One of those
 
 In 2013, a team studying mice found that during sleep, the spaces between brain cells opened up by about 60%. Fluid could move through more easily, and beta-amyloid was cleared faster than when the mice were awake.
 
-In 2019, another team watched 13 young adults sleep inside a brain scanner. During deep sleep, slow brain waves were followed by big, steady waves of fluid flowing in and out of the brain. It was the first time anyone had seen that in sleeping people.
+In 2019, another team watched 13 young adults sleep inside a brain scanner. During deep sleep, slow brain waves were followed by big, slow waves of the brain's cleaning fluid pulsing in and out. It was the first time anyone had seen that in sleeping people.
 
 ## What happens when you skip it
 
@@ -37,7 +37,9 @@ These come straight from the CDC's sleep advice:
 - Keep your room dark, quiet and a comfortable temperature.
 - Take the TV, laptop and phone out of the bedroom if you can.
 - Skip big meals, caffeine and alcohol close to bedtime.
-- Move during the day. Even a short walk helps.
+- Exercise regularly.
+
+And if you can't fit in a workout, [a short walk](/journal/what-a-10-minute-walk-does-for-your-brain/) still counts.
 
 If you've tried all of that and you still can't sleep, talk to your doctor. Some sleep problems need more than good habits.
 
