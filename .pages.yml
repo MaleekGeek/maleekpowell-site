@@ -103,7 +103,7 @@ content:
         type: select
         required: true
         options:
-          values: [Update, Insight, Tips & tricks, News]
+          values: [Motivation, Discipline, Mind & body, Growth, Grief, Relationships, Work]
       - name: cover
         label: Cover photo (optional)
         type: image
